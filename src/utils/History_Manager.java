@@ -3,8 +3,8 @@ package utils;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class History_Manager<T> {
-    private Queue<T> history = new LinkedList<>();
+public class History_Manager {
+    private Queue history = new LinkedList<>();
 
     public void add(){}
 

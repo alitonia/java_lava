@@ -1,10 +1,11 @@
-package utils;
+package utils.front_end_logic;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 import static utils.consts.*;
 
+//Done
 public class Log implements Runnable {
 
     private static Queue<String> writelog_Queue = new LinkedList<>();
@@ -16,6 +17,7 @@ public class Log implements Runnable {
             t = new Thread(this);
             t.setName("Log thread");
             t.setPriority(LOG_PRIORITY);
+            t.setDaemon(true);
             System.out.println(t.getName() + " created");
             t.start();
         }

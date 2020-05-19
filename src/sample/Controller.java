@@ -5,15 +5,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import utils.*;
+import utils.front_end_logic.Array_Controller;
+import utils.front_end_logic.Log;
 
-import static utils.consts.NUMBER_OF_RECTANGLE;
+import java.util.Collection;
+
+import static utils.consts.*;
 
 public class Controller {
 
     private final Log my_Log = new Log();
-    private final Async_Painter painter = new Async_Painter(this);
+    private final History_Manager historyManager = new History_Manager();
+    private Generator generator = new Generator();
+    private Array_Controller array_controller = new Array_Controller(this);
 
+    //    Executor executor = Executors.newFixedThreadPool(MAX_EXECUTIONERS);
     @FXML
     private Button cancel_button;
 
@@ -45,24 +53,36 @@ public class Controller {
     void start_running(ActionEvent event) {
         my_Log.print("Start button clicked!\n" +
                 "Now running!\n");
+        array_controller.setStatus(0, 1);
+
+//        generator = new Generator();
+//        generator.start( status)
+//        while (historyManager.is_Finish() = false){
+//            historyManager.get_Next();
+//            paint_Board();
+//        }
     }
 
     @FXML
     void one_step_forward(ActionEvent event) {
         my_Log.print("Next button pressed:\n" +
                 "Go to next action\n");
+        my_Log.print(array_controller.getColorful_rectangles().toString());
+
     }
 
     @FXML
     void pause_running(ActionEvent event) {
         my_Log.print("Pause button pressed:\n" +
                 "Stop action\n");
+
     }
 
     @FXML
     void one_step_backward(ActionEvent event) {
         my_Log.print("Backward button pressed:\n" +
                 "Go to previous action\n");
+        array_controller.swap(0,2);
     }
 
     @FXML
@@ -86,24 +106,32 @@ public class Controller {
                 "Generating new random values");
 
         //Get parameters of rectangles
-        visual_board.getChildren().clear();
-        int no_of_rect = (int) Math.round(visual_board.getWidth() / NUMBER_OF_RECTANGLE);
-        float width_per_rect = (float) visual_board.getWidth() / no_of_rect;
+        array_controller.make(NUMBER_OF_RECTANGLE);
+        //TODO: This should make request to History_Manager, then Manager change flag
 
-        Array_Controller my_Array = new Array_Controller();
-        my_Array.make(no_of_rect);
+//        paint_Board();
+    }
 
-        //Paint rectangles
-        my_Log.print("Now painting array");
-        painter.paint_new_rect(no_of_rect, width_per_rect, my_Array);
-
-        my_Log.print("Finish painting\n");
+    public void paint_Board() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                clean_Board();
+                visual_board.getChildren().addAll(array_controller.getColorful_rectangles());
+            }
+        });
     }
 
 
+    public void clean_Board() {
+        visual_board.getChildren().clear();
+    }
+
+    @Getter
     public Pane getVisual_board() {
         return visual_board;
     }
+
 }
 
 
