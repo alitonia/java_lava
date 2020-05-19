@@ -1,11 +1,9 @@
 package utils;
 
 import javafx.scene.paint.Color;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -17,7 +15,7 @@ public class consts{
 
 
     //Data properties
-    public static final int NUMBER_OF_RECTANGLE = 20;
+    public static final int NUMBER_OF_RECTANGLE = 50;
 
 
     //Colorful Rect properties
@@ -31,14 +29,23 @@ public class consts{
     public static final double MINIMUM_RECT_HEIGHT = 0.1D;
     public static final double MAXIMUM_RECT_HEIGHT = 0.97D;
     //status
-    public static final int NORMAL_RECT = 0;
+    public static final int NORMAL_RECT_STATUS = 0;
+    public static final int SOMEWHAT_SPECIAL_RECT_STATUS = -10;
 
     //Add more when have more status
-    public static Color[][] COLORS_ARRAY = { {NORMAL_FILL_COLOR, NORMAL_STROKE_COLOR},
-            {NORMAL_STROKE_COLOR, NORMAL_FILL_COLOR}
-    };
+
+    public static HashMap<Integer, List<Color>> COLORS_ARRAY = new HashMap<Integer, List<Color>>();
+    static {
+        COLORS_ARRAY.put(NORMAL_RECT_STATUS, Arrays.asList(NORMAL_FILL_COLOR, NORMAL_STROKE_COLOR));
+        COLORS_ARRAY.put(SOMEWHAT_SPECIAL_RECT_STATUS, Arrays.asList(NORMAL_STROKE_COLOR, NORMAL_FILL_COLOR));
+    }
+
+    private static final int VALUE_OF_FILL_COLOR = 0;
+    private static final int VALUE_OF_STROKE_COLOR = 1;
 
     //Log parameters
+    public static final int MAXIMUM_QUEUING_MESSAGE = 50;
+
     public static final int STANDARD_LOG_RATE = 1;
     public static final int MAXIMUM_LOG_RATE = 1000;
     public static final int MINIMUM_LOG_RATE = 0;
@@ -49,19 +56,19 @@ public class consts{
     public static final int SLEEP_TIME_PER_RATE = 10;
 
 
-
     public static Color getFill(int status){
         try {
-            return COLORS_ARRAY[status][0];
+            return COLORS_ARRAY.get(status).get(VALUE_OF_FILL_COLOR);
         } catch (Exception e){
             System.out.println("Can't get color");
         }
         return new Color(0,0,0,0);
     }
 
+
     public static Color getStroke(int status){
         try {
-            return COLORS_ARRAY[status][1];
+            return COLORS_ARRAY.get(status).get(VALUE_OF_STROKE_COLOR);
         } catch (Exception e){
             System.out.println("Can't get color");
         }

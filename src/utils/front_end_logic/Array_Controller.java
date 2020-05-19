@@ -9,9 +9,6 @@ import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import sample.Controller;
 
-import java.awt.*;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -46,8 +43,13 @@ public class Array_Controller {
             @Override
             public void onChanged(Change<? extends Colorful_Rectangle> ch) {
                 c.paint_Board();
-                my_Log.print("Array updated!");
-                my_Log.print(ch.toString());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        my_Log.print("Array updated!");
+                    }
+                }).start();
+
             }
         });
 
@@ -66,8 +68,7 @@ public class Array_Controller {
                     )) * visual_Board.getHeight());
             rectangle.setWidth(width_per_rect);
 
-            rectangle.setStatus(NORMAL_RECT);
-            painter.paint_by_Status(rectangle);
+            rectangle.setStatus(NORMAL_RECT_STATUS);
 
             colorful_rectangles.add(rectangle);
         }
@@ -82,12 +83,10 @@ public class Array_Controller {
         Colorful_Rectangle new_first_rectangle = new Colorful_Rectangle(second_rectangle);
         new_first_rectangle.setX(first_rectangle.getX());
         new_first_rectangle.setY(first_rectangle.getY());
-        painter.paint_by_Status(new_first_rectangle);
 
         Colorful_Rectangle new_second_rectangle = new Colorful_Rectangle(first_rectangle);
         new_second_rectangle.setX(second_rectangle.getX());
         new_second_rectangle.setY(second_rectangle.getY());
-        painter.paint_by_Status(new_second_rectangle);
 
         colorful_rectangles.set(index_1, new_first_rectangle);
         colorful_rectangles.set(index_2, new_second_rectangle);
@@ -96,9 +95,7 @@ public class Array_Controller {
 
     public void setStatus(int index, int status) {
         Colorful_Rectangle rectangle = new Colorful_Rectangle(colorful_rectangles.get(index));
-
         rectangle.setStatus(status);
-        painter.paint_by_Status(rectangle);
         colorful_rectangles.set(index, rectangle);
     }
 

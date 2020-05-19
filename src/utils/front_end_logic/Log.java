@@ -9,6 +9,7 @@ import static utils.consts.*;
 public class Log implements Runnable {
 
     private static Queue<String> writelog_Queue = new LinkedList<>();
+    private static int number_of_Messege = 0;
     private static Thread t;
 
     public Log() {
@@ -25,7 +26,10 @@ public class Log implements Runnable {
     }
 
     public void print(String msg) {
-        writelog_Queue.offer(msg);
+        if (number_of_Messege < MAXIMUM_QUEUING_MESSAGE){
+            writelog_Queue.offer(msg);
+            number_of_Messege += 1;
+        }
     }
 
     @Override
@@ -36,6 +40,8 @@ public class Log implements Runnable {
         while (true) {
             if (!writelog_Queue.isEmpty()) {
                 System.out.println(writelog_Queue.poll());
+                number_of_Messege -= 1;
+
                 rate = (int) Math.min(rate * RATE_INCREASE_COEFFICIENT, MAXIMUM_LOG_RATE);
             } else {
                 rate = (int) Math.max(MINIMUM_LOG_RATE, rate * RATE_DECAY_COEFFICIENT);
