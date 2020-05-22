@@ -1,16 +1,19 @@
 package sample;
 
 //TODO: Optimize painting
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import utils.*;
 import utils.front_end_logic.Array_Controller;
 import utils.front_end_logic.Colorful_Rectangle;
 import utils.front_end_logic.Log;
+import utils.front_end_logic.Translator;
 
 import java.util.Collection;
 
@@ -21,6 +24,7 @@ public class Controller {
     private final Log my_Log = new Log();
     private final History_Manager historyManager = new History_Manager();
     private Array_Controller array_controller = new Array_Controller(this);
+    private int execution_Status = SEQUENTIAL_MODE;
 
     //    Executor executor = Executors.newFixedThreadPool(MAX_EXECUTIONERS);
     @FXML
@@ -49,6 +53,9 @@ public class Controller {
 
     @FXML
     private Button randomize_button;
+
+    @FXML
+    private ComboBox mode_choice;
 
     @FXML
     void start_running(ActionEvent event) {
@@ -94,10 +101,24 @@ public class Controller {
     @FXML
     void generate_random(ActionEvent event) {
         my_Log.print("Random button pressed:\n" +
-                "Generating new random values");
+                "Generating new values");
+
+        execution_Status = mode_choice.getItems().indexOf(mode_choice.getValue());
 
         //Get parameters of rectangles
-        array_controller.make(NUMBER_OF_RECTANGLE);
+        if (execution_Status == SEQUENTIAL_MODE){
+            array_controller.make(NUMBER_OF_RECTANGLE);
+            //For generator
+        }
+        else if (execution_Status == BINARY_MODE){
+            array_controller.make_Ordered(NUMBER_OF_RECTANGLE);
+            //
+        }
+        else if (execution_Status == A_STAR_MODE){
+            array_controller.make_2D(SIZE_OF_2D);
+            //
+        }
+
         //TODO: This should make request to History_Manager, then Manager change flag
     }
 
@@ -106,8 +127,8 @@ public class Controller {
             @Override
             public void run() {
                 clean_Board();
-                for (Colorful_Rectangle r: array_controller.getColorful_rectangles()){
-                    visual_board.getChildren().add( r);
+                for (Colorful_Rectangle r : array_controller.getColorful_rectangles()) {
+                    visual_board.getChildren().add(r);
                 }
 
             }
@@ -124,6 +145,9 @@ public class Controller {
         return visual_board;
     }
 
+    public ComboBox getMode_choice() {
+        return mode_choice;
+    }
 }
 
 

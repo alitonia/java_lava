@@ -1,6 +1,7 @@
 package utils.front_end_logic;
 
 
+import javafx.beans.value.ObservableIntegerValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -23,6 +24,8 @@ public class Array_Controller {
     private static ObservableList<Colorful_Rectangle> colorful_rectangles;
     private Log my_Log = new Log();
     private Painter painter = new Painter();
+
+    private int status;
 
     private static int length;
 
@@ -48,7 +51,7 @@ public class Array_Controller {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        my_Log.print("Array updated!");
+//                        my_Log.print("Array updated!");
                     }
                 }).start();
 
@@ -104,6 +107,12 @@ public class Array_Controller {
     }
 
 
+
+    public void make_Ordered(int numberOfRectangle) {
+    }
+
+    public void make_2D(int sizeOf2d) {
+    }
     @Getter
     public int getLength() {
         return length;

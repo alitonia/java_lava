@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
 
         Button myButton = new Button();
@@ -23,11 +23,12 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
 
+
         //Exit program when out
         primaryStage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
-        } );
+        });
 
         primaryStage.show();
     }

@@ -14,8 +14,19 @@ public class consts{
     public static final int LOG_PRIORITY = 8;
 
 
+    // Names:
+    public static final String SEQUENTIAL = "Sequential Search";
+    public static final String BINARY = "Binary Search";
+    public static final String A_Star = "A* Path-finding";
+
+    //Operating mode:
+    public static final int SEQUENTIAL_MODE = 0;
+    public static final int BINARY_MODE = 1;
+    public static final int A_STAR_MODE = 2;
+
     //Data properties
-    public static final int NUMBER_OF_RECTANGLE = 50;
+    public static final int NUMBER_OF_RECTANGLE = 20;
+    public static final int SIZE_OF_2D = 20;
 
 
     //Colorful Rect properties
@@ -31,6 +42,7 @@ public class consts{
     //status
     public static final int NORMAL_RECT_STATUS = 0;
     public static final int SOMEWHAT_SPECIAL_RECT_STATUS = -10;
+
 
     //Add more when have more status
 
