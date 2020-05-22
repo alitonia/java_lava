@@ -20,7 +20,6 @@ public class Controller {
 
     private final Log my_Log = new Log();
     private final History_Manager historyManager = new History_Manager();
-    private Generator generator = new Generator();
     private Array_Controller array_controller = new Array_Controller(this);
 
     //    Executor executor = Executors.newFixedThreadPool(MAX_EXECUTIONERS);
