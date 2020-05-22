@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import utils.*;
 import utils.front_end_logic.Array_Controller;
+import utils.front_end_logic.Colorful_Rectangle;
 import utils.front_end_logic.Log;
 
 import java.util.Collection;
@@ -54,22 +55,13 @@ public class Controller {
     void start_running(ActionEvent event) {
         my_Log.print("Start button clicked!\n" +
                 "Now running!\n");
-        array_controller.setStatus(0, 1);
-
-//        generator = new Generator();
-//        generator.start( status)
-//        while (historyManager.is_Finish() = false){
-//            historyManager.get_Next();
-//            paint_Board();
-//        }
+        array_controller.setStatus(0, SOMEWHAT_SPECIAL_RECT_STATUS);
     }
 
     @FXML
     void one_step_forward(ActionEvent event) {
         my_Log.print("Next button pressed:\n" +
                 "Go to next action\n");
-        my_Log.print(array_controller.getColorful_rectangles().toString());
-
     }
 
     @FXML
@@ -83,7 +75,6 @@ public class Controller {
     void one_step_backward(ActionEvent event) {
         my_Log.print("Backward button pressed:\n" +
                 "Go to previous action\n");
-        array_controller.swap(0,2);
     }
 
     @FXML
@@ -109,8 +100,6 @@ public class Controller {
         //Get parameters of rectangles
         array_controller.make(NUMBER_OF_RECTANGLE);
         //TODO: This should make request to History_Manager, then Manager change flag
-
-//        paint_Board();
     }
 
     public void paint_Board() {
@@ -118,7 +107,10 @@ public class Controller {
             @Override
             public void run() {
                 clean_Board();
-                visual_board.getChildren().addAll(array_controller.getColorful_rectangles());
+                for (Colorful_Rectangle r: array_controller.getColorful_rectangles()){
+                    visual_board.getChildren().add( r);
+                }
+
             }
         });
     }

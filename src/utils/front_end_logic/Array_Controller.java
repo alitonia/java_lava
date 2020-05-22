@@ -9,6 +9,8 @@ import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import sample.Controller;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -77,26 +79,28 @@ public class Array_Controller {
 
 
     public void swap(int index_1, int index_2) {
+        //Swap coordinate of index_1 and index_2 elements
         Colorful_Rectangle first_rectangle = colorful_rectangles.get(index_1);
         Colorful_Rectangle second_rectangle = colorful_rectangles.get(index_2);
+//
+        double first_X = first_rectangle.getX();
+        double first_Y = first_rectangle.getY();
 
-        Colorful_Rectangle new_first_rectangle = new Colorful_Rectangle(second_rectangle);
-        new_first_rectangle.setX(first_rectangle.getX());
-        new_first_rectangle.setY(first_rectangle.getY());
+        first_rectangle.setX(second_rectangle.getX());
+        first_rectangle.setY(second_rectangle.getY());
 
-        Colorful_Rectangle new_second_rectangle = new Colorful_Rectangle(first_rectangle);
-        new_second_rectangle.setX(second_rectangle.getX());
-        new_second_rectangle.setY(second_rectangle.getY());
+        second_rectangle.setX(first_X);
+        second_rectangle.setY(first_Y);
 
-        colorful_rectangles.set(index_1, new_first_rectangle);
-        colorful_rectangles.set(index_2, new_second_rectangle);
+        //Do fictional swap in List
+        Collections.swap(colorful_rectangles, index_1, index_2);
     }
 
 
     public void setStatus(int index, int status) {
-        Colorful_Rectangle rectangle = new Colorful_Rectangle(colorful_rectangles.get(index));
+        Colorful_Rectangle rectangle = colorful_rectangles.get(index);
         rectangle.setStatus(status);
-        colorful_rectangles.set(index, rectangle);
+        painter.paint_by_Status(rectangle);
     }
 
 
