@@ -6,13 +6,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import sample.Controller;
 
+import java.awt.*;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -34,6 +35,7 @@ public class Array_Controller {
 
     public Array_Controller(Controller c) {
         this.c = c;
+        my_Log.print("Array_controller created.");
     }
 
 
@@ -117,10 +119,41 @@ public class Array_Controller {
     }
 
     //Make 2D rectangles
-    public void make_2D(int sizeOf2d) {
+    public void make_2D(int width_in_rectangle, int height_in_rectangle) {
+        c.clean_Board();
+
+        Pane visual_Board = c.getVisual_board();
+        colorful_rectangles = FXCollections.observableArrayList();
+
+        int total_rect = width_in_rectangle * height_in_rectangle;
+        for (int i = 0; i < total_rect; i++) {
+            Colorful_Rectangle rectangle = new Colorful_Rectangle();
+
+            rectangle.setWidth(visual_Board.getWidth() / width_in_rectangle - 1);
+            rectangle.setHeight(visual_Board.getHeight() / height_in_rectangle - 1);
+
+            rectangle.setX(10 + visual_Board.getLayoutX() + (i % width_in_rectangle) * rectangle.getWidth());
+//                    + (double) ((i % width_in_rectangle) / width_in_rectangle) * visual_Board.getLayoutX());
+            rectangle.setY(10 + visual_Board.getLayoutY() + (i / height_in_rectangle) * rectangle.getHeight());
+//                    + (double) (Math.floor(i / height_in_rectangle) / height_in_rectangle) * visual_Board.getLayoutY());
+
+            if (i == 0 || i == total_rect - 1) {
+                rectangle.setStatus(GATE_RECT_STATUS);
+            } else {
+                List<Integer> choice = Arrays.asList(
+                        NORMAL_RECT_STATUS, OBSTACLE_RECT_STATUS,
+                        NORMAL_RECT_STATUS
+                );
+                rectangle.setStatus(choice.get(ThreadLocalRandom.current().nextInt(choice.size())));
+
+            }
+            painter.paint_by_Status(rectangle);
+
+            colorful_rectangles.add(rectangle);
+        }
+        c.paint_Board(colorful_rectangles);
 
     }
-
 
 
     //Change status of 1 colorful rectangle

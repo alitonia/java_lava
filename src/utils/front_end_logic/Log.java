@@ -14,7 +14,7 @@ public class Log implements Runnable {
 
     public Log() {
         if (t == null) {
-            System.out.println("No log running. Creating log");
+            System.out.println("No log running. Creating log.");
             t = new Thread(this);
             t.setName("Log thread");
             t.setPriority(LOG_PRIORITY);

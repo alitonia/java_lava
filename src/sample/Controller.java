@@ -112,7 +112,7 @@ public class Controller {
             my_Log.print("Mode: " + BINARY);
             //
         } else if (execution_Status == A_STAR_MODE) {
-            array_controller.make_2D(LENGTH_OF_2D);
+            array_controller.make_2D(NUMBER_OF_RECTANGLE_HORIZONTAL, NUMBER_OF_RECTANGLE_VERTICAL);
             my_Log.print("Mode: " + A_Star);
             //
         } else {
@@ -129,8 +129,9 @@ public class Controller {
             public void run() {
                 my_Log.print("Painting...");
                 visual_board.getChildren().addAll(colorful_rectangles);
-                for (Colorful_Rectangle r: colorful_rectangles){
-                    System.out.println(r.getHeight());
+                my_Log.print("Values of rectangles:");
+                for (Colorful_Rectangle r : colorful_rectangles) {
+                    my_Log.print(r.toString());
                 }
             }
         });
