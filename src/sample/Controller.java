@@ -3,6 +3,7 @@ package sample;
 //TODO: Optimize painting
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,9 +14,6 @@ import utils.*;
 import utils.front_end_logic.Array_Controller;
 import utils.front_end_logic.Colorful_Rectangle;
 import utils.front_end_logic.Log;
-import utils.front_end_logic.Translator;
-
-import java.util.Collection;
 
 import static utils.consts.*;
 
@@ -61,7 +59,6 @@ public class Controller {
     void start_running(ActionEvent event) {
         my_Log.print("Start button clicked!\n" +
                 "Now running!\n");
-        array_controller.setStatus(0, SOMEWHAT_SPECIAL_RECT_STATUS);
     }
 
     @FXML
@@ -106,31 +103,35 @@ public class Controller {
         execution_Status = mode_choice.getItems().indexOf(mode_choice.getValue());
 
         //Get parameters of rectangles
-        if (execution_Status == SEQUENTIAL_MODE){
+        if (execution_Status == SEQUENTIAL_MODE) {
             array_controller.make(NUMBER_OF_RECTANGLE);
+            my_Log.print("Mode: " + SEQUENTIAL);
             //For generator
-        }
-        else if (execution_Status == BINARY_MODE){
+        } else if (execution_Status == BINARY_MODE) {
             array_controller.make_Ordered(NUMBER_OF_RECTANGLE);
+            my_Log.print("Mode: " + BINARY);
             //
-        }
-        else if (execution_Status == A_STAR_MODE){
-            array_controller.make_2D(SIZE_OF_2D);
+        } else if (execution_Status == A_STAR_MODE) {
+            array_controller.make_2D(LENGTH_OF_2D);
+            my_Log.print("Mode: " + A_Star);
             //
+        } else {
+            System.out.println("Error parsing choice!");
         }
+
 
         //TODO: This should make request to History_Manager, then Manager change flag
     }
 
-    public void paint_Board() {
+    public void paint_Board(ObservableList<Colorful_Rectangle> colorful_rectangles) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                clean_Board();
-                for (Colorful_Rectangle r : array_controller.getColorful_rectangles()) {
-                    visual_board.getChildren().add(r);
+                my_Log.print("Painting...");
+                visual_board.getChildren().addAll(colorful_rectangles);
+                for (Colorful_Rectangle r: colorful_rectangles){
+                    System.out.println(r.getHeight());
                 }
-
             }
         });
     }

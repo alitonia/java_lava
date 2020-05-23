@@ -26,8 +26,8 @@ public class consts{
 
     //Data properties
     public static final int NUMBER_OF_RECTANGLE = 20;
-    public static final int SIZE_OF_2D = 20;
-
+    public static final int LENGTH_OF_2D = 20;
+    public static final int WIDTH_OF_2D = 20;
 
     //Colorful Rect properties
     //color

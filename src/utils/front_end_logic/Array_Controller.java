@@ -10,6 +10,7 @@ import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import sample.Controller;
 
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -29,43 +30,66 @@ public class Array_Controller {
 
     private static int length;
 
-    private static boolean isPaintable = false;
+//    private static boolean isPaintable = false;
 
     public Array_Controller(Controller c) {
         this.c = c;
-
     }
 
-    public void make(int length) {
+
+    private int partition(List<Colorful_Rectangle> arr, int low, int high) {
+        double pivot = arr.get(high).getHeight();
+        int i = (low - 1); // index of smaller element
+        for (int j = low; j < high; j++) {
+            // If current element is smaller than the pivot
+            if (arr.get(j).getHeight() < pivot) {
+                i++;
+
+                // swap arr[i] and arr[j]
+//                int temp = arr[i];
+//                arr[i] = arr[j];
+//                arr[j] = temp;
+                swap(i, j);
+            }
+        }
+
+        // swap arr[i+1] and arr[high] (or pivot)
+        swap(i + 1, high);
+
+        return i + 1;
+    }
+
+
+    /* The main function that implements QuickSort()
+      arr[] --> Array to be sorted,
+      low  --> Starting index,
+      high  --> Ending index */
+    private void sort(List<Colorful_Rectangle> arr, int low, int high) {
+        if (low < high) {
+            /* pi is partitioning index, arr[pi] is
+              now at right place */
+            int pi = partition(arr, low, high);
+
+            // Recursively sort elements before
+            // partition and after partition
+            sort(arr, low, pi - 1);
+            sort(arr, pi + 1, high);
+        }
+    }
+
+
+    public void make(int number_of_Rectangles) {
         //Make a array of float between min and max value
         //Status = Normal
-        Array_Controller.length = length;
-
+        c.clean_Board();
+        Array_Controller.length = number_of_Rectangles;
         colorful_rectangles = FXCollections.observableArrayList();
-
-
-        colorful_rectangles.addListener(new ListChangeListener<Colorful_Rectangle>() {
-            @Override
-            public void onChanged(Change<? extends Colorful_Rectangle> ch) {
-                c.paint_Board();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-//                        my_Log.print("Array updated!");
-                    }
-                }).start();
-
-            }
-        });
-
-
         Pane visual_Board = c.getVisual_board();
-        float width_per_rect = (float) visual_Board.getWidth() / NUMBER_OF_RECTANGLE;
-        for (int i = 0; i < length; i++) {
-            Colorful_Rectangle rectangle = new Colorful_Rectangle();
-            rectangle.setX(visual_Board.getLayoutX() + i * width_per_rect);
-            rectangle.setY(visual_Board.getLayoutY());
 
+        float width_per_rect = (float) visual_Board.getWidth() / NUMBER_OF_RECTANGLE;
+
+        for (int i = 0; i < number_of_Rectangles; i++) {
+            Colorful_Rectangle rectangle = new Colorful_Rectangle();
             rectangle.setHeight((float) (
                     ThreadLocalRandom.current().nextDouble(
                             MINIMUM_RECT_HEIGHT,
@@ -73,33 +97,33 @@ public class Array_Controller {
                     )) * visual_Board.getHeight());
             rectangle.setWidth(width_per_rect);
 
+            rectangle.setX(visual_Board.getLayoutX() + i * width_per_rect);
+            rectangle.setY(visual_Board.getLayoutY() +
+                    (visual_Board.getHeight() - rectangle.getHeight()));
             rectangle.setStatus(NORMAL_RECT_STATUS);
 
             colorful_rectangles.add(rectangle);
         }
-        setPaintable(true);
+//        setPaintable(true);
+
+        c.paint_Board(colorful_rectangles);
     }
 
 
-    public void swap(int index_1, int index_2) {
-        //Swap coordinate of index_1 and index_2 elements
-        Colorful_Rectangle first_rectangle = colorful_rectangles.get(index_1);
-        Colorful_Rectangle second_rectangle = colorful_rectangles.get(index_2);
-//
-        double first_X = first_rectangle.getX();
-        double first_Y = first_rectangle.getY();
+    //Make ordered histogram
+    public void make_Ordered(int number_of_Rectangles) {
+        make(number_of_Rectangles);
+        sort(colorful_rectangles, 0, colorful_rectangles.size() - 1);
+    }
 
-        first_rectangle.setX(second_rectangle.getX());
-        first_rectangle.setY(second_rectangle.getY());
+    //Make 2D rectangles
+    public void make_2D(int sizeOf2d) {
 
-        second_rectangle.setX(first_X);
-        second_rectangle.setY(first_Y);
-
-        //Do fictional swap in List
-        Collections.swap(colorful_rectangles, index_1, index_2);
     }
 
 
+
+    //Change status of 1 colorful rectangle
     public void setStatus(int index, int status) {
         Colorful_Rectangle rectangle = colorful_rectangles.get(index);
         rectangle.setStatus(status);
@@ -107,20 +131,36 @@ public class Array_Controller {
     }
 
 
+    //swap histogram elements
+    public void swap(int index_1, int index_2) {
+        Pane visual_Board = c.getVisual_board();
+        //Swap coordinate of index_1 and index_2 elements
+        Colorful_Rectangle first_rectangle = colorful_rectangles.get(index_1);
+        Colorful_Rectangle second_rectangle = colorful_rectangles.get(index_2);
 
-    public void make_Ordered(int numberOfRectangle) {
+        double first_X = first_rectangle.getX();
+//        double first_Y = first_rectangle.getY();
+
+        first_rectangle.setX(second_rectangle.getX());
+        first_rectangle.setY(visual_Board.getLayoutY() +
+                (visual_Board.getHeight() - first_rectangle.getHeight()));
+
+        second_rectangle.setX(first_X);
+        second_rectangle.setY(visual_Board.getLayoutY() +
+                (visual_Board.getHeight() - second_rectangle.getHeight()));
+
+        //Do fictional swap in List
+        Collections.swap(colorful_rectangles, index_1, index_2);
     }
 
-    public void make_2D(int sizeOf2d) {
-    }
     @Getter
     public int getLength() {
         return length;
     }
 
-    public static boolean isPaintable() {
-        return isPaintable;
-    }
+//    public static boolean isPaintable() {
+//        return isPaintable;
+//    }
 
 
     public List<Colorful_Rectangle> getColorful_rectangles() {
@@ -128,9 +168,9 @@ public class Array_Controller {
     }
 
     @Setter
-    public static void setPaintable(boolean paintable) {
-        isPaintable = paintable;
-    }
+//    public static void setPaintable(boolean paintable) {
+//        isPaintable = paintable;
+//    }
 
     public void setColorful_rectangle(int index, int status) {
         colorful_rectangles.get(index).setStatus(status);
