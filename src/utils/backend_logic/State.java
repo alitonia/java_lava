@@ -27,6 +27,11 @@ public class State {
         this.index = index;
     }
 
+    public State(State s) {
+        this.index = s.getIndex();
+        this.status = s.getStatus();
+    }
+
 
     @Getter
     public int getStatus() {

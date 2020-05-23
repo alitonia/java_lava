@@ -13,7 +13,9 @@ public class consts {
     //Thread Priority
     public static final int LOG_PRIORITY = 8;
 
+    //Play-speed
 
+    public static final long DELAY_MILIS_PER_RUN = 500;
     // Names:
     public static final String SEQUENTIAL = "Sequential Search";
     public static final String BINARY = "Binary Search";
@@ -61,6 +63,17 @@ public class consts {
     public static final Color THE_CHOSEN_STROKE_COLOR =
             new Color(0.158, 0.89, 0.96, 0.75);
 
+    public static final Color THE_TRUMP_FILL_COLOR =
+            new Color((float) 18 / 255, (float) 25 / 255, (float) 250 / 255, 0.8);
+    public static final Color THE_TRUMP_STROKE_COLOR =
+            new Color(0.667, 0.96, 0.189, 1);
+
+    public static final Color THE_UNWORTHY_FILL_COLOR =
+            new Color((float) 231 / 255, (float) 200 / 255, (float) 100 / 255, 1);
+    public static final Color THE_UNWORTHY_STROKE_COLOR =
+            new Color(0.667, 0.96, 0.189, 1);
+
+
     // size
     public static final double MINIMUM_RECT_HEIGHT = 0.03D;
     public static final double MAXIMUM_RECT_HEIGHT = 0.97D;
@@ -94,6 +107,12 @@ public class consts {
 
         COLORS_ARRAY.put(THE_CHOSEN_RECT_STATUS,
                 Arrays.asList(THE_CHOSEN_FILL_COLOR, THE_CHOSEN_STROKE_COLOR));
+
+        COLORS_ARRAY.put(THE_TRUMP_RECT_STATUS,
+                Arrays.asList(THE_TRUMP_FILL_COLOR, THE_TRUMP_STROKE_COLOR));
+
+        COLORS_ARRAY.put(THE_UNWORTHY_RECT_STATUS,
+                Arrays.asList(THE_UNWORTHY_FILL_COLOR, THE_UNWORTHY_STROKE_COLOR));
     }
 
     private static final int VALUE_OF_FILL_COLOR = 0;

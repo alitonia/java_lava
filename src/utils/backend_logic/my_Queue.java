@@ -13,6 +13,8 @@ public class my_Queue {
     //New:
     private static LinkedList<Map<String, List<State>>> history_Queue;
     private static List<State> internal_List;
+    private static List<State> origin_List;
+
     private static int current_step;
     private static int queue_Length;
 
@@ -93,7 +95,11 @@ public class my_Queue {
 
     public List<State> back_to_Start() {
         current_step = 0;
-        return history_Queue.get(current_step).get("Old");
+        return origin_List;
+    }
+
+    public boolean isEnding() {
+        return current_step == queue_Length;
     }
 
     @Getter
@@ -124,6 +130,14 @@ public class my_Queue {
 
     public static void setInternal_List(List<State> internal_List) {
         my_Queue.internal_List = internal_List;
+//        //Copy of original version
+//        for (State s : internal_List) {
+//            my_Queue.origin_List.add(new State(s));
+//        }
+    }
+
+    public static void setOrigin_List(List<State> origin_List) {
+        my_Queue.origin_List = origin_List;
     }
 
     public static void print() {
