@@ -118,6 +118,7 @@ public class Array_Controller {
         sort(colorful_rectangles, 0, colorful_rectangles.size() - 1);
     }
 
+
     //Make 2D rectangles
     public void make_2D(int width_in_rectangle, int height_in_rectangle) {
         c.clean_Board();
@@ -134,7 +135,7 @@ public class Array_Controller {
 
             rectangle.setX(10 + visual_Board.getLayoutX() + (i % width_in_rectangle) * rectangle.getWidth());
 //                    + (double) ((i % width_in_rectangle) / width_in_rectangle) * visual_Board.getLayoutX());
-            rectangle.setY(10 + visual_Board.getLayoutY() + (i / height_in_rectangle) * rectangle.getHeight());
+            rectangle.setY(10 + visual_Board.getLayoutY() + (int)(i / height_in_rectangle) * rectangle.getHeight());
 //                    + (double) (Math.floor(i / height_in_rectangle) / height_in_rectangle) * visual_Board.getLayoutY());
 
             if (i == 0 || i == total_rect - 1) {

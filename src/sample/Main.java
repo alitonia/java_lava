@@ -21,7 +21,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(true);
+        primaryStage.setResizable(false);
 
 
         //Exit program when out
