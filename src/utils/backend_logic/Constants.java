@@ -4,6 +4,7 @@ public class Constants {
 
 
     public class Sequential_Status {
+        public static final int NORMAL_STATUS = -3;
         public static final int CHOOSING_STATUS = 0;
         public static final int NOT_STATUS = 1;
         public static final int FOUND_VALUE_STATUS = 2;

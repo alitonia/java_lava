@@ -1,14 +1,25 @@
 package utils.backend_logic;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Mini_testing {
     public static void main(String[] args) {
         // TODO code application logic here
-        int[] a = {0, 1, 2, 3, 4, 5, 6};
-        Queue q = new Queue();
-        q = SearchingUtils.Binary_Search(6, a, 0, a.length - 1);
-        //q = SearchingUtils.Sequential_Search(6, a);
-        for (int i = 0; i < q.getList().size(); i++) {
-            System.out.println(q.getList().get(i).getStatus() + " " + q.getList().get(i).getIndex());
+        my_Queue q = new my_Queue();
+
+        List<Double> a = Arrays.asList(0D, 1D, 2D, 3D, 4D, 5D, 6D);
+        List<State> l = new ArrayList<>();
+
+        for (int i = 0; i < a.size(); i++) {
+            l.add(new State(i, Constants.Sequential_Status.NORMAL_STATUS));
         }
+        SearchingUtils s = new SearchingUtils();
+        my_Queue.setInternal_List(l);
+
+//        q = SearchingUtils.Binary_Search(6, a, 0, a.length - 1);
+        s.Sequential_Search(6, a);
+        my_Queue.print();
     }
 }

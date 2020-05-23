@@ -11,6 +11,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import utils.*;
+import utils.backend_logic.SearchingUtils;
+import utils.backend_logic.my_Queue;
 import utils.front_end_logic.Array_Controller;
 import utils.front_end_logic.Colorful_Rectangle;
 import utils.front_end_logic.Log;
@@ -23,6 +25,8 @@ public class Controller {
     private final History_Manager historyManager = new History_Manager();
     private Array_Controller array_controller = new Array_Controller(this);
     private int execution_Status = SEQUENTIAL_MODE;
+    private SearchingUtils generator = new SearchingUtils();
+    private my_Queue history_Manager = new my_Queue();
 
     //    Executor executor = Executors.newFixedThreadPool(MAX_EXECUTIONERS);
     @FXML
@@ -65,6 +69,7 @@ public class Controller {
     void one_step_forward(ActionEvent event) {
         my_Log.print("Next button pressed:\n" +
                 "Go to next action\n");
+
     }
 
     @FXML
@@ -106,21 +111,30 @@ public class Controller {
         if (execution_Status == SEQUENTIAL_MODE) {
             array_controller.make(NUMBER_OF_RECTANGLE);
             my_Log.print("Mode: " + SEQUENTIAL);
+
             //For generator
+            generator.setInternal_List(array_controller.get_List_Double_format());
+            my_Queue.setInternal_List( array_controller.get_List_State_format());
+
+            generator.Sequential_Search(
+                    array_controller.get_List_Double_format().get(5),
+                    array_controller.get_List_Double_format());
+            my_Queue.print();
+
         } else if (execution_Status == BINARY_MODE) {
             array_controller.make_Ordered(NUMBER_OF_RECTANGLE);
             my_Log.print("Mode: " + BINARY);
+
             //
         } else if (execution_Status == A_STAR_MODE) {
             array_controller.make_2D(NUMBER_OF_RECTANGLE_HORIZONTAL, NUMBER_OF_RECTANGLE_VERTICAL);
             my_Log.print("Mode: " + A_Star);
+
             //
         } else {
             System.out.println("Error parsing choice!");
         }
 
-
-        //TODO: This should make request to History_Manager, then Manager change flag
     }
 
     public void paint_Board(ObservableList<Colorful_Rectangle> colorful_rectangles) {

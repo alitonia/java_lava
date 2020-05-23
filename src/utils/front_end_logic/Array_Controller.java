@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import sample.Controller;
+import utils.backend_logic.State;
 
 import java.awt.*;
 import java.nio.file.Path;
@@ -199,6 +200,22 @@ public class Array_Controller {
 
     public List<Colorful_Rectangle> getColorful_rectangles() {
         return colorful_rectangles;
+    }
+
+    public List<State> get_List_State_format(){
+        List<State> l = new ArrayList<>();
+        for (int i = 0; i < colorful_rectangles.size(); i++) {
+            l.add( new State(i, colorful_rectangles.get(i).getStatus()));
+        }
+        return l;
+    }
+
+    public List<Double> get_List_Double_format(){
+        List<Double> l = new ArrayList<>();
+        for (int i = 0; i < colorful_rectangles.size(); i++) {
+            l.add( colorful_rectangles.get(i).getHeight());
+        }
+        return l;
     }
 
     @Setter

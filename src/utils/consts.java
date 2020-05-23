@@ -25,7 +25,7 @@ public class consts {
     public static final int A_STAR_MODE = 2;
 
     //Data properties
-    public static final int NUMBER_OF_RECTANGLE = 20;
+    public static final int NUMBER_OF_RECTANGLE = 10;
     public static final int NUMBER_OF_RECTANGLE_HORIZONTAL = 20;
     public static final int NUMBER_OF_RECTANGLE_VERTICAL = 20;
 
@@ -46,7 +46,6 @@ public class consts {
     public static final Color SOMEWHAT_SPECIAL_STROKE_COLOR =
             new Color(0.158, 0.89, 0.96, 0.75);
 
-
     public static final Color GATE_FILL_COLOR =
             new Color((float) 124 / 255, (float) 64 / 255, (float) 33 / 255, 1);
     public static final Color GATE_STROKE_COLOR =
@@ -57,11 +56,21 @@ public class consts {
     public static final Color OBSTACLE_STROKE_COLOR =
             new Color((float) 18 / 255, (float) 148 / 255, (float) 127 / 255, 0.25);
 
+    public static final Color THE_CHOSEN_FILL_COLOR =
+            new Color(0.667, 0.96, 0.189, 1);
+    public static final Color THE_CHOSEN_STROKE_COLOR =
+            new Color(0.158, 0.89, 0.96, 0.75);
+
     // size
     public static final double MINIMUM_RECT_HEIGHT = 0.03D;
     public static final double MAXIMUM_RECT_HEIGHT = 0.97D;
     //status
+
     public static final int NORMAL_RECT_STATUS = 0;
+    public static final int THE_CHOSEN_RECT_STATUS = 1;
+    public static final int THE_TRUMP_RECT_STATUS = 2;
+    public static final int THE_UNWORTHY_RECT_STATUS = 3;
+
     public static final int SOMEWHAT_SPECIAL_RECT_STATUS = -10;
     public static final int GATE_RECT_STATUS = 7;
     public static final int OBSTACLE_RECT_STATUS = 5;
@@ -82,6 +91,9 @@ public class consts {
 
         COLORS_ARRAY.put(OBSTACLE_RECT_STATUS,
                 Arrays.asList(OBSTACLE_FILL_COLOR, OBSTACLE_STROKE_COLOR));
+
+        COLORS_ARRAY.put(THE_CHOSEN_RECT_STATUS,
+                Arrays.asList(THE_CHOSEN_FILL_COLOR, THE_CHOSEN_STROKE_COLOR));
     }
 
     private static final int VALUE_OF_FILL_COLOR = 0;

@@ -1,47 +1,65 @@
 package utils.backend_logic;
 
+import jdk.nashorn.internal.objects.annotations.Getter;
+import jdk.nashorn.internal.objects.annotations.Setter;
+
 import java.util.ArrayList;
 
 public class State {
-    private int status;
 
-    private ArrayList<Integer> index = new ArrayList<Integer>();
+    private ArrayList<Integer> my_Index = new ArrayList<>();
+    private int index;
+    private int status;
 
     public State() {
 
     }
 
-    public State(int status, ArrayList<Integer> index) {
-        this.status = status;
+//    //old:
+//    public State(int status, ArrayList<Integer> my_Index) {
+//        this.status = status;
+//        this.my_Index = my_Index;
+//    }
 
+    //new:
+    public State(int index, int status) {
+        this.status = status;
         this.index = index;
     }
 
-    /**
-     * @return the status
-     */
+
+    @Getter
     public int getStatus() {
         return status;
     }
 
-    /**
-     * @param status the status to set
-     */
+    public ArrayList<Integer> getMy_Index() {
+        return my_Index;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+
+    @Setter
     public void setStatus(int status) {
         this.status = status;
     }
 
-    /**
-     * @return the index
-     */
-    public ArrayList<Integer> getIndex() {
-        return index;
+    public void setMy_Index(ArrayList<Integer> my_Index) {
+        this.my_Index = my_Index;
     }
 
-    /**
-     * @param index the index to set
-     */
-    public void setIndex(ArrayList<Integer> index) {
+    public void setIndex(int index) {
         this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        return "State{" +
+                "index=" + index +
+                ", status=" + status +
+                '}';
     }
 }
