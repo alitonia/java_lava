@@ -260,7 +260,7 @@ public class Controller {
             target_line.setVisible(false);
             my_Log.print("Mode: " + A_Star);
 
-            array_controller.make_2D(NUMBER_OF_RECTANGLE_HORIZONTAL, NUMBER_OF_RECTANGLE_VERTICAL);
+            array_controller.make_2D(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS);
             my_Queue.setInternal_List(array_controller.get_List_State_format());
             my_Queue.setOrigin_List(array_controller.get_List_State_format());
 

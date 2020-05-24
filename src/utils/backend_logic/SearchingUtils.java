@@ -1,7 +1,5 @@
 package utils.backend_logic;
 
-import utils.consts;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class SearchingUtils {
     public void Sequential_Search(double search_value, List<Double> a) {
 
         for (int i = 0; i < a.size(); i++) {
-            status = THE_CHOSEN_RECT_STATUS;
+            status = THE_SPOTLIGHT_RECT_STATUS;
             index = i;
             state = new State(index, status);
 
@@ -29,7 +27,7 @@ public class SearchingUtils {
             //Found correct value?
             if (a.get(i) == search_value) {
                 index = i;
-                status = THE_TRUMP_RECT_STATUS;
+                status = THE_SUCCESSFUL_RECT_STATUS;
                 state = new State(index, status);
 
                 change_List = new ArrayList<>();
@@ -59,7 +57,7 @@ public class SearchingUtils {
             //??!?
 
             //Hightlight the interacting part of histogram
-            status = SOMEWHAT_SPECIAL_RECT_STATUS;
+            status = FOCUSED_RECT_STATUS;
             change_List = new ArrayList<>();
             for (int i = l; i < r + 1; i++) {
                 state = new State(i, status);
@@ -69,7 +67,7 @@ public class SearchingUtils {
 
 
             //Highlight middle index
-            status = THE_CHOSEN_RECT_STATUS;
+            status = THE_SPOTLIGHT_RECT_STATUS;
             index = mid;
             change_List = new ArrayList<>();
             change_List.add(new State(index, status));
@@ -78,7 +76,7 @@ public class SearchingUtils {
 
             if (search_value == a.get(mid)) {
                 //When Found the value, highlight it, stop
-                status = THE_TRUMP_RECT_STATUS;
+                status = THE_SUCCESSFUL_RECT_STATUS;
                 index = mid;
                 change_List = new ArrayList<>();
                 change_List.add(new State(index, status));

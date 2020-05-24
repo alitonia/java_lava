@@ -25,8 +25,8 @@ public class consts {
 
     //Data properties
     public static final int NUMBER_OF_RECTANGLE = 30;
-    public static final int NUMBER_OF_RECTANGLE_HORIZONTAL = 20;
-    public static final int NUMBER_OF_RECTANGLE_VERTICAL = 20;
+    public static final int NUMBER_OF_RECTANGLE_X_AXIS = 20;
+    public static final int NUMBER_OF_RECTANGLE_Y_AXIS = 20;
     public static final double HEIGHT_VARIANCE_COEFFICIENT = 1.3;
     public static final int MINIMUM_TRAVERSING_DISTANCE = (int) (NUMBER_OF_RECTANGLE * 0.3);
 
@@ -45,40 +45,40 @@ public class consts {
     public static final Color NORMAL_STROKE_COLOR =
             new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
 
-    public static final Color SOMEWHAT_SPECIAL_FILL_COLOR =
+    public static final Color FOCUSED_FILL_COLOR =
             new Color((float) 255 / 255, (float) 196 / 255, (float) 163 / 255, 1);
     //            new Color(0.17, 0.85, 0.459, 1);
-    public static final Color SOMEWHAT_SPECIAL_STROKE_COLOR =
+    public static final Color FOCUSED_STROKE_COLOR =
             new Color((float) 170 / 255, (float) 207 / 255, (float) 207 / 255, 0.5);
 
     public static final Color GATE_FILL_COLOR =
             new Color((float) 252 / 255, (float) 248 / 255, (float) 118 / 255, 1);
     public static final Color GATE_STROKE_COLOR =
-            new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 0.2);
+            new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 0.25);
 
     public static final Color OBSTACLE_FILL_COLOR =
-            new Color((float) 231 / 255, (float) 20 / 255, (float) 20 / 255, 1);
+            new Color((float) 48 / 255, (float) 57 / 255, (float) 96 / 255, 1);
     public static final Color OBSTACLE_STROKE_COLOR =
-            new Color((float) 18 / 255, (float) 148 / 255, (float) 127 / 255, 0.25);
+            new Color((float) 18 / 255, (float) 148 / 255, (float) 127 / 255, 1);
 
-    public static final Color THE_CHOSEN_FILL_COLOR =
+    public static final Color THE_SPOTLIGHT_FILL_COLOR =
             new Color((float) 252 / 255, (float) 248 / 255, (float) 118 / 255, 1);
     //            new Color(0.667, 0.96, 0.189, 1);
-    public static final Color THE_CHOSEN_STROKE_COLOR =
+    public static final Color THE_SPOTLIGHT_STROKE_COLOR =
             new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 0.8);
 
-    public static final Color THE_TRUMP_FILL_COLOR =
+    public static final Color THE_SUCCESSFUL_FILL_COLOR =
             new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 1);
-    public static final Color THE_TRUMP_STROKE_COLOR =
+    public static final Color THE_SUCCESSFUL_STROKE_COLOR =
             new Color((float) 252 / 255, (float) 248 / 255, (float) 118 / 255, 0.8);
 
     public static final Color THE_UNWORTHY_FILL_COLOR =
             new Color((float) 217 / 255, (float) 69 / 255, (float) 95 / 255, 1);
-
-    //            new Color((float) 212 / 255, (float) 248 / 255, (float) 118 / 255, 1);
     public static final Color THE_UNWORTHY_STROKE_COLOR =
             new Color((float) 225 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
 
+
+    //These aren't used
     public static final Color THE_HIGHLIGHTED_FILL_COLOR =
             new Color((float) 4 / 255, (float) 200 / 255, (float) 100 / 255, 1);
     public static final Color THE_HIGHLIGHTED_STROKE_COLOR =
@@ -96,17 +96,18 @@ public class consts {
     //status
 
     public static final int NORMAL_RECT_STATUS = 0;
-    public static final int THE_CHOSEN_RECT_STATUS = 1;
-    public static final int THE_TRUMP_RECT_STATUS = 2;
-    public static final int THE_UNWORTHY_RECT_STATUS = 3;
+    public static final int FOCUSED_RECT_STATUS = 1;
 
-    public static final int THE_HIGHLIGHTED_RECT_STATUS = 6;
+    public static final int THE_SPOTLIGHT_RECT_STATUS = 2;
+    public static final int THE_SUCCESSFUL_RECT_STATUS = 3;
+    public static final int THE_UNWORTHY_RECT_STATUS = 4;
+
+    public static final int GATE_RECT_STATUS = 5;
+    public static final int OBSTACLE_RECT_STATUS = 6;
+
+    public static final int THE_HIGHLIGHTED_RECT_STATUS = 7;
     public static final int THE_OUTSTANDING_RECT_STATUS = 8;
 
-
-    public static final int SOMEWHAT_SPECIAL_RECT_STATUS = -10;
-    public static final int GATE_RECT_STATUS = 7;
-    public static final int OBSTACLE_RECT_STATUS = 5;
 
     //Add more when have more status
 
@@ -116,8 +117,17 @@ public class consts {
         COLORS_ARRAY.put(NORMAL_RECT_STATUS,
                 Arrays.asList(NORMAL_FILL_COLOR, NORMAL_STROKE_COLOR));
 
-        COLORS_ARRAY.put(SOMEWHAT_SPECIAL_RECT_STATUS,
-                Arrays.asList(SOMEWHAT_SPECIAL_FILL_COLOR, SOMEWHAT_SPECIAL_STROKE_COLOR));
+        COLORS_ARRAY.put(FOCUSED_RECT_STATUS,
+                Arrays.asList(FOCUSED_FILL_COLOR, FOCUSED_STROKE_COLOR));
+
+        COLORS_ARRAY.put(THE_SPOTLIGHT_RECT_STATUS,
+                Arrays.asList(THE_SPOTLIGHT_FILL_COLOR, THE_SPOTLIGHT_STROKE_COLOR));
+
+        COLORS_ARRAY.put(THE_SUCCESSFUL_RECT_STATUS,
+                Arrays.asList(THE_SUCCESSFUL_FILL_COLOR, THE_SUCCESSFUL_STROKE_COLOR));
+
+        COLORS_ARRAY.put(THE_UNWORTHY_RECT_STATUS,
+                Arrays.asList(THE_UNWORTHY_FILL_COLOR, THE_UNWORTHY_STROKE_COLOR));
 
         COLORS_ARRAY.put(GATE_RECT_STATUS,
                 Arrays.asList(GATE_FILL_COLOR, GATE_STROKE_COLOR));
@@ -125,24 +135,14 @@ public class consts {
         COLORS_ARRAY.put(OBSTACLE_RECT_STATUS,
                 Arrays.asList(OBSTACLE_FILL_COLOR, OBSTACLE_STROKE_COLOR));
 
-        COLORS_ARRAY.put(THE_CHOSEN_RECT_STATUS,
-                Arrays.asList(THE_CHOSEN_FILL_COLOR, THE_CHOSEN_STROKE_COLOR));
-
-        COLORS_ARRAY.put(THE_TRUMP_RECT_STATUS,
-                Arrays.asList(THE_TRUMP_FILL_COLOR, THE_TRUMP_STROKE_COLOR));
-
-        COLORS_ARRAY.put(THE_UNWORTHY_RECT_STATUS,
-                Arrays.asList(THE_UNWORTHY_FILL_COLOR, THE_UNWORTHY_STROKE_COLOR));
 
         COLORS_ARRAY.put(THE_HIGHLIGHTED_RECT_STATUS,
                 Arrays.asList(THE_HIGHLIGHTED_FILL_COLOR, THE_HIGHLIGHTED_STROKE_COLOR));
 
         COLORS_ARRAY.put(THE_OUTSTANDING_RECT_STATUS,
                 Arrays.asList(THE_OUTSTANDING_FILL_COLOR, THE_OUTSTANDING_STROKE_COLOR));
-    }
 
-    private static final int VALUE_OF_FILL_COLOR = 0;
-    private static final int VALUE_OF_STROKE_COLOR = 1;
+    }
 
     //Log parameters
     public static final int MAXIMUM_QUEUING_MESSAGE = 50;
@@ -156,6 +156,8 @@ public class consts {
 
     public static final int SLEEP_TIME_PER_RATE = 10;
 
+    private static final int VALUE_OF_FILL_COLOR = 0;
+    private static final int VALUE_OF_STROKE_COLOR = 1;
 
     public static Color getFill(int status) {
         try {
