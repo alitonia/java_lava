@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.collections.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -7,108 +9,86 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.collections.FXCollections?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" style="-fx-background-color: #2B0033;" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2B0033;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
-        <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <AnchorPane prefHeight="264.0" prefWidth="574.0">
                     <children>
-                        <Pane fx:id="visual_board" layoutX="14.0" prefHeight="264.0" prefWidth="600.0"
-                              style="-fx-background-color: #3a0011;" AnchorPane.bottomAnchor="0.0"
-                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                        <Pane fx:id="visual_board" layoutX="14.0" prefHeight="264.0" prefWidth="600.0" style="-fx-background-color: #3a0011;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Line fx:id="target_line" endX="500.0" layoutX="100.0" layoutY="100.0" startX="-100.0" stroke="#a6a53d" strokeWidth="5.0" visible="false" />
+                     </children></Pane>
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="132.0" prefWidth="598.0">
                     <children>
-                        <Pane fx:id="button_box" prefHeight="132.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0"
-                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Pane fx:id="button_box" prefHeight="132.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <GridPane layoutY="17.0" prefHeight="107.0" prefWidth="600.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="302.0" minWidth="10.0"
-                                                           prefWidth="298.0"/>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="302.0" minWidth="10.0"
-                                                           prefWidth="302.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="302.0" minWidth="10.0" prefWidth="298.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="302.0" minWidth="10.0" prefWidth="302.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="40.0"
-                                              GridPane.columnIndex="1">
+                                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="40.0" GridPane.columnIndex="1">
                                             <GridPane.margin>
-                                                <Insets bottom="20.0" left="10.0" right="20.0" top="20.0"/>
+                                                <Insets bottom="20.0" left="10.0" right="20.0" top="20.0" />
                                             </GridPane.margin>
                                             <children>
-                                                <Button fx:id="start_button" mnemonicParsing="false"
-                                                        onAction="#start_running" prefHeight="65.0" prefWidth="143.0"
-                                                        text="Start" disable="true"/>
-                                                <Button fx:id="step_forward_button" mnemonicParsing="false"
-                                                        onAction="#one_step_forward" prefHeight="60.0" prefWidth="140.0"
-                                                        text="Step -&gt;" disable="true"/>
+                                                <Button fx:id="start_button" disable="true" mnemonicParsing="false" onAction="#start_running" prefHeight="65.0" prefWidth="143.0" text="Start" />
+                                                <Button fx:id="step_forward_button" disable="true" mnemonicParsing="false" onAction="#one_step_forward" prefHeight="60.0" prefWidth="140.0" text="Step -&gt;" />
                                             </children>
                                         </HBox>
-                                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="40.0"
-                                              GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="40.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                             <children>
-                                                <Button fx:id="pause_button" mnemonicParsing="false"
-                                                        onAction="#pause_running" prefHeight="65.0" prefWidth="143.0"
-                                                        text="Pause" disable="true"/>
-                                                <Button fx:id="step_backward_button" mnemonicParsing="false"
-                                                        onAction="#one_step_backward" prefHeight="60.0"
-                                                        prefWidth="140.0" text="Step &lt;-" disable="true"/>
+                                                <Button fx:id="pause_button" disable="true" mnemonicParsing="false" onAction="#pause_running" prefHeight="65.0" prefWidth="143.0" text="Pause" />
+                                                <Button fx:id="step_backward_button" disable="true" mnemonicParsing="false" onAction="#one_step_backward" prefHeight="60.0" prefWidth="140.0" text="Step &lt;-" />
                                             </children>
                                             <GridPane.margin>
-                                                <Insets bottom="20.0" left="10.0" right="20.0" top="20.0"/>
+                                                <Insets bottom="20.0" left="10.0" right="20.0" top="20.0" />
                                             </GridPane.margin>
                                         </HBox>
-                                        <HBox prefHeight="110.0" prefWidth="298.0" spacing="40.0"
-                                              GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                        <HBox prefHeight="110.0" prefWidth="298.0" spacing="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                             <children>
-                                                <Button fx:id="reset_button" mnemonicParsing="false"
-                                                        onAction="#back_to_start" prefHeight="65.0" prefWidth="143.0"
-                                                        text="Reset" disable="true"/>
-                                                <Button fx:id="cancel_button" mnemonicParsing="false"
-                                                        onAction="#cancel_program" prefHeight="60.0" prefWidth="140.0"
-                                                        text="Cancel"/>
+                                                <Button fx:id="reset_button" disable="true" mnemonicParsing="false" onAction="#back_to_start" prefHeight="65.0" prefWidth="143.0" text="Reset" />
+                                                <Button fx:id="cancel_button" mnemonicParsing="false" onAction="#cancel_program" prefHeight="60.0" prefWidth="140.0" text="Cancel" />
                                             </children>
                                             <GridPane.margin>
-                                                <Insets bottom="20.0" left="10.0" right="20.0" top="20.0"/>
+                                                <Insets bottom="20.0" left="10.0" right="20.0" top="20.0" />
                                             </GridPane.margin>
                                         </HBox>
                                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                                             <GridPane.margin>
-                                                <Insets bottom="20.0" left="90.0" right="80.0" top="20.0"/>
+                                                <Insets bottom="20.0" left="90.0" right="80.0" top="20.0" />
                                             </GridPane.margin>
                                         </HBox>
-                                        <Button fx:id="randomize_button" mnemonicParsing="false"
-                                                onAction="#generate_random" prefHeight="65.0" prefWidth="143.0"
-                                                text="Randomize" GridPane.rowIndex="1">
+                                        <Button fx:id="randomize_button" mnemonicParsing="false" onAction="#generate_random" prefHeight="65.0" prefWidth="143.0" text="Randomize" GridPane.rowIndex="1">
                                             <GridPane.margin>
-                                                <Insets bottom="15.0" left="85.0" top="15.0"/>
+                                                <Insets bottom="15.0" left="85.0" top="15.0" />
                                             </GridPane.margin>
                                         </Button>
                                         <ComboBox fx:id="mode_choice" prefWidth="175.0">
                                             <GridPane.margin>
-                                                <Insets bottom="10.0" left="70.0" top="10.0"/>
+                                                <Insets bottom="10.0" left="70.0" top="10.0" />
                                             </GridPane.margin>
                                             <items>
                                                 <FXCollections fx:factory="observableArrayList">
-                                                    <String fx:id="sequential" fx:value="Sequential Search"/>
-                                                    <String fx:id="binary" fx:value="Binary Search"/>
-                                                    <String fx:id="A" fx:value="A* Path-finding"/>
+                                                    <String fx:id="sequential" fx:value="Sequential Search" />
+                                                    <String fx:id="binary" fx:value="Binary Search" />
+                                                    <String fx:id="A" fx:value="A* Path-finding" />
                                                 </FXCollections>
                                             </items>
                                             <value>
-                                                <String fx:id="sequential_1" fx:value="Sequential Search"/>
+                                                <String fx:id="sequential_1" fx:value="Sequential Search" />
                                             </value>
                                             <padding>
-                                                <Insets left="5.0" right="3.0"/>
+                                                <Insets left="5.0" right="3.0" />
                                             </padding>
                                         </ComboBox>
                                     </children>

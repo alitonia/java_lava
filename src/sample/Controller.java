@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 import jdk.nashorn.internal.objects.annotations.Getter;
 
 import org.reactfx.EventStreams;
@@ -72,6 +73,9 @@ public class Controller {
 
     @FXML
     private ComboBox mode_choice;
+
+    @FXML
+    private Line target_line;
 
     @FXML
     void start_running(ActionEvent event) {
@@ -220,11 +224,15 @@ public class Controller {
 
 
             //Current target is the x-th element of histogram
-            Double target = array_controller.get_List_Double_format().get(
+            Colorful_Rectangle target = array_controller.getColorful_rectangles().get(
                     ThreadLocalRandom.current().nextInt(array_controller.getLength()));
+            //set target
+            target_line.setStartY(target.getY() - 100);
+            target_line.setEndY(target.getY() - 100);
+            target_line.setVisible(true);
 
             generator.Sequential_Search(
-                    target,
+                    target.getHeight(),
                     array_controller.get_List_Double_format());
             my_Queue.print();
 
@@ -234,6 +242,7 @@ public class Controller {
 
             //
         } else if (execution_Status == A_STAR_MODE) {
+            target_line.setVisible(false);
             array_controller.make_2D(NUMBER_OF_RECTANGLE_HORIZONTAL, NUMBER_OF_RECTANGLE_VERTICAL);
             my_Log.print("Mode: " + A_Star);
 
@@ -267,6 +276,7 @@ public class Controller {
 
     public void clean_Board() {
         visual_board.getChildren().clear();
+        visual_board.getChildren().add(target_line);
     }
 
     @Getter
