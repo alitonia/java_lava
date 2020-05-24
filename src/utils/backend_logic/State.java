@@ -1,13 +1,14 @@
 package utils.backend_logic;
 
+import jdk.nashorn.internal.objects.annotations.Constructor;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
+import utils.Translator;
 
 import java.util.ArrayList;
 
 public class State {
 
-    private ArrayList<Integer> my_Index = new ArrayList<>();
     private int index;
     private int status;
 
@@ -15,13 +16,6 @@ public class State {
 
     }
 
-//    //old:
-//    public State(int status, ArrayList<Integer> my_Index) {
-//        this.status = status;
-//        this.my_Index = my_Index;
-//    }
-
-    //new:
     public State(int index, int status) {
         this.status = status;
         this.index = index;
@@ -32,14 +26,15 @@ public class State {
         this.status = s.getStatus();
     }
 
+    public State(int x_Index, int y_Index, int status) {
+        this.index = Translator.translate(x_Index, y_Index);
+        this.status = status;
+    }
+
 
     @Getter
     public int getStatus() {
         return status;
-    }
-
-    public ArrayList<Integer> getMy_Index() {
-        return my_Index;
     }
 
     public int getIndex() {
@@ -52,12 +47,12 @@ public class State {
         this.status = status;
     }
 
-    public void setMy_Index(ArrayList<Integer> my_Index) {
-        this.my_Index = my_Index;
-    }
-
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public void setIndex(int x_Index, int y_Index) {
+        this.index = Translator.translate(x_Index, y_Index);
     }
 
     @Override
