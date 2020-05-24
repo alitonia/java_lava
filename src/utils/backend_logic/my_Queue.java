@@ -102,6 +102,10 @@ public class my_Queue {
         return current_step == queue_Length;
     }
 
+    public boolean isHead(){
+        return current_step == 0;
+    }
+
     @Getter
 //    public ArrayList<State> getList() {
 //        return list;

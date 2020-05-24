@@ -3,11 +3,8 @@ package sample;
 //TODO: Optimize painting
 
 
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 
-import javafx.beans.Observable;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +28,6 @@ import utils.front_end_logic.Painter;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static utils.consts.*;
 
@@ -44,7 +40,7 @@ public class Controller {
     private SearchingUtils generator = new SearchingUtils();
     private my_Queue history_Manager = new my_Queue();
     private Painter painter = new Painter();
-    private Subscription x;
+    private Subscription playing_Stream;
     //    Executor executor = Executors.newFixedThreadPool(MAX_EXECUTIONERS);
     @FXML
     private Button cancel_button;
@@ -80,42 +76,65 @@ public class Controller {
     void start_running(ActionEvent event) {
         my_Log.print("Start button clicked!\n" +
                 "Now running!\n");
+        //Disable bug-able button :)
+        pause_button.setDisable(false);
+        step_forward_button.setDisable(true);
+        step_backward_button.setDisable(true);
+        start_button.setDisable(true);
+        randomize_button.setDisable(true);
+        mode_choice.setDisable(true);
 
-        x = EventStreams.ticks(Duration.ofMillis(DELAY_MILIS_PER_RUN))
-                .supplyCompletionStage(
-                        () -> CompletableFuture.supplyAsync(() -> history_Manager.get_Next_Step()))
-                .await()
-                .subscribe(v -> {
-                    if (v != null) {
-                        painter.paint_by_Many_Status(v, array_controller.getColorful_rectangles());
-                    }
-                });
+        //Main event
+        if (history_Manager.getQueue_Length() == 0) {
+            my_Log.print("No instance created!");
+        } else {
+            if (playing_Stream == null) {
+                playing_Stream = EventStreams.ticks(Duration.ofMillis(DELAY_MILIS_PER_RUN))
+                        .supplyCompletionStage(
+                                () -> CompletableFuture.supplyAsync(() -> history_Manager.get_Next_Step()))
+                        .await()
 
-        //Manually terminate subscription with another thread
-        // as currently there isn't a way to terminate inside Subscription's definition
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (history_Manager.isEnding() == false) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                x.unsubscribe();
+                        .subscribe(v -> {
+                            if (v != null) {
+                                painter.paint_by_Many_Status(v, array_controller.getColorful_rectangles());
+                            } else {
+                                playing_Stream.unsubscribe();
+                                playing_Stream = null;
+                                pause_button.setDisable(true);
+                                step_forward_button.setDisable(true);
+                                step_backward_button.setDisable(false);
+                                reset_button.setDisable(false);
+                                randomize_button.setDisable(false);
+                                mode_choice.setDisable(false);
+                            }
+                        });
+            } else {
+                my_Log.print("Already playing");
             }
-        }).start();
-
-        my_Log.print("Reach end of steps!");
+        }
     }
 
     @FXML
     void pause_running(ActionEvent event) {
         my_Log.print("Pause button pressed:\n" +
                 "Stop action\n");
-        x.unsubscribe();
-
+        if (playing_Stream != null) {
+            playing_Stream.unsubscribe();
+            playing_Stream = null;
+        } else {
+            my_Log.print("No stream playing");
+        }
+        pause_button.setDisable(true);
+        if (history_Manager.isEnding() == false) {
+            step_forward_button.setDisable(false);
+            start_button.setDisable(false);
+        }
+        if (history_Manager.isHead() == false) {
+            step_backward_button.setDisable(false);
+            reset_button.setDisable(false);
+        }
+        randomize_button.setDisable(false);
+        mode_choice.setDisable(false);
     }
 
     @FXML
@@ -127,6 +146,14 @@ public class Controller {
             painter.paint_by_Many_Status(now_State, array_controller.getColorful_rectangles());
         } else {
             my_Log.print("Reach end of steps!");
+        }
+        if (history_Manager.isEnding() == true) {
+            step_forward_button.setDisable(true);
+            start_button.setDisable(true);
+        }
+        else {
+            step_backward_button.setDisable(false);
+            reset_button.setDisable(false);
         }
     }
 
@@ -140,15 +167,28 @@ public class Controller {
         } else {
             my_Log.print("Reach head of steps!");
         }
+        if (history_Manager.isEnding() == false) {
+            step_forward_button.setDisable(false);
+            start_button.setDisable(false);
+        }
+        if (history_Manager.isHead() == true){
+            reset_button.setDisable(true);
+            step_backward_button.setDisable(true);
+        }
     }
 
     @FXML
     void back_to_start(ActionEvent event) {
         my_Log.print("Reset button pressed:\n" +
                 "Back to top\n");
+        pause_running(event);
         List<State> now_State = history_Manager.back_to_Start();
 
         painter.paint_by_Many_Status(now_State, array_controller.getColorful_rectangles());
+        step_backward_button.setDisable(true);
+        reset_button.setDisable(true);
+        start_button.setDisable(false);
+        step_forward_button.setDisable(false);
     }
 
     @FXML
@@ -163,7 +203,8 @@ public class Controller {
     void generate_random(ActionEvent event) {
         my_Log.print("Random button pressed:\n" +
                 "Generating new values");
-
+        //Clean previous operation
+        pause_running(event);
         execution_Status = mode_choice.getItems().indexOf(mode_choice.getValue());
 
         //Get parameters of rectangles
@@ -195,6 +236,12 @@ public class Controller {
         } else {
             System.out.println("Error parsing choice!");
         }
+        history_Manager.back_to_Start();
+        //enable buttons:
+        start_button.setDisable(false);
+        step_forward_button.setDisable(false);
+        step_backward_button.setDisable(true);
+        reset_button.setDisable(true);
 
     }
 
