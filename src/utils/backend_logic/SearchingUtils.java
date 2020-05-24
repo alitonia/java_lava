@@ -51,20 +51,19 @@ public class SearchingUtils {
 
     public my_Queue Binary_Search(double search_value, List<Double> a, int l, int r) {
 
+        //Range of focus ( also better coloring)
+        //Highlight the interacting part of histogram
+        status = FOCUSED_RECT_STATUS;
+        change_List = new ArrayList<>();
+        for (int i = l; i < r + 1; i++) {
+            state = new State(i, status);
+            change_List.add(state);
+        }
+        q.add(change_List);
 
         while (l <= r) {
             int mid = l + (r - l) / 2; // same as (l+r)/2 but avoid overflow;
             //??!?
-
-            //Hightlight the interacting part of histogram
-            status = FOCUSED_RECT_STATUS;
-            change_List = new ArrayList<>();
-            for (int i = l; i < r + 1; i++) {
-                state = new State(i, status);
-                change_List.add(state);
-            }
-            q.add(change_List);
-
 
             //Highlight middle index
             status = THE_SPOTLIGHT_RECT_STATUS;

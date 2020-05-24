@@ -34,13 +34,14 @@ import static utils.consts.*;
 
 public class Controller {
 
+    private int execution_Status = SEQUENTIAL_MODE;
+    private Subscription playing_Stream;
+
     private final Log my_Log = new Log();
     private Array_Controller array_controller = new Array_Controller(this);
-    private int execution_Status = SEQUENTIAL_MODE;
     private SearchingUtils generator = new SearchingUtils();
     private my_Queue history_Manager = new my_Queue();
     private Painter painter = new Painter();
-    private Subscription playing_Stream;
     //    Executor executor = Executors.newFixedThreadPool(MAX_EXECUTIONERS);
     @FXML
     private Button cancel_button;

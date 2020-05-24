@@ -97,7 +97,7 @@ public class Array_Controller {
                     ThreadLocalRandom.current().nextDouble(
                             MINIMUM_RECT_HEIGHT,
                             MAXIMUM_RECT_HEIGHT
-                    )) * visual_Board.getHeight() /HEIGHT_VARIANCE_COEFFICIENT) * HEIGHT_VARIANCE_COEFFICIENT);
+                    )) * visual_Board.getHeight() / HEIGHT_VARIANCE_COEFFICIENT) * HEIGHT_VARIANCE_COEFFICIENT);
             rectangle.setWidth(width_per_rect);
 
             rectangle.setX(visual_Board.getLayoutX() + i * width_per_rect);
@@ -121,31 +121,35 @@ public class Array_Controller {
 
 
     //Make 2D rectangles
-    public void make_2D(int width_in_rectangle, int height_in_rectangle) {
+    public void make_2D(int X_axis_in_rectangle, int Y_axis_in_rectangle) {
         c.clean_Board();
 
         Pane visual_Board = c.getVisual_board();
         colorful_rectangles = FXCollections.observableArrayList();
 
-        int total_rect = width_in_rectangle * height_in_rectangle;
+        int total_rect = X_axis_in_rectangle * Y_axis_in_rectangle;
         for (int i = 0; i < total_rect; i++) {
             Colorful_Rectangle rectangle = new Colorful_Rectangle();
 
-            rectangle.setWidth(visual_Board.getWidth() / width_in_rectangle - 1);
+            rectangle.setWidth(
+                    ((1 - PERCENT_LEFT_PADDING_A_STAR - PERCENT_RIGHT_PADDING_A_STAR) * visual_Board.getWidth())
+                            / X_axis_in_rectangle);
             //Increase variance
-            rectangle.setHeight(visual_Board.getHeight() / height_in_rectangle - 1);
+            rectangle.setHeight(
+                    ((1 - PERCENT_UP_PADDING_A_STAR - PERCENT_DOWN_PADDING_A_STAR) * visual_Board.getHeight())
+                            / Y_axis_in_rectangle);
 
-            rectangle.setX(10 + visual_Board.getLayoutX() + (i % width_in_rectangle) * rectangle.getWidth());
-//                    + (double) ((i % width_in_rectangle) / width_in_rectangle) * visual_Board.getLayoutX());
-            rectangle.setY(10 + visual_Board.getLayoutY() + (int) (i / height_in_rectangle) * rectangle.getHeight());
-//                    + (double) (Math.floor(i / height_in_rectangle) / height_in_rectangle) * visual_Board.getLayoutY());
+            rectangle.setX(visual_Board.getLayoutX() + visual_Board.getWidth() * PERCENT_LEFT_PADDING_A_STAR
+                    + (i % X_axis_in_rectangle) * rectangle.getWidth());
+            rectangle.setY(visual_Board.getLayoutY() + visual_Board.getHeight() * PERCENT_UP_PADDING_A_STAR +
+                    (i / X_axis_in_rectangle) * rectangle.getHeight());
 
             if (i == 0 || i == total_rect - 1) {
                 rectangle.setStatus(GATE_RECT_STATUS);
             } else {
+                //Randomize obstacles with percentage 1/3
                 List<Integer> choice = Arrays.asList(
-                        NORMAL_RECT_STATUS, OBSTACLE_RECT_STATUS,
-                        NORMAL_RECT_STATUS
+                        NORMAL_RECT_STATUS, OBSTACLE_RECT_STATUS, NORMAL_RECT_STATUS
                 );
                 rectangle.setStatus(choice.get(ThreadLocalRandom.current().nextInt(choice.size())));
 

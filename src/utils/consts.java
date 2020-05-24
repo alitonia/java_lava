@@ -25,13 +25,23 @@ public class consts {
 
     //Data properties
     public static final int NUMBER_OF_RECTANGLE = 30;
-    public static final int NUMBER_OF_RECTANGLE_X_AXIS = 20;
+    public static final int NUMBER_OF_RECTANGLE_X_AXIS = 30;
     public static final int NUMBER_OF_RECTANGLE_Y_AXIS = 20;
     public static final double HEIGHT_VARIANCE_COEFFICIENT = 1.3;
     public static final int MINIMUM_TRAVERSING_DISTANCE = (int) (NUMBER_OF_RECTANGLE * 0.3);
 
     //Play-speed
     public static final long DELAY_MILIS_PER_RUN = 5000 / NUMBER_OF_RECTANGLE;
+
+
+    // size
+    public static final double MINIMUM_RECT_HEIGHT = 0.03D;
+    public static final double MAXIMUM_RECT_HEIGHT = 0.97D;
+
+    public static final double PERCENT_RIGHT_PADDING_A_STAR = 0.015D;
+    public static final double PERCENT_LEFT_PADDING_A_STAR = 0.015D;
+    public static final double PERCENT_UP_PADDING_A_STAR = 0.03D;
+    public static final double PERCENT_DOWN_PADDING_A_STAR = 0.03D;
 
 
     //color
@@ -46,20 +56,20 @@ public class consts {
             new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
 
     public static final Color FOCUSED_FILL_COLOR =
-            new Color((float) 255 / 255, (float) 196 / 255, (float) 163 / 255, 1);
+            new Color((float) 255 / 255, (float) 165 / 255, (float) 163 / 255, 1);
     //            new Color(0.17, 0.85, 0.459, 1);
     public static final Color FOCUSED_STROKE_COLOR =
-            new Color((float) 170 / 255, (float) 207 / 255, (float) 207 / 255, 0.5);
+            new Color((float) 11 / 255, (float) 199 / 255, (float) 207 / 255, 0.35);
 
     public static final Color GATE_FILL_COLOR =
             new Color((float) 252 / 255, (float) 248 / 255, (float) 118 / 255, 1);
     public static final Color GATE_STROKE_COLOR =
-            new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 0.25);
+            new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 0.5);
 
     public static final Color OBSTACLE_FILL_COLOR =
-            new Color((float) 48 / 255, (float) 57 / 255, (float) 96 / 255, 1);
+            new Color((float) 47 / 255, (float) 196 / 255, (float) 178 / 255, 1);
     public static final Color OBSTACLE_STROKE_COLOR =
-            new Color((float) 18 / 255, (float) 148 / 255, (float) 127 / 255, 1);
+            new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
 
     public static final Color THE_SPOTLIGHT_FILL_COLOR =
             new Color((float) 252 / 255, (float) 248 / 255, (float) 118 / 255, 1);
@@ -90,11 +100,8 @@ public class consts {
             new Color(0.667, 0.96, 0.189, 0.25);
 
 
-    // size
-    public static final double MINIMUM_RECT_HEIGHT = 0.03D;
-    public static final double MAXIMUM_RECT_HEIGHT = 0.97D;
-    //status
 
+    //status
     public static final int NORMAL_RECT_STATUS = 0;
     public static final int FOCUSED_RECT_STATUS = 1;
 
@@ -110,7 +117,6 @@ public class consts {
 
 
     //Add more when have more status
-
     public static HashMap<Integer, List<Color>> COLORS_ARRAY = new HashMap<Integer, List<Color>>();
 
     static {
@@ -182,7 +188,7 @@ public class consts {
         if (execution_Mode == SEQUENTIAL_MODE) {
             return DELAY_MILIS_PER_RUN;
         } else if (execution_Mode == BINARY_MODE) {
-            return (long) (DELAY_MILIS_PER_RUN * 2.5);
+            return DELAY_MILIS_PER_RUN * 3;
         } else if (execution_Mode == A_STAR_MODE) {
             return DELAY_MILIS_PER_RUN * 3;
         } else return 1;
