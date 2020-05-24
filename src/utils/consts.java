@@ -13,9 +13,6 @@ public class consts {
     //Thread Priority
     public static final int LOG_PRIORITY = 8;
 
-    //Play-speed
-
-    public static final long DELAY_MILIS_PER_RUN = 500;
     // Names:
     public static final String SEQUENTIAL = "Sequential Search";
     public static final String BINARY = "Binary Search";
@@ -27,31 +24,37 @@ public class consts {
     public static final int A_STAR_MODE = 2;
 
     //Data properties
-    public static final int NUMBER_OF_RECTANGLE = 200;
+    public static final int NUMBER_OF_RECTANGLE = 30;
     public static final int NUMBER_OF_RECTANGLE_HORIZONTAL = 20;
     public static final int NUMBER_OF_RECTANGLE_VERTICAL = 20;
+    public static final double HEIGHT_VARIANCE_COEFFICIENT = 1.3;
+    public static final int MINIMUM_TRAVERSING_DISTANCE = (int) (NUMBER_OF_RECTANGLE * 0.3);
+
+    //Play-speed
+    public static final long DELAY_MILIS_PER_RUN = 5000 / NUMBER_OF_RECTANGLE;
+
+
+    //color
+    //Other's color
 
     //Colorful Rect properties
-    //color
-    private static float red = 0;
-    private static float green = 0;
-    private static float blue = 0;
-    private static float opacity = 0;
 
     public static final Color NORMAL_FILL_COLOR =
-            new Color(0.158, 0.89, 0.96, 0.75);
+            new Color((float) 255 / 255, (float) 154 / 255, (float) 118 / 255, 1);
+    //            new Color(0.158, 0.89, 0.96, 0.75);
     public static final Color NORMAL_STROKE_COLOR =
-            new Color(0.667, 0.96, 0.189, 1);
+            new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
 
     public static final Color SOMEWHAT_SPECIAL_FILL_COLOR =
-            new Color(0.17, 0.85, 0.459, 1);
+            new Color((float) 255 / 255, (float) 196 / 255, (float) 163 / 255, 1);
+    //            new Color(0.17, 0.85, 0.459, 1);
     public static final Color SOMEWHAT_SPECIAL_STROKE_COLOR =
-            new Color(0.158, 0.89, 0.96, 0.75);
+            new Color((float) 170 / 255, (float) 207 / 255, (float) 207 / 255, 0.5);
 
     public static final Color GATE_FILL_COLOR =
-            new Color((float) 124 / 255, (float) 64 / 255, (float) 33 / 255, 1);
+            new Color((float) 252 / 255, (float) 248 / 255, (float) 118 / 255, 1);
     public static final Color GATE_STROKE_COLOR =
-            new Color((float) 231 / 255, (float) 20 / 255, (float) 20 / 255, 0.25);
+            new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 0.2);
 
     public static final Color OBSTACLE_FILL_COLOR =
             new Color((float) 231 / 255, (float) 20 / 255, (float) 20 / 255, 1);
@@ -59,19 +62,22 @@ public class consts {
             new Color((float) 18 / 255, (float) 148 / 255, (float) 127 / 255, 0.25);
 
     public static final Color THE_CHOSEN_FILL_COLOR =
-            new Color(0.667, 0.96, 0.189, 1);
+            new Color((float) 252 / 255, (float) 248 / 255, (float) 118 / 255, 1);
+    //            new Color(0.667, 0.96, 0.189, 1);
     public static final Color THE_CHOSEN_STROKE_COLOR =
-            new Color(0.158, 0.89, 0.96, 0.75);
+            new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 0.8);
 
     public static final Color THE_TRUMP_FILL_COLOR =
-            new Color((float) 18 / 255, (float) 25 / 255, (float) 250 / 255, 0.8);
+            new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 1);
     public static final Color THE_TRUMP_STROKE_COLOR =
-            new Color(0.667, 0.96, 0.189, 1);
+            new Color((float) 252 / 255, (float) 248 / 255, (float) 118 / 255, 0.8);
 
     public static final Color THE_UNWORTHY_FILL_COLOR =
-            new Color((float) 231 / 255, (float) 200 / 255, (float) 100 / 255, 1);
+            new Color((float) 217 / 255, (float) 69 / 255, (float) 95 / 255, 1);
+
+    //            new Color((float) 212 / 255, (float) 248 / 255, (float) 118 / 255, 1);
     public static final Color THE_UNWORTHY_STROKE_COLOR =
-            new Color(0.667, 0.96, 0.189, 1);
+            new Color((float) 225 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
 
     public static final Color THE_HIGHLIGHTED_FILL_COLOR =
             new Color((float) 4 / 255, (float) 200 / 255, (float) 100 / 255, 1);
@@ -168,6 +174,16 @@ public class consts {
             System.out.println("Can't get color");
         }
         return new Color(0, 0, 0, 0);
+    }
+
+    public static long getDelay(int execution_Mode) {
+        if (execution_Mode == SEQUENTIAL_MODE) {
+            return DELAY_MILIS_PER_RUN;
+        } else if (execution_Mode == BINARY_MODE) {
+            return (long) (DELAY_MILIS_PER_RUN * 2.5);
+        } else if (execution_Mode == A_STAR_MODE) {
+            return DELAY_MILIS_PER_RUN * 3;
+        } else return 1;
     }
 }
 

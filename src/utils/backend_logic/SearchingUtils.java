@@ -92,18 +92,25 @@ public class SearchingUtils {
                 change_List.add(new State(index, status));
                 q.add(change_List);
 
-                status = NORMAL_RECT_STATUS;
-                change_List = new ArrayList<>();
-                for (int i = l; i < r + 1; i++) {
-                    state = new State(i, status);
-                    change_List.add(state);
-                }
-
-                q.add(change_List);
-
+                //Mark the wrong path
                 if (search_value < a.get(mid)) {
+                    status = THE_UNWORTHY_RECT_STATUS;
+                    change_List = new ArrayList<>();
+                    for (int i = mid + 1; i < r + 1; i++) {
+                        state = new State(i, status);
+                        change_List.add(state);
+                    }
+                    q.add(change_List);
                     r = mid - 1;
+
                 } else {
+                    status = THE_UNWORTHY_RECT_STATUS;
+                    change_List = new ArrayList<>();
+                    for (int i = l; i < mid; i++) {
+                        state = new State(i, status);
+                        change_List.add(state);
+                    }
+                    q.add(change_List);
                     l = mid + 1;
                 }
             }

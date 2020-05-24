@@ -16,7 +16,6 @@ import jdk.nashorn.internal.objects.annotations.Getter;
 
 import org.reactfx.EventStreams;
 import org.reactfx.Subscription;
-import utils.*;
 import utils.backend_logic.SearchingUtils;
 import utils.backend_logic.State;
 import utils.backend_logic.my_Queue;
@@ -88,12 +87,13 @@ public class Controller {
         randomize_button.setDisable(true);
         mode_choice.setDisable(true);
 
+        long delay = getDelay(execution_Status);
         //Main event
         if (history_Manager.getQueue_Length() == 0) {
             my_Log.print("No instance created!");
         } else {
             if (playing_Stream == null) {
-                playing_Stream = EventStreams.ticks(Duration.ofMillis(DELAY_MILIS_PER_RUN))
+                playing_Stream = EventStreams.ticks(Duration.ofMillis(delay))
                         .supplyCompletionStage(
                                 () -> CompletableFuture.supplyAsync(() -> history_Manager.get_Next_Step()))
                         .await()
@@ -223,7 +223,10 @@ public class Controller {
 
             //Current target is the x-th element of histogram
             Colorful_Rectangle target = array_controller.getColorful_rectangles().get(
-                    ThreadLocalRandom.current().nextInt(array_controller.getLength()));
+                    ThreadLocalRandom.current().
+                            nextInt(array_controller.getLength() - MINIMUM_TRAVERSING_DISTANCE)
+                            + MINIMUM_TRAVERSING_DISTANCE);
+
             //set target
             target_line.setStartY(target.getY() - 100);
             target_line.setEndY(target.getY() - 100);
@@ -235,6 +238,7 @@ public class Controller {
             my_Queue.print();
 
         } else if (execution_Status == BINARY_MODE) {
+            my_Log.print("Mode: " + BINARY);
             array_controller.make_Ordered(NUMBER_OF_RECTANGLE);
 
             my_Queue.setInternal_List(array_controller.get_List_State_format());
@@ -247,25 +251,27 @@ public class Controller {
             target_line.setEndY(target.getY() - 100);
             target_line.setVisible(true);
 
-//            generator.Binary_Search(
-//                    target.getHeight(),
-//                    array_controller.get_List_Double_format());
             generator.Binary_Search(target.getHeight(), array_controller.get_List_Double_format(),
                     0, array_controller.getLength() - 1);
             my_Queue.print();
 
-            my_Log.print("Mode: " + BINARY);
-
             //
         } else if (execution_Status == A_STAR_MODE) {
             target_line.setVisible(false);
-            array_controller.make_2D(NUMBER_OF_RECTANGLE_HORIZONTAL, NUMBER_OF_RECTANGLE_VERTICAL);
             my_Log.print("Mode: " + A_Star);
+
+            array_controller.make_2D(NUMBER_OF_RECTANGLE_HORIZONTAL, NUMBER_OF_RECTANGLE_VERTICAL);
+            my_Queue.setInternal_List(array_controller.get_List_State_format());
+            my_Queue.setOrigin_List(array_controller.get_List_State_format());
+
+            //generator generate something here
+            my_Queue.print();
 
             //
         } else {
             System.out.println("Error parsing choice!");
         }
+
         history_Manager.back_to_Start();
         //enable buttons:
         start_button.setDisable(false);

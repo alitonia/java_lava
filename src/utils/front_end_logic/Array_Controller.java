@@ -93,11 +93,11 @@ public class Array_Controller {
 
         for (int i = 0; i < number_of_Rectangles; i++) {
             Colorful_Rectangle rectangle = new Colorful_Rectangle();
-            rectangle.setHeight((float) (
+            rectangle.setHeight(Math.floor((double) (
                     ThreadLocalRandom.current().nextDouble(
                             MINIMUM_RECT_HEIGHT,
                             MAXIMUM_RECT_HEIGHT
-                    )) * visual_Board.getHeight());
+                    )) * visual_Board.getHeight() /HEIGHT_VARIANCE_COEFFICIENT) * HEIGHT_VARIANCE_COEFFICIENT);
             rectangle.setWidth(width_per_rect);
 
             rectangle.setX(visual_Board.getLayoutX() + i * width_per_rect);
@@ -133,8 +133,7 @@ public class Array_Controller {
 
             rectangle.setWidth(visual_Board.getWidth() / width_in_rectangle - 1);
             //Increase variance
-            rectangle.setHeight(Math.floor(
-                    (visual_Board.getHeight() / height_in_rectangle - 1) /10) * 10);
+            rectangle.setHeight(visual_Board.getHeight() / height_in_rectangle - 1);
 
             rectangle.setX(10 + visual_Board.getLayoutX() + (i % width_in_rectangle) * rectangle.getWidth());
 //                    + (double) ((i % width_in_rectangle) / width_in_rectangle) * visual_Board.getLayoutX());
