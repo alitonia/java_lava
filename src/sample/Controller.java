@@ -28,6 +28,7 @@ import utils.front_end_logic.Painter;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static utils.consts.*;
 
@@ -150,8 +151,7 @@ public class Controller {
         if (history_Manager.isEnding() == true) {
             step_forward_button.setDisable(true);
             start_button.setDisable(true);
-        }
-        else {
+        } else {
             step_backward_button.setDisable(false);
             reset_button.setDisable(false);
         }
@@ -171,7 +171,7 @@ public class Controller {
             step_forward_button.setDisable(false);
             start_button.setDisable(false);
         }
-        if (history_Manager.isHead() == true){
+        if (history_Manager.isHead() == true) {
             reset_button.setDisable(true);
             step_backward_button.setDisable(true);
         }
@@ -205,6 +205,7 @@ public class Controller {
                 "Generating new values");
         //Clean previous operation
         pause_running(event);
+        history_Manager.clear();
         execution_Status = mode_choice.getItems().indexOf(mode_choice.getValue());
 
         //Get parameters of rectangles
@@ -217,9 +218,13 @@ public class Controller {
             my_Queue.setInternal_List(array_controller.get_List_State_format());
             my_Queue.setOrigin_List(array_controller.get_List_State_format());
 
-            //Current target is the 6th element of histogram
+
+            //Current target is the x-th element of histogram
+            Double target = array_controller.get_List_Double_format().get(
+                    ThreadLocalRandom.current().nextInt(array_controller.getLength()));
+
             generator.Sequential_Search(
-                    array_controller.get_List_Double_format().get(5),
+                    target,
                     array_controller.get_List_Double_format());
             my_Queue.print();
 

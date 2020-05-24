@@ -11,6 +11,7 @@ public class SearchingUtils {
 
     private my_Queue q = new my_Queue();
     private List<Double> internal_List;
+    private double search_Value;
 
     public void setInternal_List(List<Double> internal_List) {
         this.internal_List = internal_List;
