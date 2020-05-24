@@ -26,10 +26,12 @@ public class Log implements Runnable {
     }
 
     public void print(String msg) {
-        if (number_of_Messege < MAXIMUM_QUEUING_MESSAGE){
-            writelog_Queue.offer(msg);
-            number_of_Messege += 1;
+        if (number_of_Messege > MAXIMUM_QUEUING_MESSAGE){
+            writelog_Queue = new LinkedList<>();
+            number_of_Messege = 0;
         }
+        writelog_Queue.offer(msg);
+        number_of_Messege += 1;
     }
 
     @Override

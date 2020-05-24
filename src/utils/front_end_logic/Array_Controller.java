@@ -132,6 +132,7 @@ public class Array_Controller {
             Colorful_Rectangle rectangle = new Colorful_Rectangle();
 
             rectangle.setWidth(visual_Board.getWidth() / width_in_rectangle - 1);
+            //Increase variance
             rectangle.setHeight(Math.floor(
                     (visual_Board.getHeight() / height_in_rectangle - 1) /10) * 10);
 

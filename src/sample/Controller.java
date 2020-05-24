@@ -36,7 +36,6 @@ import static utils.consts.*;
 public class Controller {
 
     private final Log my_Log = new Log();
-    private final History_Manager historyManager = new History_Manager();
     private Array_Controller array_controller = new Array_Controller(this);
     private int execution_Status = SEQUENTIAL_MODE;
     private SearchingUtils generator = new SearchingUtils();
@@ -237,6 +236,24 @@ public class Controller {
 
         } else if (execution_Status == BINARY_MODE) {
             array_controller.make_Ordered(NUMBER_OF_RECTANGLE);
+
+            my_Queue.setInternal_List(array_controller.get_List_State_format());
+            my_Queue.setOrigin_List(array_controller.get_List_State_format());
+
+            Colorful_Rectangle target = array_controller.getColorful_rectangles().get(
+                    ThreadLocalRandom.current().nextInt(array_controller.getLength()));
+            //set target
+            target_line.setStartY(target.getY() - 100);
+            target_line.setEndY(target.getY() - 100);
+            target_line.setVisible(true);
+
+//            generator.Binary_Search(
+//                    target.getHeight(),
+//                    array_controller.get_List_Double_format());
+            generator.Binary_Search(target.getHeight(), array_controller.get_List_Double_format(),
+                    0, array_controller.getLength() - 1);
+            my_Queue.print();
+
             my_Log.print("Mode: " + BINARY);
 
             //

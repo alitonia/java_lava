@@ -1,8 +1,11 @@
 package utils.backend_logic;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static utils.consts.NORMAL_RECT_STATUS;
 
 public class Mini_testing {
     public static void main(String[] args) {
@@ -13,13 +16,14 @@ public class Mini_testing {
         List<State> l = new ArrayList<>();
 
         for (int i = 0; i < a.size(); i++) {
-            l.add(new State(i, Constants.Sequential_Status.NORMAL_STATUS));
+            l.add(new State(i, NORMAL_RECT_STATUS));
         }
         SearchingUtils s = new SearchingUtils();
         my_Queue.setInternal_List(l);
 
 //        q = SearchingUtils.Binary_Search(6, a, 0, a.length - 1);
-        s.Sequential_Search(6, a);
+        s.Binary_Search(6, a, 0, a.size() - 1);
+//        s.Sequential_Search(6, a);
         my_Queue.print();
     }
 }

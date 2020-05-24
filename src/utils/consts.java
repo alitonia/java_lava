@@ -27,7 +27,7 @@ public class consts {
     public static final int A_STAR_MODE = 2;
 
     //Data properties
-    public static final int NUMBER_OF_RECTANGLE = 10;
+    public static final int NUMBER_OF_RECTANGLE = 200;
     public static final int NUMBER_OF_RECTANGLE_HORIZONTAL = 20;
     public static final int NUMBER_OF_RECTANGLE_VERTICAL = 20;
 
@@ -44,7 +44,7 @@ public class consts {
             new Color(0.667, 0.96, 0.189, 1);
 
     public static final Color SOMEWHAT_SPECIAL_FILL_COLOR =
-            new Color(0.667, 0.96, 0.189, 1);
+            new Color(0.17, 0.85, 0.459, 1);
     public static final Color SOMEWHAT_SPECIAL_STROKE_COLOR =
             new Color(0.158, 0.89, 0.96, 0.75);
 
@@ -73,6 +73,16 @@ public class consts {
     public static final Color THE_UNWORTHY_STROKE_COLOR =
             new Color(0.667, 0.96, 0.189, 1);
 
+    public static final Color THE_HIGHLIGHTED_FILL_COLOR =
+            new Color((float) 4 / 255, (float) 200 / 255, (float) 100 / 255, 1);
+    public static final Color THE_HIGHLIGHTED_STROKE_COLOR =
+            new Color(0.667, 0.96, 0.189, 0.25);
+
+    public static final Color THE_OUTSTANDING_FILL_COLOR =
+            new Color((float) 18 / 255, (float) 200 / 255, (float) 250 / 255, 0.8);
+    public static final Color THE_OUTSTANDING_STROKE_COLOR =
+            new Color(0.667, 0.96, 0.189, 0.25);
+
 
     // size
     public static final double MINIMUM_RECT_HEIGHT = 0.03D;
@@ -83,6 +93,10 @@ public class consts {
     public static final int THE_CHOSEN_RECT_STATUS = 1;
     public static final int THE_TRUMP_RECT_STATUS = 2;
     public static final int THE_UNWORTHY_RECT_STATUS = 3;
+
+    public static final int THE_HIGHLIGHTED_RECT_STATUS = 6;
+    public static final int THE_OUTSTANDING_RECT_STATUS = 8;
+
 
     public static final int SOMEWHAT_SPECIAL_RECT_STATUS = -10;
     public static final int GATE_RECT_STATUS = 7;
@@ -113,6 +127,12 @@ public class consts {
 
         COLORS_ARRAY.put(THE_UNWORTHY_RECT_STATUS,
                 Arrays.asList(THE_UNWORTHY_FILL_COLOR, THE_UNWORTHY_STROKE_COLOR));
+
+        COLORS_ARRAY.put(THE_HIGHLIGHTED_RECT_STATUS,
+                Arrays.asList(THE_HIGHLIGHTED_FILL_COLOR, THE_HIGHLIGHTED_STROKE_COLOR));
+
+        COLORS_ARRAY.put(THE_OUTSTANDING_RECT_STATUS,
+                Arrays.asList(THE_OUTSTANDING_FILL_COLOR, THE_OUTSTANDING_STROKE_COLOR));
     }
 
     private static final int VALUE_OF_FILL_COLOR = 0;
