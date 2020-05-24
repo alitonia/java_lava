@@ -218,7 +218,6 @@ public class Controller {
             my_Log.print("Mode: " + SEQUENTIAL);
 
             //For generator
-            generator.setInternal_List(array_controller.get_List_Double_format());
             my_Queue.setInternal_List(array_controller.get_List_State_format());
             my_Queue.setOrigin_List(array_controller.get_List_State_format());
 

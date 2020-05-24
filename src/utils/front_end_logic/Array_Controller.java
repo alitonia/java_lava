@@ -132,11 +132,12 @@ public class Array_Controller {
             Colorful_Rectangle rectangle = new Colorful_Rectangle();
 
             rectangle.setWidth(visual_Board.getWidth() / width_in_rectangle - 1);
-            rectangle.setHeight(visual_Board.getHeight() / height_in_rectangle - 1);
+            rectangle.setHeight(Math.floor(
+                    (visual_Board.getHeight() / height_in_rectangle - 1) /10) * 10);
 
             rectangle.setX(10 + visual_Board.getLayoutX() + (i % width_in_rectangle) * rectangle.getWidth());
 //                    + (double) ((i % width_in_rectangle) / width_in_rectangle) * visual_Board.getLayoutX());
-            rectangle.setY(10 + visual_Board.getLayoutY() + (int)(i / height_in_rectangle) * rectangle.getHeight());
+            rectangle.setY(10 + visual_Board.getLayoutY() + (int) (i / height_in_rectangle) * rectangle.getHeight());
 //                    + (double) (Math.floor(i / height_in_rectangle) / height_in_rectangle) * visual_Board.getLayoutY());
 
             if (i == 0 || i == total_rect - 1) {
@@ -202,18 +203,18 @@ public class Array_Controller {
         return colorful_rectangles;
     }
 
-    public List<State> get_List_State_format(){
+    public List<State> get_List_State_format() {
         List<State> l = new ArrayList<>();
         for (int i = 0; i < colorful_rectangles.size(); i++) {
-            l.add( new State(i, colorful_rectangles.get(i).getStatus()));
+            l.add(new State(i, colorful_rectangles.get(i).getStatus()));
         }
         return l;
     }
 
-    public List<Double> get_List_Double_format(){
+    public List<Double> get_List_Double_format() {
         List<Double> l = new ArrayList<>();
         for (int i = 0; i < colorful_rectangles.size(); i++) {
-            l.add( colorful_rectangles.get(i).getHeight());
+            l.add(colorful_rectangles.get(i).getHeight());
         }
         return l;
     }
