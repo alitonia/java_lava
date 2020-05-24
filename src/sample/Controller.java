@@ -232,10 +232,18 @@ public class Controller {
             target_line.setStartY(target.getY() - 100);
             target_line.setEndY(target.getY() - 100);
             target_line.setVisible(true);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    target_line.toFront();
+                }
+            });
 
             generator.Sequential_Search(
                     target.getHeight(),
                     array_controller.get_List_Double_format());
+
+
             my_Queue.print();
 
         } else if (execution_Status == BINARY_MODE) {
@@ -251,6 +259,13 @@ public class Controller {
             target_line.setStartY(target.getY() - 100);
             target_line.setEndY(target.getY() - 100);
             target_line.setVisible(true);
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    target_line.toFront();
+                }
+            });
 
             generator.Binary_Search(target.getHeight(), array_controller.get_List_Double_format(),
                     0, array_controller.getLength() - 1);

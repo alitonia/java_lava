@@ -1,0 +1,19 @@
+.button {
+    -fx-background-insets: 0 0 -1 0, 0, 1;
+    -fx-background-radius: 4, 4, 3;
+    -fx-font-family: "Lohit Tamil Classical"
+}
+
+.button:hover {
+    -fx-background-color: rgb(255, 232, 223);
+}
+
+.combo-box {
+    -fx-background-insets: 0 0 -1 0, 0, 1;
+    -fx-background-radius: 4, 4, 3;
+    -fx-font-family: "Lohit Tamil Classical"
+}
+
+.combo-box:hover {
+    -fx-background-color: rgb(255, 232, 223);
+}
