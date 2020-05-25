@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static utils.consts.NORMAL_RECT_STATUS;
+import static utils.consts.THE_NORMAL_RECT_STATUS;
 
 public class Mini_testing {
     public static void main(String[] args) {
@@ -16,7 +16,7 @@ public class Mini_testing {
         List<State> l = new ArrayList<>();
 
         for (int i = 0; i < a.size(); i++) {
-            l.add(new State(i, NORMAL_RECT_STATUS));
+            l.add(new State(i, THE_NORMAL_RECT_STATUS));
         }
         SearchingUtils s = new SearchingUtils();
         my_Queue.setInternal_List(l);

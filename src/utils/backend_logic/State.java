@@ -1,11 +1,8 @@
 package utils.backend_logic;
 
-import jdk.nashorn.internal.objects.annotations.Constructor;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import utils.Translator;
-
-import java.util.ArrayList;
 
 public class State {
 
@@ -27,7 +24,7 @@ public class State {
     }
 
     public State(int x_Index, int y_Index, int status) {
-        this.index = Translator.translate(x_Index, y_Index);
+        this.index = Translator.flatten(x_Index, y_Index);
         this.status = status;
     }
 
@@ -52,7 +49,7 @@ public class State {
     }
 
     public void setIndex(int x_Index, int y_Index) {
-        this.index = Translator.translate(x_Index, y_Index);
+        this.index = Translator.flatten(x_Index, y_Index);
     }
 
     @Override

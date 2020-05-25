@@ -53,7 +53,7 @@ public class SearchingUtils {
 
         //Range of focus ( also better coloring)
         //Highlight the interacting part of histogram
-        status = FOCUSED_RECT_STATUS;
+        status = THE_FOCUSED_RECT_STATUS;
         change_List = new ArrayList<>();
         for (int i = l; i < r + 1; i++) {
             state = new State(i, status);

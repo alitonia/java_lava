@@ -21,8 +21,8 @@ import utils.backend_logic.State;
 import utils.backend_logic.my_Queue;
 import utils.front_end_logic.Array_Controller;
 import utils.front_end_logic.Colorful_Rectangle;
-import utils.front_end_logic.Log;
-import utils.front_end_logic.Painter;
+import utils.Log;
+import utils.Painter;
 
 
 import java.time.Duration;
@@ -214,7 +214,7 @@ public class Controller {
 
         //Get parameters of rectangles
         if (execution_Status == SEQUENTIAL_MODE) {
-            array_controller.make(NUMBER_OF_RECTANGLE);
+            array_controller.make_Histogram(NUMBER_OF_RECTANGLE);
             my_Log.print("Mode: " + SEQUENTIAL);
 
             //For generator
@@ -225,8 +225,8 @@ public class Controller {
             //Current target is the x-th element of histogram
             Colorful_Rectangle target = array_controller.getColorful_rectangles().get(
                     ThreadLocalRandom.current().
-                            nextInt(array_controller.getLength() - MINIMUM_TRAVERSING_DISTANCE)
-                            + MINIMUM_TRAVERSING_DISTANCE);
+                            nextInt(array_controller.getLength() - MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE)
+                            + MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE);
 
             //set target
             target_line.setStartY(target.getY() - 100);
@@ -244,11 +244,11 @@ public class Controller {
                     array_controller.get_List_Double_format());
 
 
-            my_Queue.print();
+//            my_Queue.print();
 
         } else if (execution_Status == BINARY_MODE) {
             my_Log.print("Mode: " + BINARY);
-            array_controller.make_Ordered(NUMBER_OF_RECTANGLE);
+            array_controller.make_Ordered_Histogram(NUMBER_OF_RECTANGLE);
 
             my_Queue.setInternal_List(array_controller.get_List_State_format());
             my_Queue.setOrigin_List(array_controller.get_List_State_format());
@@ -269,19 +269,19 @@ public class Controller {
 
             generator.Binary_Search(target.getHeight(), array_controller.get_List_Double_format(),
                     0, array_controller.getLength() - 1);
-            my_Queue.print();
+//            my_Queue.print();
 
             //
         } else if (execution_Status == A_STAR_MODE) {
             target_line.setVisible(false);
             my_Log.print("Mode: " + A_Star);
 
-            array_controller.make_2D(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS);
+            array_controller.make_Map(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS);
             my_Queue.setInternal_List(array_controller.get_List_State_format());
             my_Queue.setOrigin_List(array_controller.get_List_State_format());
 
             //generator generate something here
-            my_Queue.print();
+//            my_Queue.print();
 
             //
         } else {
@@ -305,7 +305,7 @@ public class Controller {
                 visual_board.getChildren().addAll(colorful_rectangles);
                 my_Log.print("Values of rectangles:");
                 for (Colorful_Rectangle r : colorful_rectangles) {
-                    my_Log.print(r.toString());
+//                    my_Log.print(r.toString());
                 }
             }
         });

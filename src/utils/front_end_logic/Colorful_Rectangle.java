@@ -1,9 +1,9 @@
 package utils.front_end_logic;
 
 import javafx.scene.shape.Rectangle;
-import javafx.util.Pair;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
+import utils.Painter;
 
 import static utils.consts.*;
 
@@ -15,7 +15,8 @@ public class Colorful_Rectangle extends Rectangle {
 
     public Colorful_Rectangle() {
         super();
-        this.status = NORMAL_RECT_STATUS;
+        //DEFAULT
+        this.status = THE_DEFAULT_RECT_STATUS;
     }
 
     public Colorful_Rectangle(Colorful_Rectangle r) {
@@ -29,12 +30,12 @@ public class Colorful_Rectangle extends Rectangle {
 
     public Colorful_Rectangle(double width, double height) {
         super(width, height);
-        this.setStatus(NORMAL_RECT_STATUS);
+        this.setStatus(THE_DEFAULT_RECT_STATUS);
     }
 
     public Colorful_Rectangle(double x, double y, double width, double height) {
         super(x, y, width, height);
-        this.status = NORMAL_RECT_STATUS;
+        this.status = THE_DEFAULT_RECT_STATUS;
     }
 
     @Getter
@@ -49,5 +50,13 @@ public class Colorful_Rectangle extends Rectangle {
         painter.paint_by_Status(this);
     }
 
-
+    @Override
+    public String toString() {
+        return "Colorful_Rectangle{ " +
+                "X=" + getX() + ", " +
+                "Y=" + getY() + ", " +
+                "status=" + status + ", " +
+                "height=" + getHeight() +
+                " }";
+    }
 }

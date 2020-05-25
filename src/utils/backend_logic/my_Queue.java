@@ -2,7 +2,7 @@ package utils.backend_logic;
 
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
-import utils.front_end_logic.Log;
+import utils.Log;
 
 import java.util.*;
 
