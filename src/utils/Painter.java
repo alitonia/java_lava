@@ -26,7 +26,7 @@ public class Painter {
 
     }
 
-    public void paint_by_Many_Status(List<State> stateList, List<Colorful_Rectangle> r) {
+    public void paint_Many_By_Status(List<State> stateList, List<Colorful_Rectangle> r) {
         //Debate-able use of Thread
         //Might not work consistently if Delay time too small
         final Colorful_Rectangle[] rectangle = new Colorful_Rectangle[1];

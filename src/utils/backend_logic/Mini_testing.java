@@ -21,8 +21,8 @@ public class Mini_testing {
             l.add(new State(i, THE_NORMAL_RECT_STATUS));
         }
         SearchingUtils s = new SearchingUtils();
-        q.setInternal_List(l);
-        q.setOrigin_List(l);
+        q.set_Internal_List(l);
+        q.set_Origin_List(l);
 
 //        q = SearchingUtils.binary_Search(6, a, 0, a.length - 1);
         s.binary_Search(6, a, q);

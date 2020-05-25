@@ -62,10 +62,10 @@ public class history_Manager {
         my_Log.print("Queue cleared!");
     }
 
-    public List<State> get_Next_Step() {
+    public List<State> get_Next() {
         List<State> return_List = null;
 
-        if (isEnding()) {
+        if (is_Tail()) {
             my_Log.print("End of Queue");
         } else {
             return_List = history_Queue.get(current_step).get("New");
@@ -74,10 +74,10 @@ public class history_Manager {
         return return_List;
     }
 
-    public List<State> get_Previous_Step() {
+    public List<State> get_Previous() {
         List<State> return_List = null;
 
-        if (isHead()) {
+        if (is_Top()) {
             my_Log.print("Start of Queue");
         } else {
             current_step -= 1;
@@ -86,38 +86,46 @@ public class history_Manager {
         return return_List;
     }
 
-    public List<State> back_to_Start() {
+    public void reset() {
         current_step = 0;
         my_Log.print("Queue set to 0");
-        return origin_List;
     }
 
-    public boolean isEnding() {
+    public boolean is_Tail() {
         return current_step == queue_Length;
     }
 
-    public boolean isHead() {
+    public boolean is_Top() {
         return current_step == 0;
+    }
+
+    public boolean is_Empty() {
+        return queue_Length == 0;
     }
 
 
     @Getter
-    public LinkedList<Map<String, List<State>>> getHistory_Queue() {
+    public LinkedList<Map<String, List<State>>> get_History_Queue() {
         return history_Queue;
     }
 
-    public int getQueue_Length() {
+    public int get_Queue_Length() {
         return queue_Length;
+    }
+
+    public List<State> get_Origin_List() {
+        return origin_List;
     }
 
 
     @Setter
     //Might be used for debugging
-    public void setInternal_List(List<State> internal_List) {
+    public void set_Internal_List(List<State> internal_List) {
         this.internal_List = internal_List;
     }
 
-    public void setOrigin_List(List<State> origin_List) {
+
+    public void set_Origin_List(List<State> origin_List) {
         this.origin_List = origin_List;
 
         //Copy to internal_List
@@ -127,9 +135,11 @@ public class history_Manager {
         }
     }
 
+
     public void print() {
         System.out.println("Queue elements:");
         AtomicInteger depth = new AtomicInteger();
+
         history_Queue.forEach(map -> {
             my_Log.print("Depth: " + depth);
             map.forEach((name, state_List) ->

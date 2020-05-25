@@ -15,6 +15,7 @@ public class Log {
 
     public Log() {
     }
+
     public void print(String msg) {
         executor.execute(new Runnable() {
             @Override

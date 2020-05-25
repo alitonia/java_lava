@@ -9,6 +9,8 @@ import java.util.List;
 
 public class consts {
 
+    //Thread
+    public static final int MAX_EXECUTIONERS = 3;
 
     // Names:
     public static final String SEQUENTIAL = "Sequential Search";
@@ -21,13 +23,13 @@ public class consts {
     public static final int A_STAR_MODE = 2;
 
     //Data properties
-    public static final int NUMBER_OF_RECTANGLE = 30;
+    public static final int NUMBER_OF_RECTANGLE = 20;
     public static final int NUMBER_OF_RECTANGLE_X_AXIS = 30;
     public static final int NUMBER_OF_RECTANGLE_Y_AXIS = 20;
     public static final double HEIGHT_VARIANCE_COEFFICIENT = 1.3;
     public static final int MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE = (int) (NUMBER_OF_RECTANGLE * 0.3);
 
-    public static final boolean TARGET_LINE_TO_FRONT = false;
+    public static final boolean TARGET_LINE_TO_FRONT = true;
 
     //Play-speed
     public static final long SEQUENTIAL_SEARCH_DELAY_MILLISECOND = (int) 5000 / NUMBER_OF_RECTANGLE;
@@ -45,7 +47,6 @@ public class consts {
 
 
     //color
-
 
     //Colorful Rect properties
     //normal

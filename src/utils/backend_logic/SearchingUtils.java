@@ -14,6 +14,7 @@ public class SearchingUtils {
 
     public void sequential_Search(double search_value, List<Double> a,
                                   history_Manager history_Queue) {
+        //Push coloring process of sequential search to history Queue
 
         for (int i = 0; i < a.size(); i++) {
             change_List = new ArrayList<>();
@@ -45,6 +46,7 @@ public class SearchingUtils {
 
     public void binary_Search(double search_value, List<Double> a,
                               history_Manager history_Queue) {
+        //Push coloring process of binary search to history Queue
 
         int start = 0;
         int end = a.size() - 1;

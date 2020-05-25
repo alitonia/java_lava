@@ -39,7 +39,7 @@ public class Array_Controller {
     // Run procedure that can't be done in Constructor
     // due to some "unique features" of javaFX
     private void init() {
-        Pane visual_Board = controller.getVisual_board();
+        Pane visual_Board = controller.get_Visual_Board();
 
         // Frequently used parameter
         this.board_Width = visual_Board.getWidth();
@@ -148,7 +148,7 @@ public class Array_Controller {
 
     // swap histogram elements
     public void swap(int index_1, int index_2) {
-        Pane visual_Board = controller.getVisual_board();
+        Pane visual_Board = controller.get_Visual_Board();
 
         // Swap coordinate of index_1 and index_2 elements
         Colorful_Rectangle first_rectangle = colorful_rectangles.get(index_1);
@@ -207,11 +207,11 @@ public class Array_Controller {
         return length;
     }
 
-    public List<Colorful_Rectangle> getColorful_rectangles() {
+    public List<Colorful_Rectangle> get_Colorful_Rectangles() {
         return colorful_rectangles;
     }
 
-    public List<State> get_List_State_format() {
+    public List<State> get_List_State_Format() {
         List<State> l = new ArrayList<>();
         for (int i = 0; i < colorful_rectangles.size(); i++) {
             l.add(new State(i, colorful_rectangles.get(i).getStatus()));
@@ -219,7 +219,7 @@ public class Array_Controller {
         return l;
     }
 
-    public List<Double> get_List_Double_format() {
+    public List<Double> get_List_Double_Format() {
         List<Double> l = new ArrayList<>();
         for (int i = 0; i < colorful_rectangles.size(); i++) {
             l.add(colorful_rectangles.get(i).getHeight());
