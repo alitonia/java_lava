@@ -229,8 +229,8 @@ public class Controller {
                             + MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE);
 
             //set target
-            target_line.setStartY(target.getY() - 100);
-            target_line.setEndY(target.getY() - 100);
+            target_line.setStartY(target.getY());
+            target_line.setEndY(target.getY());
             target_line.setVisible(true);
             Platform.runLater(new Runnable() {
                 @Override
@@ -258,8 +258,8 @@ public class Controller {
             Colorful_Rectangle target = array_controller.getColorful_rectangles().get(
                     ThreadLocalRandom.current().nextInt(array_controller.getLength()));
             //set target
-            target_line.setStartY(target.getY() - 100);
-            target_line.setEndY(target.getY() - 100);
+            target_line.setStartY(target.getY());
+            target_line.setEndY(target.getY());
             target_line.setVisible(true);
 
             Platform.runLater(new Runnable() {

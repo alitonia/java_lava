@@ -17,7 +17,7 @@
                     <children>
                         <Pane fx:id="visual_board" layoutX="14.0" prefHeight="264.0" prefWidth="600.0" style="-fx-background-color: #bb596b;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Line fx:id="target_line" endX="500.0" layoutX="100.0" layoutY="100.0" startX="-100.0" stroke="#cceabb" strokeWidth="2.5" style="-fx-opacity: 1;" visible="false" />
+                        <Line fx:id="target_line" endX="500.0" layoutX="100.0" layoutY="0" startX="-100.0" stroke="#cceabb" strokeWidth="2.5" style="-fx-opacity: 1;" visible="false" />
                      </children></Pane>
                     </children>
                 </AnchorPane>
