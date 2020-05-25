@@ -1,14 +1,10 @@
 # java_lava
-For java miniproject
-Development branch for java
+JAVA Mini-project for OOP class
 
 TODO: 
- - Finish history
- - Finish update
- - Finish sort generator
- - Interactive buttons
- 
-PENDING: 
-  - Interactive history
-  - Async with Observables
-  - Add CSS
+    - Make A* backend and integration
+    - Add EventStream and Observable to Button changes
+    
+Optional: 
+    - Increase window size( Perhaps not needed)
+  

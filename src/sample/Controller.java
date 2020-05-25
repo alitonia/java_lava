@@ -2,28 +2,46 @@ package sample;
 
 //TODO: Optimize painting
 
+
 import javafx.application.Platform;
+
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 import jdk.nashorn.internal.objects.annotations.Getter;
-import utils.*;
+
+import org.reactfx.EventStreams;
+import org.reactfx.Subscription;
+import utils.backend_logic.SearchingUtils;
+import utils.backend_logic.State;
+import utils.backend_logic.history_Manager;
 import utils.front_end_logic.Array_Controller;
 import utils.front_end_logic.Colorful_Rectangle;
-import utils.front_end_logic.Log;
+import utils.Log;
+import utils.Painter;
+
+
+import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static utils.consts.*;
 
 public class Controller {
 
-    private final Log my_Log = new Log();
-    private final History_Manager historyManager = new History_Manager();
-    private Array_Controller array_controller = new Array_Controller(this);
     private int execution_Status = SEQUENTIAL_MODE;
+    private Subscription playing_Stream;
 
+    private final Log my_Log = new Log();
+    private Array_Controller array_controller = new Array_Controller(this);
+    private SearchingUtils generator = new SearchingUtils();
+    private utils.backend_logic.history_Manager history_Manager = new history_Manager();
+    private Painter painter = new Painter();
     //    Executor executor = Executors.newFixedThreadPool(MAX_EXECUTIONERS);
     @FXML
     private Button cancel_button;
@@ -56,35 +74,125 @@ public class Controller {
     private ComboBox mode_choice;
 
     @FXML
+    private Line target_line;
+
+    @FXML
     void start_running(ActionEvent event) {
         my_Log.print("Start button clicked!\n" +
                 "Now running!\n");
-    }
+        //Disable bug-able button :)
+        pause_button.setDisable(false);
+        step_forward_button.setDisable(true);
+        step_backward_button.setDisable(true);
+        start_button.setDisable(true);
+        randomize_button.setDisable(true);
+        mode_choice.setDisable(true);
 
-    @FXML
-    void one_step_forward(ActionEvent event) {
-        my_Log.print("Next button pressed:\n" +
-                "Go to next action\n");
+        long delay = getDelay(execution_Status);
+        //Main event
+        if (history_Manager.getQueue_Length() == 0) {
+            my_Log.print("No instance created!");
+        } else {
+            if (playing_Stream == null) {
+                playing_Stream = EventStreams.ticks(Duration.ofMillis(delay))
+                        .supplyCompletionStage(
+                                () -> CompletableFuture.supplyAsync(() -> history_Manager.get_Next_Step()))
+                        .await()
+
+                        .subscribe(v -> {
+                            if (v != null) {
+                                painter.paint_by_Many_Status(v, array_controller.getColorful_rectangles());
+                            } else {
+                                playing_Stream.unsubscribe();
+                                playing_Stream = null;
+                                pause_button.setDisable(true);
+                                step_forward_button.setDisable(true);
+                                step_backward_button.setDisable(false);
+                                reset_button.setDisable(false);
+                                randomize_button.setDisable(false);
+                                mode_choice.setDisable(false);
+                            }
+                        });
+            } else {
+                my_Log.print("Already playing");
+            }
+        }
     }
 
     @FXML
     void pause_running(ActionEvent event) {
         my_Log.print("Pause button pressed:\n" +
                 "Stop action\n");
+        if (playing_Stream != null) {
+            playing_Stream.unsubscribe();
+            playing_Stream = null;
+        } else {
+            my_Log.print("No stream playing");
+        }
+        pause_button.setDisable(true);
+        if (history_Manager.isEnding() == false) {
+            step_forward_button.setDisable(false);
+            start_button.setDisable(false);
+        }
+        if (history_Manager.isHead() == false) {
+            step_backward_button.setDisable(false);
+            reset_button.setDisable(false);
+        }
+        randomize_button.setDisable(false);
+        mode_choice.setDisable(false);
+    }
 
+    @FXML
+    void one_step_forward(ActionEvent event) {
+        my_Log.print("Next button pressed:\n" +
+                "Go to next action\n");
+        List<State> now_State = history_Manager.get_Next_Step();
+        if (now_State != null) {
+            painter.paint_by_Many_Status(now_State, array_controller.getColorful_rectangles());
+        } else {
+            my_Log.print("Reach end of steps!");
+        }
+        if (history_Manager.isEnding() == true) {
+            step_forward_button.setDisable(true);
+            start_button.setDisable(true);
+        } else {
+            step_backward_button.setDisable(false);
+            reset_button.setDisable(false);
+        }
     }
 
     @FXML
     void one_step_backward(ActionEvent event) {
         my_Log.print("Backward button pressed:\n" +
                 "Go to previous action\n");
+        List<State> now_State = history_Manager.get_Previous_Step();
+        if (now_State != null) {
+            painter.paint_by_Many_Status(now_State, array_controller.getColorful_rectangles());
+        } else {
+            my_Log.print("Reach head of steps!");
+        }
+        if (history_Manager.isEnding() == false) {
+            step_forward_button.setDisable(false);
+            start_button.setDisable(false);
+        }
+        if (history_Manager.isHead() == true) {
+            reset_button.setDisable(true);
+            step_backward_button.setDisable(true);
+        }
     }
 
     @FXML
     void back_to_start(ActionEvent event) {
         my_Log.print("Reset button pressed:\n" +
                 "Back to top\n");
+        pause_running(event);
+        List<State> now_State = history_Manager.back_to_Start();
 
+        painter.paint_by_Many_Status(now_State, array_controller.getColorful_rectangles());
+        step_backward_button.setDisable(true);
+        reset_button.setDisable(true);
+        start_button.setDisable(false);
+        step_forward_button.setDisable(false);
     }
 
     @FXML
@@ -99,28 +207,99 @@ public class Controller {
     void generate_random(ActionEvent event) {
         my_Log.print("Random button pressed:\n" +
                 "Generating new values");
-
+        //Clean previous operation
+        pause_running(event);
+        history_Manager.clear();
         execution_Status = mode_choice.getItems().indexOf(mode_choice.getValue());
 
         //Get parameters of rectangles
         if (execution_Status == SEQUENTIAL_MODE) {
-            array_controller.make(NUMBER_OF_RECTANGLE);
+            array_controller.make_Histogram(NUMBER_OF_RECTANGLE);
             my_Log.print("Mode: " + SEQUENTIAL);
+
             //For generator
+//            history_Manager.setInternal_List(array_controller.get_List_State_format());
+            history_Manager.setOrigin_List(array_controller.get_List_State_format());
+
+
+            //Current target is the x-th element of histogram
+            Colorful_Rectangle target = array_controller.getColorful_rectangles().get(
+                    ThreadLocalRandom.current().
+                            nextInt(array_controller.getLength() - MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE)
+                            + MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE);
+
+            //set target
+            target_line.setStartY(target.getY() - 100);
+            target_line.setEndY(target.getY() - 100);
+            target_line.setVisible(true);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    target_line.toFront();
+                }
+            });
+
+            generator.sequential_Search(
+                    target.getHeight(),
+                    array_controller.get_List_Double_format(),
+                    history_Manager
+            );
+
+
+//            history_Manager.print();
+
         } else if (execution_Status == BINARY_MODE) {
-            array_controller.make_Ordered(NUMBER_OF_RECTANGLE);
             my_Log.print("Mode: " + BINARY);
+            array_controller.make_Ordered_Histogram(NUMBER_OF_RECTANGLE);
+
+//            history_Manager.setInternal_List(array_controller.get_List_State_format());
+            history_Manager.setOrigin_List(array_controller.get_List_State_format());
+
+            Colorful_Rectangle target = array_controller.getColorful_rectangles().get(
+                    ThreadLocalRandom.current().nextInt(array_controller.getLength()));
+            //set target
+            target_line.setStartY(target.getY() - 100);
+            target_line.setEndY(target.getY() - 100);
+            target_line.setVisible(true);
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    target_line.toFront();
+                }
+            });
+
+            generator.binary_Search(
+                    target.getHeight(),
+                    array_controller.get_List_Double_format(),
+                    history_Manager
+            );
+//            history_Manager.print();
+
             //
         } else if (execution_Status == A_STAR_MODE) {
-            array_controller.make_2D(NUMBER_OF_RECTANGLE_HORIZONTAL, NUMBER_OF_RECTANGLE_VERTICAL);
+            target_line.setVisible(false);
             my_Log.print("Mode: " + A_Star);
+
+            array_controller.make_Map(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS);
+//            history_Manager.setInternal_List(array_controller.get_List_State_format());
+            history_Manager.setOrigin_List(array_controller.get_List_State_format());
+
+            //generator generate something here
+//            history_Manager.print();
+
             //
         } else {
             System.out.println("Error parsing choice!");
         }
 
+        history_Manager.back_to_Start();
+        //enable buttons:
+        start_button.setDisable(false);
+        step_forward_button.setDisable(false);
+        step_backward_button.setDisable(true);
+        reset_button.setDisable(true);
 
-        //TODO: This should make request to History_Manager, then Manager change flag
     }
 
     public void paint_Board(ObservableList<Colorful_Rectangle> colorful_rectangles) {
@@ -131,7 +310,7 @@ public class Controller {
                 visual_board.getChildren().addAll(colorful_rectangles);
                 my_Log.print("Values of rectangles:");
                 for (Colorful_Rectangle r : colorful_rectangles) {
-                    my_Log.print(r.toString());
+//                    my_Log.print(r.toString());
                 }
             }
         });
@@ -140,6 +319,7 @@ public class Controller {
 
     public void clean_Board() {
         visual_board.getChildren().clear();
+        visual_board.getChildren().add(target_line);
     }
 
     @Getter

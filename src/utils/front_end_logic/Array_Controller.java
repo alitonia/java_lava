@@ -1,18 +1,16 @@
 package utils.front_end_logic;
 
 
-import javafx.beans.value.ObservableIntegerValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import sample.Controller;
+import utils.Log;
+import utils.Random_Color;
+import utils.backend_logic.State;
 
-import java.awt.*;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -22,158 +20,141 @@ import static utils.consts.*;
 
 public class Array_Controller {
 
-    private Controller c;
-    private static ObservableList<Colorful_Rectangle> colorful_rectangles;
-    private Log my_Log = new Log();
-    private Painter painter = new Painter();
-
-    private int status;
-
-    private static int length;
-
-//    private static boolean isPaintable = false;
+    private Controller controller;
+    private ObservableList<Colorful_Rectangle> colorful_rectangles;
+    private int length;
+    // Frequently used parameter
+    double board_Width;
+    double board_Height;
+    double board_X;
+    double board_Y;
 
     public Array_Controller(Controller c) {
-        this.c = c;
-        my_Log.print("Array_controller created.");
+        this.controller = c;
+        Log log = new Log();
+        log.print("Array_controller created.");
+
     }
 
+    // Run procedure that can't be done in Constructor
+    // due to some "unique features" of javaFX
+    private void init() {
+        Pane visual_Board = controller.getVisual_board();
 
-    private int partition(List<Colorful_Rectangle> arr, int low, int high) {
-        double pivot = arr.get(high).getHeight();
-        int i = (low - 1); // index of smaller element
-        for (int j = low; j < high; j++) {
-            // If current element is smaller than the pivot
-            if (arr.get(j).getHeight() < pivot) {
-                i++;
+        // Frequently used parameter
+        this.board_Width = visual_Board.getWidth();
+        this.board_Height = visual_Board.getHeight();
+        this.board_X = visual_Board.getLayoutX();
+        this.board_Y = visual_Board.getLayoutY();
 
-                // swap arr[i] and arr[j]
-//                int temp = arr[i];
-//                arr[i] = arr[j];
-//                arr[j] = temp;
-                swap(i, j);
-            }
-        }
-
-        // swap arr[i+1] and arr[high] (or pivot)
-        swap(i + 1, high);
-
-        return i + 1;
-    }
-
-
-    /* The main function that implements QuickSort()
-      arr[] --> Array to be sorted,
-      low  --> Starting index,
-      high  --> Ending index */
-    private void sort(List<Colorful_Rectangle> arr, int low, int high) {
-        if (low < high) {
-            /* pi is partitioning index, arr[pi] is
-              now at right place */
-            int pi = partition(arr, low, high);
-
-            // Recursively sort elements before
-            // partition and after partition
-            sort(arr, low, pi - 1);
-            sort(arr, pi + 1, high);
-        }
-    }
-
-
-    public void make(int number_of_Rectangles) {
-        //Make a array of float between min and max value
-        //Status = Normal
-        c.clean_Board();
-        Array_Controller.length = number_of_Rectangles;
+        controller.clean_Board();
         colorful_rectangles = FXCollections.observableArrayList();
-        Pane visual_Board = c.getVisual_board();
+    }
 
-        float width_per_rect = (float) visual_Board.getWidth() / NUMBER_OF_RECTANGLE;
+    public void make_Histogram(int number_of_Rectangles) {
+        // Create histogram with number of elements = length
+        // uniform width, length randomly assigned between min and max length
+        // X and Y so that the whole histogram looks like a histogram
+        // Default status: NORMAL_RECT_STATUS
+
+        init();
+        this.length = number_of_Rectangles;
+        double rectangle_Width = board_Width / length;
 
         for (int i = 0; i < number_of_Rectangles; i++) {
             Colorful_Rectangle rectangle = new Colorful_Rectangle();
-            rectangle.setHeight((float) (
-                    ThreadLocalRandom.current().nextDouble(
-                            MINIMUM_RECT_HEIGHT,
-                            MAXIMUM_RECT_HEIGHT
-                    )) * visual_Board.getHeight());
-            rectangle.setWidth(width_per_rect);
 
-            rectangle.setX(visual_Board.getLayoutX() + i * width_per_rect);
-            rectangle.setY(visual_Board.getLayoutY() +
-                    (visual_Board.getHeight() - rectangle.getHeight()));
-            rectangle.setStatus(NORMAL_RECT_STATUS);
+            // Get random height within visual_Board range,
+            // then round over so target line can easily be distinguished
+            double rectangle_Height = Math.floor((
+                    ThreadLocalRandom.current().nextDouble(MINIMUM_RECT_HEIGHT, MAXIMUM_RECT_HEIGHT)
+                            * board_Height)
+                    / HEIGHT_VARIANCE_COEFFICIENT) * HEIGHT_VARIANCE_COEFFICIENT;
 
-            colorful_rectangles.add(rectangle);
+            rectangle.setHeight(rectangle_Height);
+            rectangle.setWidth(rectangle_Width);
+
+            rectangle.setX(board_X + i * rectangle_Width);
+            rectangle.setY(board_Y + (board_Height - rectangle_Height));
+            rectangle.setStatus(THE_NORMAL_RECT_STATUS);
+
+            this.colorful_rectangles.add(rectangle);
         }
-//        setPaintable(true);
 
-        c.paint_Board(colorful_rectangles);
+        controller.paint_Board(colorful_rectangles);
     }
 
 
-    //Make ordered histogram
-    public void make_Ordered(int number_of_Rectangles) {
-        make(number_of_Rectangles);
-        sort(colorful_rectangles, 0, colorful_rectangles.size() - 1);
+    public void make_Ordered_Histogram(int number_of_Rectangles) {
+        // make_Histogram histogram, then sort it ---> ordered histogram
+        make_Histogram(number_of_Rectangles);
+        sort(this.colorful_rectangles, 0, colorful_rectangles.size() - 1);
     }
 
 
-    //Make 2D rectangles
-    public void make_2D(int width_in_rectangle, int height_in_rectangle) {
-        c.clean_Board();
+    public void make_Map(int num_of_X_axis_Rectangle, int num_of_Y_axis_Rectangle) {
+        // Make a map to demonstrate A* Path-finding algorithm
+        // Map line in visual_Board, has size X_axis_in_rectangle x Y_axis_in_rectangle
+        // Top and bottom has 2 portals that needs to connect with algorithm
+        // Randomly generate obstacles on the map
 
-        Pane visual_Board = c.getVisual_board();
-        colorful_rectangles = FXCollections.observableArrayList();
+        init();
+        // Map 2D list into 1D
+        this.length = num_of_X_axis_Rectangle * num_of_Y_axis_Rectangle;
 
-        int total_rect = width_in_rectangle * height_in_rectangle;
-        for (int i = 0; i < total_rect; i++) {
+        // Map generation part
+        double rectangle_Width =
+                ((1 - PERCENT_LEFT_PADDING_OF_A_STAR - PERCENT_RIGHT_PADDING_OF_A_STAR) * board_Width)
+                        / num_of_X_axis_Rectangle;
+
+        double rectangle_Height =
+                ((1 - PERCENT_UP_PADDING_A_STAR - PERCENT_DOWN_PADDING_A_STAR) * board_Height)
+                        / num_of_Y_axis_Rectangle;
+
+        for (int i = 0; i < length; i++) {
             Colorful_Rectangle rectangle = new Colorful_Rectangle();
 
-            rectangle.setWidth(visual_Board.getWidth() / width_in_rectangle - 1);
-            rectangle.setHeight(visual_Board.getHeight() / height_in_rectangle - 1);
+            rectangle.setWidth(rectangle_Width);
+            rectangle.setHeight(rectangle_Height);
 
-            rectangle.setX(10 + visual_Board.getLayoutX() + (i % width_in_rectangle) * rectangle.getWidth());
-//                    + (double) ((i % width_in_rectangle) / width_in_rectangle) * visual_Board.getLayoutX());
-            rectangle.setY(10 + visual_Board.getLayoutY() + (int)(i / height_in_rectangle) * rectangle.getHeight());
-//                    + (double) (Math.floor(i / height_in_rectangle) / height_in_rectangle) * visual_Board.getLayoutY());
+            int column = i % num_of_X_axis_Rectangle;
+            int row = i / num_of_X_axis_Rectangle;
+            rectangle.setX(
+                    board_X + board_Width * PERCENT_LEFT_PADDING_OF_A_STAR
+                            + column * rectangle_Width);
 
-            if (i == 0 || i == total_rect - 1) {
-                rectangle.setStatus(GATE_RECT_STATUS);
+            rectangle.setY(
+                    board_Y + board_Height * PERCENT_UP_PADDING_A_STAR +
+                            row * rectangle_Height);
+
+            // Make gate at (0x0) and (length_X x length_Y)
+            if (i == 0 || i == length - 1) {
+                rectangle.setStatus(THE_GATE_RECT_STATUS);
             } else {
-                List<Integer> choice = Arrays.asList(
-                        NORMAL_RECT_STATUS, OBSTACLE_RECT_STATUS,
-                        NORMAL_RECT_STATUS
+                // Randomize obstacles with percentage 1/3
+                int status = Random_Color.get_Random(
+                        new Random_Color(THE_NORMAL_RECT_STATUS, 2.0 / 3.0),
+                        new Random_Color(THE_OBSTACLE_RECT_STATUS, 1.0 / 3.0)
                 );
-                rectangle.setStatus(choice.get(ThreadLocalRandom.current().nextInt(choice.size())));
-
+                rectangle.setStatus(status);
             }
-            painter.paint_by_Status(rectangle);
 
             colorful_rectangles.add(rectangle);
         }
-        c.paint_Board(colorful_rectangles);
+        controller.paint_Board(colorful_rectangles);
 
     }
 
 
-    //Change status of 1 colorful rectangle
-    public void setStatus(int index, int status) {
-        Colorful_Rectangle rectangle = colorful_rectangles.get(index);
-        rectangle.setStatus(status);
-        painter.paint_by_Status(rectangle);
-    }
-
-
-    //swap histogram elements
+    // swap histogram elements
     public void swap(int index_1, int index_2) {
-        Pane visual_Board = c.getVisual_board();
-        //Swap coordinate of index_1 and index_2 elements
+        Pane visual_Board = controller.getVisual_board();
+
+        // Swap coordinate of index_1 and index_2 elements
         Colorful_Rectangle first_rectangle = colorful_rectangles.get(index_1);
         Colorful_Rectangle second_rectangle = colorful_rectangles.get(index_2);
 
         double first_X = first_rectangle.getX();
-//        double first_Y = first_rectangle.getY();
 
         first_rectangle.setX(second_rectangle.getX());
         first_rectangle.setY(visual_Board.getLayoutY() +
@@ -183,31 +164,78 @@ public class Array_Controller {
         second_rectangle.setY(visual_Board.getLayoutY() +
                 (visual_Board.getHeight() - second_rectangle.getHeight()));
 
-        //Do fictional swap in List
+        // Do fictional swap in List
+        // due to usage of index in finding position in Controller
         Collections.swap(colorful_rectangles, index_1, index_2);
     }
+
+
+    public void sort(List<Colorful_Rectangle> rectangles, int start, int end) {
+        // Quicksort
+        // but altered to not mess up histogram display
+
+        if (start < end) {
+            int pivot = partition(rectangles, start, end);
+
+            // Recursively sort on 2 sides of pivot
+            sort(rectangles, start, pivot - 1);
+            sort(rectangles, pivot + 1, end);
+        }
+    }
+
+
+    private int partition(List<Colorful_Rectangle> rectangles, int start, int end) {
+        // This version choose end index as pivot
+        double pivot = rectangles.get(end).getHeight();
+
+        int i = (start - 1); // index of smaller element
+        for (int j = start; j < end; j++) {
+            // If current element is smaller than the pivot
+            if (rectangles.get(j).getHeight() < pivot) {
+                i += 1;
+                swap(i, j);
+            }
+        }
+        // swap pivot and last index
+        swap(i + 1, end);
+        return i + 1;
+    }
+
 
     @Getter
     public int getLength() {
         return length;
     }
 
-//    public static boolean isPaintable() {
-//        return isPaintable;
-//    }
-
-
     public List<Colorful_Rectangle> getColorful_rectangles() {
         return colorful_rectangles;
     }
 
-    @Setter
-//    public static void setPaintable(boolean paintable) {
-//        isPaintable = paintable;
-//    }
+    public List<State> get_List_State_format() {
+        List<State> l = new ArrayList<>();
+        for (int i = 0; i < colorful_rectangles.size(); i++) {
+            l.add(new State(i, colorful_rectangles.get(i).getStatus()));
+        }
+        return l;
+    }
 
+    public List<Double> get_List_Double_format() {
+        List<Double> l = new ArrayList<>();
+        for (int i = 0; i < colorful_rectangles.size(); i++) {
+            l.add(colorful_rectangles.get(i).getHeight());
+        }
+        return l;
+    }
+
+
+    @Setter
     public void setColorful_rectangle(int index, int status) {
         colorful_rectangles.get(index).setStatus(status);
     }
 
+    //Change status of 1 colorful rectangle
+    public void setStatus(int index, int status) {
+        Colorful_Rectangle rectangle = colorful_rectangles.get(index);
+        rectangle.setStatus(status);
+    }
 }

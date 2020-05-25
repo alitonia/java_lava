@@ -1,92 +1,115 @@
 package utils.backend_logic;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static utils.consts.*;
+
+//TODO: Name change on finishing A_Star
 
 public class SearchingUtils {
-    public static Queue Sequential_Search(int search_value, int[] a) {
-        Queue q = new Queue();
-        int status;
-        ArrayList<Integer> index;
-        State s1;
-        for (int i = 0; i < a.length; i++) {
-            index = new ArrayList<Integer>();
-            status = Constants.Sequential_Status.CHOOSING_STATUS;
-            index.add(i);
-            s1 = new State(status, index);
-            q.getList().add(s1);
-            if (a[i] == search_value) {
-                index = new ArrayList<Integer>();
-                status = Constants.Sequential_Status.FOUND_VALUE_STATUS;
-                index.add(i);
-                s1 = new State(status, index);
-                q.getList().add(s1);
+
+    private int status;
+    private List<State> change_List;
+
+    public void sequential_Search(double search_value, List<Double> a,
+                                  history_Manager history_Queue) {
+
+        for (int i = 0; i < a.size(); i++) {
+            change_List = new ArrayList<>();
+            status = THE_SPOTLIGHT_RECT_STATUS;
+            change_List.add(new State(i, status));
+
+            history_Queue.add(change_List);
+
+            //Found correct value?
+            if (a.get(i) == search_value) {
+                change_List = new ArrayList<>();
+                status = THE_SUCCESSFUL_RECT_STATUS;
+                change_List.add(new State(i, status));
+
+                history_Queue.add(change_List);
                 break;
-            } else {
-                index = new ArrayList<Integer>();
-                status = Constants.Sequential_Status.NOT_STATUS;
-                index.add(i);
-                s1 = new State(status, index);
-                q.getList().add(s1);
+            }
+            //Not correct value?
+            else {
+                change_List = new ArrayList<>();
+                status = THE_UNWORTHY_RECT_STATUS;
+                change_List.add(new State(i, status));
+
+                history_Queue.add(change_List);
             }
         }
-        return q;
+
     }
 
-    public static Queue Binary_Search(int search_value, int[] a, int l, int r) {
-        Queue q = new Queue();
-        int status;
-        ArrayList<Integer> index;
-        State s;
+    public void binary_Search(double search_value, List<Double> a,
+                              history_Manager history_Queue) {
 
-        while (l <= r) {
-            int mid = l + (r - l) / 2; // same as (l+r)/2 but avoid overflow;
+        int start = 0;
+        int end = a.size() - 1;
 
 
-            //Save the range of array after each loop(left index,right index)
-            status = Constants.Binary_Search_Status.RANGE_STATUS;
-            index = new ArrayList<Integer>();
-            index.add(l);
-            index.add(r);
-            s = new State(status, index);
-            q.getList().add(s);
+        //Range of focus ( also better coloring)
+        //Highlight the interacting part of histogram
+
+        change_List = new ArrayList<>();
+        status = THE_FOCUSED_RECT_STATUS;
+        for (int i = start; i < end + 1; i++) {
+            change_List.add(new State(i, status));
+        }
+        history_Queue.add(change_List);
 
 
-            //Store the value of "mid" index
-            status = Constants.Binary_Search_Status.MID_STATUS;
-            index = new ArrayList<Integer>();
-            index.add(mid);
-            s = new State(status, index);
-            q.getList().add(s);
+        while (start <= end) {
+            int mid = start + (end - start) / 2; // same as (l+r)/2 but avoid overflow;
+            //??!?
 
-            if (search_value == a[mid]) {
-                //When Found the value,store the index!!!
-                index = new ArrayList<Integer>();
-                status = Constants.Binary_Search_Status.FOUND_VALUE_STATUS;
-                index.add(mid);
-                s = new State(status, index);
-                q.getList().add(s);
-                return q;
+            //Highlight middle index
+            change_List = new ArrayList<>();
+            status = THE_SPOTLIGHT_RECT_STATUS;
+            change_List.add(new State(mid, status));
+
+            history_Queue.add(change_List);
+
+            if (search_value == a.get(mid)) {
+                //When Found the value, highlight it, stop
+                change_List = new ArrayList<>();
+                status = THE_SUCCESSFUL_RECT_STATUS;
+                change_List.add(new State(mid, status));
+
+                history_Queue.add(change_List);
+                break;
+
             } else {
-                status = Constants.Binary_Search_Status.NOT_MID_STATUS;
-                index = new ArrayList<Integer>();
-                index.add(mid);
-                s = new State(status, index);
-                q.getList().add(s);
+                change_List = new ArrayList<>();
+                status = THE_UNWORTHY_RECT_STATUS;
+                change_List.add(new State(mid, status));
 
-                status = Constants.Binary_Search_Status.DELETE_STATUS;
-                index = new ArrayList<Integer>();
-                index.add(l);
-                index.add(r);
-                s = new State(status, index);
-                q.getList().add(s);
+                history_Queue.add(change_List);
 
-                if (search_value < a[mid]) {
-                    r = mid - 1;
+                //Mark the wrong path
+                if (search_value < a.get(mid)) {
+                    change_List = new ArrayList<>();
+                    status = THE_UNWORTHY_RECT_STATUS;
+
+                    for (int i = mid + 1; i < end + 1; i++) {
+                        change_List.add(new State(i, status));
+                    }
+                    history_Queue.add(change_List);
+                    end = mid - 1;
+
                 } else {
-                    l = mid + 1;
+                    change_List = new ArrayList<>();
+                    status = THE_UNWORTHY_RECT_STATUS;
+
+                    for (int i = start; i < mid; i++) {
+                        change_List.add(new State(i, status));
+                    }
+                    history_Queue.add(change_List);
+                    start = mid + 1;
                 }
             }
         }
-        return q;
     }
 }
