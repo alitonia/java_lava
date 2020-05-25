@@ -18,7 +18,7 @@ import org.reactfx.EventStreams;
 import org.reactfx.Subscription;
 import utils.backend_logic.SearchingUtils;
 import utils.backend_logic.State;
-import utils.backend_logic.my_Queue;
+import utils.backend_logic.history_Manager;
 import utils.front_end_logic.Array_Controller;
 import utils.front_end_logic.Colorful_Rectangle;
 import utils.Log;
@@ -40,7 +40,7 @@ public class Controller {
     private final Log my_Log = new Log();
     private Array_Controller array_controller = new Array_Controller(this);
     private SearchingUtils generator = new SearchingUtils();
-    private my_Queue history_Manager = new my_Queue();
+    private utils.backend_logic.history_Manager history_Manager = new history_Manager();
     private Painter painter = new Painter();
     //    Executor executor = Executors.newFixedThreadPool(MAX_EXECUTIONERS);
     @FXML
@@ -218,8 +218,8 @@ public class Controller {
             my_Log.print("Mode: " + SEQUENTIAL);
 
             //For generator
-            my_Queue.setInternal_List(array_controller.get_List_State_format());
-            my_Queue.setOrigin_List(array_controller.get_List_State_format());
+//            history_Manager.setInternal_List(array_controller.get_List_State_format());
+            history_Manager.setOrigin_List(array_controller.get_List_State_format());
 
 
             //Current target is the x-th element of histogram
@@ -239,19 +239,21 @@ public class Controller {
                 }
             });
 
-            generator.Sequential_Search(
+            generator.sequential_Search(
                     target.getHeight(),
-                    array_controller.get_List_Double_format());
+                    array_controller.get_List_Double_format(),
+                    history_Manager
+            );
 
 
-//            my_Queue.print();
+//            history_Manager.print();
 
         } else if (execution_Status == BINARY_MODE) {
             my_Log.print("Mode: " + BINARY);
             array_controller.make_Ordered_Histogram(NUMBER_OF_RECTANGLE);
 
-            my_Queue.setInternal_List(array_controller.get_List_State_format());
-            my_Queue.setOrigin_List(array_controller.get_List_State_format());
+//            history_Manager.setInternal_List(array_controller.get_List_State_format());
+            history_Manager.setOrigin_List(array_controller.get_List_State_format());
 
             Colorful_Rectangle target = array_controller.getColorful_rectangles().get(
                     ThreadLocalRandom.current().nextInt(array_controller.getLength()));
@@ -267,9 +269,12 @@ public class Controller {
                 }
             });
 
-            generator.Binary_Search(target.getHeight(), array_controller.get_List_Double_format(),
-                    0, array_controller.getLength() - 1);
-//            my_Queue.print();
+            generator.binary_Search(
+                    target.getHeight(),
+                    array_controller.get_List_Double_format(),
+                    history_Manager
+            );
+//            history_Manager.print();
 
             //
         } else if (execution_Status == A_STAR_MODE) {
@@ -277,11 +282,11 @@ public class Controller {
             my_Log.print("Mode: " + A_Star);
 
             array_controller.make_Map(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS);
-            my_Queue.setInternal_List(array_controller.get_List_State_format());
-            my_Queue.setOrigin_List(array_controller.get_List_State_format());
+//            history_Manager.setInternal_List(array_controller.get_List_State_format());
+            history_Manager.setOrigin_List(array_controller.get_List_State_format());
 
             //generator generate something here
-//            my_Queue.print();
+//            history_Manager.print();
 
             //
         } else {

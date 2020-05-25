@@ -1,7 +1,8 @@
 package utils.backend_logic;
 
 public class Constants {
-
+    // Only keep for the shake of integration
+    // TODO: Delete upon finishing A*
 
     public class Sequential_Status {
         public static final int NORMAL_STATUS = -3;

@@ -9,9 +9,6 @@ public class State {
     private int index;
     private int status;
 
-    public State() {
-
-    }
 
     public State(int index, int status) {
         this.status = status;
@@ -51,6 +48,7 @@ public class State {
     public void setIndex(int x_Index, int y_Index) {
         this.index = Translator.flatten(x_Index, y_Index);
     }
+
 
     @Override
     public String toString() {

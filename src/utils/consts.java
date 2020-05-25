@@ -9,9 +9,6 @@ import java.util.List;
 
 public class consts {
 
-    public static final int MAX_EXECUTIONERS = 4;
-    //Thread Priority
-    public static final int LOG_PRIORITY = 8;
 
     // Names:
     public static final String SEQUENTIAL = "Sequential Search";
