@@ -28,6 +28,7 @@ public class Array_Controller {
     double board_Height;
     double board_X;
     double board_Y;
+    Log my_Log = new Log();
 
     public Array_Controller(Controller c) {
         this.controller = c;
@@ -57,6 +58,7 @@ public class Array_Controller {
         // X and Y so that the whole histogram looks like a histogram
         // Default status: NORMAL_RECT_STATUS
 
+        my_Log.print("Making histogram");
         init();
         this.length = number_of_Rectangles;
         double rectangle_Width = board_Width / length;
@@ -80,7 +82,7 @@ public class Array_Controller {
 
             this.colorful_rectangles.add(rectangle);
         }
-
+        my_Log.print("Done");
         controller.paint_Board(colorful_rectangles);
     }
 
@@ -88,7 +90,9 @@ public class Array_Controller {
     public void make_Ordered_Histogram(int number_of_Rectangles) {
         // make_Histogram histogram, then sort it ---> ordered histogram
         make_Histogram(number_of_Rectangles);
+        my_Log.print("Sorting histogram");
         sort(this.colorful_rectangles, 0, colorful_rectangles.size() - 1);
+        my_Log.print("Done");
     }
 
 
@@ -98,6 +102,7 @@ public class Array_Controller {
         // Top and bottom has 2 portals that needs to connect with algorithm
         // Randomly generate obstacles on the map
 
+        my_Log.print("Making 2D map");
         init();
         // Map 2D list into 1D
         this.length = num_of_X_axis_Rectangle * num_of_Y_axis_Rectangle;
@@ -141,8 +146,8 @@ public class Array_Controller {
 
             colorful_rectangles.add(rectangle);
         }
+        my_Log.print("Done");
         controller.paint_Board(colorful_rectangles);
-
     }
 
 

@@ -10,7 +10,7 @@ import java.util.List;
 public class consts {
 
     //Thread
-    public static final int MAX_EXECUTIONERS = 3;
+    public static final int MAX_EXECUTIONERS = 3; //?
 
     //Operating mode:
     public static final String SEQUENTIAL_SEARCH_MODE = "Sequential Search";

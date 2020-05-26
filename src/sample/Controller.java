@@ -34,7 +34,7 @@ import static utils.consts.*;
 public class Controller {
 
     private String execution_Mode = SEQUENTIAL_SEARCH_MODE;
-    private Subscription playing_Stream;
+    private Subscription play_Stream;
 
     private final Log my_Log = new Log();
     private final Array_Controller array_Controller = new Array_Controller(this);
@@ -101,8 +101,9 @@ public class Controller {
         if (history_Manager.is_Empty()) {
             my_Log.print("No instance created!");
         } else {
-            if (playing_Stream == null) {
-                playing_Stream = EventStreams.ticks(Duration.ofMillis(delay))
+            my_Log.print("Play stream created");
+            if (play_Stream == null) {
+                play_Stream = EventStreams.ticks(Duration.ofMillis(delay))
                         .supplyCompletionStage(
                                 () -> CompletableFuture.supplyAsync(history_Manager::get_Next))
                         .await()
@@ -112,8 +113,8 @@ public class Controller {
                                 painter.paint_Many_By_Status(v, array_Controller.get_Colorful_Rectangles());
                             } else {
                                 button_Executor.execute(() -> {
-                                            playing_Stream.unsubscribe();
-                                            playing_Stream = null;
+                                            play_Stream.unsubscribe();
+                                            play_Stream = null;
                                             pause_Button.setDisable(true);
                                             forward_Button.setDisable(true);
                                             backward_Button.setDisable(false);
@@ -135,9 +136,9 @@ public class Controller {
         my_Log.print("Pause button pressed:\n" +
                 "Stop action\n");
 
-        if (playing_Stream != null) {
-            playing_Stream.unsubscribe();
-            playing_Stream = null;
+        if (play_Stream != null) {
+            play_Stream.unsubscribe();
+            play_Stream = null;
         } else {
             my_Log.print("No stream playing");
         }
@@ -318,6 +319,7 @@ public class Controller {
                 array_Controller.get_List_Double_Format(),
                 history_Manager
         );
+        my_Log.print("Done");
     }
 
 
@@ -352,6 +354,7 @@ public class Controller {
                 array_Controller.get_List_Double_Format(),
                 history_Manager
         );
+        my_Log.print("Done");
     }
 
 
@@ -365,7 +368,9 @@ public class Controller {
         history_Manager.set_Origin_List(array_Controller.get_List_State_Format());
 
         //generator generate something here
+        //currently no engine for start
 
+        my_Log.print("Done");
     }
 
 
@@ -373,21 +378,21 @@ public class Controller {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                my_Log.print("Painting...");
+                my_Log.print("Painting board...");
                 visual_Board.getChildren().addAll(colorful_rectangles);
-                my_Log.print("Values of rectangles:");
-                for (Colorful_Rectangle r : colorful_rectangles) {
-//                    my_Log.print(r.toString());
-                }
+                my_Log.print("Done");
             }
         });
     }
 
 
     public void clean_Board() {
+        my_Log.print("Cleaning board...");
         visual_Board.getChildren().clear();
         visual_Board.getChildren().add(target_Line);
         target_Line.setVisible(false);
+        my_Log.print("Done");
+
     }
 
     @Getter

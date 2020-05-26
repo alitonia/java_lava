@@ -74,6 +74,7 @@ public class history_Manager {
         } else {
             return_List = history_Queue.get(current_step).get("New");
             current_step += 1;
+            my_Log.print("Get next step successfully");
         }
         return return_List;
     }
@@ -86,6 +87,7 @@ public class history_Manager {
         } else {
             current_step -= 1;
             return_List = history_Queue.get(current_step).get("Old");
+            my_Log.print("Get previous step successfully");
         }
         return return_List;
     }

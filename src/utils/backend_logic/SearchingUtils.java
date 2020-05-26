@@ -1,5 +1,7 @@
 package utils.backend_logic;
 
+import utils.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +13,13 @@ public class SearchingUtils {
 
     private int status;
     private List<State> change_List;
+    Log my_Log = new Log();
 
     public void sequential_Search(double search_value, List<Double> a,
                                   history_Manager history_Queue) {
         //Push coloring process of sequential search to history Queue
 
+        my_Log.print("Generating sequential search steps");
         for (int i = 0; i < a.size(); i++) {
             change_List = new ArrayList<>();
             status = THE_SPOTLIGHT_RECT_STATUS;
@@ -41,12 +45,13 @@ public class SearchingUtils {
                 history_Queue.add(change_List);
             }
         }
-
+    my_Log.print("Done");
     }
 
     public void binary_Search(double search_value, List<Double> a,
                               history_Manager history_Queue) {
         //Push coloring process of binary search to history Queue
+        my_Log.print("Generating binary search steps");
 
         int start = 0;
         int end = a.size() - 1;
@@ -113,5 +118,6 @@ public class SearchingUtils {
                 }
             }
         }
+        my_Log.print("Done");
     }
 }
