@@ -33,7 +33,7 @@ import static utils.consts.*;
 
 public class Controller {
 
-    private int execution_Status = SEQUENTIAL_MODE;
+    private String execution_Mode = SEQUENTIAL_SEARCH_MODE;
     private Subscription playing_Stream;
 
     private final Log my_Log = new Log();
@@ -94,8 +94,7 @@ public class Controller {
                     mode_Choice.setDisable(true);
                 }
         );
-        long delay = getDelay(execution_Status);
-
+        long delay = getDelay(execution_Mode);
 
         // Run continuously until pause or
         // end of queue(next return null)
@@ -241,6 +240,7 @@ public class Controller {
         System.exit(0);
     }
 
+
     @FXML
     void generate_Random(ActionEvent event) {
         my_Log.print("Random button pressed:\n" + "Generating new values");
@@ -250,20 +250,25 @@ public class Controller {
         history_Manager.clear();
 
         // get choice in ComboBox in a complicated way
-        execution_Status = mode_Choice.getItems().indexOf(mode_Choice.getValue());
+        execution_Mode = mode_Choice.getValue();
 
-        // make visual objects basad on choice
-        if (execution_Status == SEQUENTIAL_MODE) {
-            generate_Sequential();
+        // make visual objects based on choice
+        switch (execution_Mode) {
+            case SEQUENTIAL_SEARCH_MODE:
+                generate_Sequential();
+                break;
 
-        } else if (execution_Status == BINARY_MODE) {
-            generate_Binary();
+            case BINARY_SEARCH_MODE:
+                generate_Binary();
+                break;
 
-        } else if (execution_Status == A_STAR_MODE) {
-            generate_A_Star();
+            case A_STAR_PATH_FINDING_MODE:
+                generate_A_Star();
+                break;
 
-        } else {
-            System.out.println("Error parsing choice!");
+            default:
+                System.out.println("Error parsing choice!");
+                break;
         }
 
         //enable buttons:
@@ -278,7 +283,7 @@ public class Controller {
 
 
     private void generate_Sequential() {
-        my_Log.print("Mode: " + SEQUENTIAL);
+        my_Log.print("Mode: " + SEQUENTIAL_SEARCH_MODE);
         array_Controller.make_Histogram(NUMBER_OF_RECTANGLE);
 
         // set context for history manager
@@ -317,7 +322,7 @@ public class Controller {
 
 
     private void generate_Binary() {
-        my_Log.print("Mode: " + BINARY);
+        my_Log.print("Mode: " + BINARY_SEARCH_MODE);
         array_Controller.make_Ordered_Histogram(NUMBER_OF_RECTANGLE);
 
         // set context for history manager
@@ -353,7 +358,7 @@ public class Controller {
     private void generate_A_Star() {
         //no need for target_line
         target_Line.setVisible(false);
-        my_Log.print("Mode: " + A_Star);
+        my_Log.print("Mode: " + A_STAR_PATH_FINDING_MODE);
         array_Controller.make_Map(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS);
 
         // set context for history manager

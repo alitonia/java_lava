@@ -36,6 +36,7 @@ public class Painter {
                 for (State s : stateList) {
                     rectangle[0] = r.get(s.getIndex());
                     rectangle[0].setStatus(s.getStatus());
+                    rectangle[0].setHeight(s.getHeight());
                     paint_by_Status(rectangle[0]);
                 }
             }

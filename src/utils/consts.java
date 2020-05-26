@@ -12,15 +12,11 @@ public class consts {
     //Thread
     public static final int MAX_EXECUTIONERS = 3;
 
-    // Names:
-    public static final String SEQUENTIAL = "Sequential Search";
-    public static final String BINARY = "Binary Search";
-    public static final String A_Star = "A* Path-finding";
-
     //Operating mode:
-    public static final int SEQUENTIAL_MODE = 0;
-    public static final int BINARY_MODE = 1;
-    public static final int A_STAR_MODE = 2;
+    public static final String SEQUENTIAL_SEARCH_MODE = "Sequential Search";
+    public static final String BINARY_SEARCH_MODE = "Binary Search";
+    public static final String A_STAR_PATH_FINDING_MODE = "A* Path-finding";
+
 
     //Data properties
     public static final int NUMBER_OF_RECTANGLE = 20;
@@ -180,14 +176,20 @@ public class consts {
         return new Color(0, 0, 0, 0);
     }
 
-    public static long getDelay(int execution_Mode) {
-        if (execution_Mode == SEQUENTIAL_MODE) {
-            return SEQUENTIAL_SEARCH_DELAY_MILLISECOND;
-        } else if (execution_Mode == BINARY_MODE) {
-            return BINARY_SEARCH_DELAY_MILLISECOND;
-        } else if (execution_Mode == A_STAR_MODE) {
-            return A_STAR_DELAY_MILLISECOND;
-        } else return 1;
+
+    public static long getDelay(String execution_Mode) {
+        switch (execution_Mode) {
+            case SEQUENTIAL_SEARCH_MODE:
+                return SEQUENTIAL_SEARCH_DELAY_MILLISECOND;
+
+            case BINARY_SEARCH_MODE:
+                return BINARY_SEARCH_DELAY_MILLISECOND;
+
+            case A_STAR_PATH_FINDING_MODE:
+                return A_STAR_DELAY_MILLISECOND;
+            default:
+                return 1;
+        }
     }
 }
 
