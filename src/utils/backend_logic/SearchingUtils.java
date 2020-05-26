@@ -19,7 +19,7 @@ public class SearchingUtils {
         for (int i = 0; i < a.size(); i++) {
             change_List = new ArrayList<>();
             status = THE_SPOTLIGHT_RECT_STATUS;
-            change_List.add(new State(i, status));
+            change_List.add(new State(i, status, a.get(i)));
 
             history_Queue.add(change_List);
 
@@ -27,7 +27,7 @@ public class SearchingUtils {
             if (a.get(i) == search_value) {
                 change_List = new ArrayList<>();
                 status = THE_SUCCESSFUL_RECT_STATUS;
-                change_List.add(new State(i, status));
+                change_List.add(new State(i, status, a.get(i)));
 
                 history_Queue.add(change_List);
                 break;
@@ -36,7 +36,7 @@ public class SearchingUtils {
             else {
                 change_List = new ArrayList<>();
                 status = THE_UNWORTHY_RECT_STATUS;
-                change_List.add(new State(i, status));
+                change_List.add(new State(i, status, a.get(i)));
 
                 history_Queue.add(change_List);
             }
@@ -58,7 +58,7 @@ public class SearchingUtils {
         change_List = new ArrayList<>();
         status = THE_FOCUSED_RECT_STATUS;
         for (int i = start; i < end + 1; i++) {
-            change_List.add(new State(i, status));
+            change_List.add(new State(i, status, a.get(i)));
         }
         history_Queue.add(change_List);
 
@@ -70,7 +70,7 @@ public class SearchingUtils {
             //Highlight middle index
             change_List = new ArrayList<>();
             status = THE_SPOTLIGHT_RECT_STATUS;
-            change_List.add(new State(mid, status));
+            change_List.add(new State(mid, status, a.get(mid)));
 
             history_Queue.add(change_List);
 
@@ -78,7 +78,7 @@ public class SearchingUtils {
                 //When Found the value, highlight it, stop
                 change_List = new ArrayList<>();
                 status = THE_SUCCESSFUL_RECT_STATUS;
-                change_List.add(new State(mid, status));
+                change_List.add(new State(mid, status, a.get(mid)));
 
                 history_Queue.add(change_List);
                 break;
@@ -86,7 +86,7 @@ public class SearchingUtils {
             } else {
                 change_List = new ArrayList<>();
                 status = THE_UNWORTHY_RECT_STATUS;
-                change_List.add(new State(mid, status));
+                change_List.add(new State(mid, status, a.get(mid)));
 
                 history_Queue.add(change_List);
 
@@ -96,7 +96,7 @@ public class SearchingUtils {
                     status = THE_UNWORTHY_RECT_STATUS;
 
                     for (int i = mid + 1; i < end + 1; i++) {
-                        change_List.add(new State(i, status));
+                        change_List.add(new State(i, status, a.get(i)));
                     }
                     history_Queue.add(change_List);
                     end = mid - 1;
@@ -106,7 +106,7 @@ public class SearchingUtils {
                     status = THE_UNWORTHY_RECT_STATUS;
 
                     for (int i = start; i < mid; i++) {
-                        change_List.add(new State(i, status));
+                        change_List.add(new State(i, status, a.get(i)));
                     }
                     history_Queue.add(change_List);
                     start = mid + 1;

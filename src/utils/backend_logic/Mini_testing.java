@@ -18,7 +18,7 @@ public class Mini_testing {
         List<State> l = new ArrayList<>();
 
         for (int i = 0; i < a.size(); i++) {
-            l.add(new State(i, THE_NORMAL_RECT_STATUS));
+            l.add(new State(i, THE_NORMAL_RECT_STATUS, a.get(i)));
         }
         SearchingUtils s = new SearchingUtils();
         q.set_Internal_List(l);

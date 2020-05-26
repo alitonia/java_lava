@@ -32,8 +32,12 @@ public class history_Manager {
             //Make old_List
             List<State> previous_State = new ArrayList<>();
             for (State s : new_Changes) {
-                previous_State.add(new State(s.getIndex(), internal_List.get(s.getIndex()).getStatus()));
+                previous_State.add(
+                        new State(s.getIndex(),
+                                internal_List.get(s.getIndex()).getStatus(),
+                                internal_List.get(s.getIndex()).getHeight()));
             }
+
             my_Map.put("Old", previous_State);
 
             //Make new_List
@@ -131,7 +135,7 @@ public class history_Manager {
         //Copy to internal_List
         internal_List = new ArrayList<>();
         for (State s : origin_List) {
-            internal_List.add(new State(s));
+            internal_List.add(new State(s, s.getHeight()));
         }
     }
 

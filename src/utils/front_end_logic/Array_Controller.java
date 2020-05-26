@@ -214,7 +214,10 @@ public class Array_Controller {
     public List<State> get_List_State_Format() {
         List<State> l = new ArrayList<>();
         for (int i = 0; i < colorful_rectangles.size(); i++) {
-            l.add(new State(i, colorful_rectangles.get(i).getStatus()));
+            l.add(
+                    new State(i,
+                            colorful_rectangles.get(i).getStatus(),
+                            colorful_rectangles.get(i).getHeight()));
         }
         return l;
     }
