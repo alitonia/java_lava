@@ -36,6 +36,7 @@ public class Mini_testing {
 
         //This is the Map passed into generator
         List<Node> given_Nodes = b.get_List_Node_Format();
+        q.set_Origin_List(b.get_List_State_Format());
 
         //Validate
         System.out.println("Node values in current list: ");
@@ -142,5 +143,16 @@ class Beard {
             my_Node.add(new_Node);
         }
         return my_Node;
+    }
+
+    public List<State> get_List_State_Format() {
+        List<State> l = new ArrayList<>();
+        for (int i = 0; i < colorful_rectangles.size(); i++) {
+            l.add(
+                    new State(i,
+                            colorful_rectangles.get(i).getStatus(),
+                            colorful_rectangles.get(i).getHeight()));
+        }
+        return l;
     }
 }

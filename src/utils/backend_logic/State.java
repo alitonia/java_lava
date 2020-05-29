@@ -78,6 +78,7 @@ public class State {
         return "State{" +
                 "index=" + index +
                 ", status=" + status +
+                ", height=" + height +
                 '}';
     }
 }
