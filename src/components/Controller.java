@@ -1,10 +1,9 @@
-package sample;
+package components;
 
 //TODO: Optimize painting
 
 
 import javafx.application.Platform;
-
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,21 +12,22 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import jdk.nashorn.internal.objects.annotations.Getter;
-
 import org.reactfx.EventStreams;
 import org.reactfx.Subscription;
+import utils.Log;
+import utils.Painter;
 import utils.backend_logic.SearchingUtils;
 import utils.backend_logic.State;
 import utils.backend_logic.history_Manager;
 import utils.front_end_logic.Array_Controller;
 import utils.front_end_logic.Colorful_Rectangle;
-import utils.Log;
-import utils.Painter;
-
 
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static utils.consts.*;
 
@@ -366,6 +366,7 @@ public class Controller {
 
         // set context for history manager
         history_Manager.set_Origin_List(array_Controller.get_List_State_Format());
+        System.out.println(array_Controller.get_List_Node_Format().toString());
 
         //generator generate something here
         //currently no engine for start

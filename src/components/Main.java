@@ -1,4 +1,4 @@
-package sample;
+package components;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -14,7 +14,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         //Initialize
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        root.getStylesheets().add("sample/main_Style.css");
+
+        // the address is not changed when rename parent directory @@ --> be careful
+        root.getStylesheets().add("components/main_Style.css");
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));

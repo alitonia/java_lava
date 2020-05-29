@@ -103,6 +103,7 @@ public class consts {
 
 
     //status
+    //For rectangle color
     public static final int THE_NORMAL_RECT_STATUS = 0;
     public static final int THE_FOCUSED_RECT_STATUS = 1;
 
@@ -117,6 +118,14 @@ public class consts {
     public static final int THE_OUTSTANDING_RECT_STATUS = 8;
 
     public static final int THE_DEFAULT_RECT_STATUS = THE_NORMAL_RECT_STATUS;
+
+
+    //For initialize 2D map
+    public static final int WALK_ABLE_SIGNAL = -1;
+    public static final int BLOCKED_SIGNAL = -2;
+    public static final int DESTINATION_SIGNAL = -3;
+    public static final int SOURCE_SIGNAL = -4;
+
 
 
     //Add more when have more status

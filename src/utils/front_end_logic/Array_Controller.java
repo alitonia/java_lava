@@ -6,10 +6,12 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
-import sample.Controller;
+import components.Controller;
 import utils.Log;
 import utils.Random_Color;
+import utils.backend_logic.Node;
 import utils.backend_logic.State;
+import utils.consts;
 
 import java.util.*;
 import java.util.List;
@@ -235,6 +237,36 @@ public class Array_Controller {
         return l;
     }
 
+
+    public List<Node> get_List_Node_Format() {
+        List<Node> my_Node = new ArrayList<>();
+        Node new_Node;
+        int X_position;
+        int Y_position;
+        int status;
+
+        for (int i = 0; i < colorful_rectangles.size(); i++) {
+            X_position = i % NUMBER_OF_RECTANGLE_X_AXIS;
+            Y_position = i / NUMBER_OF_RECTANGLE_X_AXIS;
+            new_Node = new Node(X_position, Y_position);
+
+            status = colorful_rectangles.get(i).getStatus();
+
+            //Get appropriate f values
+            if (i == 0) {
+                new_Node.setF(SOURCE_SIGNAL);
+            } else if (i == colorful_rectangles.size() - 1) {
+                new_Node.setF(DESTINATION_SIGNAL);
+            } else if (status == THE_OBSTACLE_RECT_STATUS) {
+                new_Node.setF(BLOCKED_SIGNAL);
+            } else {
+                new_Node.setF(WALK_ABLE_SIGNAL);
+            }
+            my_Node.add(new_Node);
+        }
+
+        return my_Node;
+    }
 
     @Setter
     public void setColorful_rectangle(int index, int status) {
