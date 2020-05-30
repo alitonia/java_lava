@@ -1,17 +1,12 @@
 package utils.backend_logic;
 
 
-import components.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.layout.Pane;
-import utils.Log;
 import utils.Random_Color;
-import utils.front_end_logic.Array_Controller;
 import utils.front_end_logic.Colorful_Rectangle;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static utils.consts.*;
@@ -24,7 +19,7 @@ public class Mini_testing {
     public static void main(String[] args) {
         // TODO code application logic here
         history_Manager q = new history_Manager();
-        SearchingUtils generator = new SearchingUtils();
+        A_Path_Finding generator = new A_Path_Finding();
 
         int number_of_rectangle_in_X = 5;
         int number_of_rectangle_in_Y = 7;
@@ -35,23 +30,23 @@ public class Mini_testing {
 
 
         //This is the Map passed into generator
-        List<Node> given_Nodes = b.get_List_Node_Format();
+        List<Node> given_Nodes = b.get_List_Node_Format(number_of_rectangle_in_X, number_of_rectangle_in_Y);
         q.set_Origin_List(b.get_List_State_Format());
 
         //Validate
         System.out.println("Node values in current list: ");
         for (int i = 0; i < given_Nodes.size(); i++) {
             System.out.print(i + ": " + given_Nodes.get(i).toString() + " ");
-            if (given_Nodes.get(i).getF() == WALK_ABLE_SIGNAL) {
+            if (given_Nodes.get(i).get_F() == WALK_ABLE_SIGNAL) {
                 System.out.println("Walkable");
             }
-            if (given_Nodes.get(i).getF() == BLOCKED_SIGNAL) {
+            if (given_Nodes.get(i).get_F() == BLOCKED_SIGNAL) {
                 System.out.println("Block");
             }
-            if (given_Nodes.get(i).getF() == SOURCE_SIGNAL) {
+            if (given_Nodes.get(i).get_F() == START_SIGNAL) {
                 System.out.println("Source");
             }
-            if (given_Nodes.get(i).getF() == DESTINATION_SIGNAL) {
+            if (given_Nodes.get(i).get_F() == END_SIGNAL) {
                 System.out.println("Destination");
             }
             if ((i + 1) % number_of_rectangle_in_X == 0) {
@@ -60,10 +55,16 @@ public class Mini_testing {
         }
 
         // Insert your generator here:
-        // generator.A_Star( given_Nodes, q);
+        generator.find_Path(number_of_rectangle_in_X, number_of_rectangle_in_Y,
+                given_Nodes, q);
 
 
         //Print nodes to verify
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         q.print();
     }
 }
@@ -116,7 +117,7 @@ class Beard {
     }
 
 
-    public List<Node> get_List_Node_Format() {
+    public List<Node> get_List_Node_Format(int num_of_X_axis_Rectangle, int num_of_Y_axis_Rectangle) {
         List<Node> my_Node = new ArrayList<>();
         Node new_Node;
         int X_position;
@@ -124,21 +125,21 @@ class Beard {
         int status;
 
         for (int i = 0; i < colorful_rectangles.size(); i++) {
-            X_position = i % NUMBER_OF_RECTANGLE_X_AXIS;
-            Y_position = i / NUMBER_OF_RECTANGLE_X_AXIS;
+            X_position = i % num_of_X_axis_Rectangle;
+            Y_position = i / num_of_X_axis_Rectangle;
             new_Node = new Node(X_position, Y_position);
 
             status = colorful_rectangles.get(i).getStatus();
 
             //Get appropriate f values
             if (i == 0) {
-                new_Node.setF(SOURCE_SIGNAL);
+                new_Node.set_F(START_SIGNAL);
             } else if (i == colorful_rectangles.size() - 1) {
-                new_Node.setF(DESTINATION_SIGNAL);
+                new_Node.set_F(END_SIGNAL);
             } else if (status == THE_OBSTACLE_RECT_STATUS) {
-                new_Node.setF(BLOCKED_SIGNAL);
+                new_Node.set_F(BLOCKED_SIGNAL);
             } else {
-                new_Node.setF(WALK_ABLE_SIGNAL);
+                new_Node.set_F(WALK_ABLE_SIGNAL);
             }
             my_Node.add(new_Node);
         }

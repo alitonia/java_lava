@@ -11,7 +11,6 @@ import utils.Log;
 import utils.Random_Color;
 import utils.backend_logic.Node;
 import utils.backend_logic.State;
-import utils.consts;
 
 import java.util.*;
 import java.util.List;
@@ -254,13 +253,13 @@ public class Array_Controller {
 
             //Get appropriate f values
             if (i == 0) {
-                new_Node.setF(SOURCE_SIGNAL);
+                new_Node.set_F(START_SIGNAL);
             } else if (i == colorful_rectangles.size() - 1) {
-                new_Node.setF(DESTINATION_SIGNAL);
+                new_Node.set_F(END_SIGNAL);
             } else if (status == THE_OBSTACLE_RECT_STATUS) {
-                new_Node.setF(BLOCKED_SIGNAL);
+                new_Node.set_F(BLOCKED_SIGNAL);
             } else {
-                new_Node.setF(WALK_ABLE_SIGNAL);
+                new_Node.set_F(WALK_ABLE_SIGNAL);
             }
             my_Node.add(new_Node);
         }

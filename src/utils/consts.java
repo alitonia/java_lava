@@ -123,8 +123,8 @@ public class consts {
     //For initialize 2D map
     public static final int WALK_ABLE_SIGNAL = -1;
     public static final int BLOCKED_SIGNAL = -2;
-    public static final int DESTINATION_SIGNAL = -3;
-    public static final int SOURCE_SIGNAL = -4;
+    public static final int END_SIGNAL = -3;
+    public static final int START_SIGNAL = -4;
 
 
 

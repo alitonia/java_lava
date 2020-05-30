@@ -1,10 +1,7 @@
 package utils.backend_logic;
 
-import jdk.nashorn.internal.objects.annotations.Constructor;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
-
-import java.beans.ConstructorProperties;
 
 public class Node {
     private int x, y;
@@ -21,8 +18,17 @@ public class Node {
         this.y = y;
     }
 
+    public Node(Node node) {
+        this.x = node.x;
+        this.y = node.y;
+        this.f = node.f;
+        this.g = node.y;
+        this.h = node.h;
+        this.Parent = node.getParent();
+    }
+
     public boolean check_overlap(Node e) {
-        if (this.getX() == e.getX() && this.getY() == e.getY()) {
+        if (this.get_X() == e.get_X() && this.get_Y() == e.get_Y()) {
             return true;
         }
         return false;
@@ -30,19 +36,19 @@ public class Node {
 
 
     @Getter
-    public int getX() {
+    public int get_X() {
         return x;
     }
 
-    public int getY() {
+    public int get_Y() {
         return y;
     }
 
-    public double getF() {
+    public double get_F() {
         return f;
     }
 
-    public double getG() {
+    public double get_G() {
         return g;
     }
 
@@ -56,27 +62,27 @@ public class Node {
 
 
     @Setter
-    public void setX(int x) {
+    public void set_X(int x) {
         this.x = x;
     }
 
-    public void setY(int y) {
+    public void set_Y(int y) {
         this.y = y;
     }
 
-    public void setF(double f) {
+    public void set_F(double f) {
         this.f = f;
     }
 
-    public void setG(double g) {
+    public void set_G(double g) {
         this.g = g;
     }
 
-    public void setH(double h) {
+    public void set_H(double h) {
         this.h = h;
     }
 
-    public void setParent(Node parent) {
+    public void set_Parent(Node parent) {
         Parent = parent;
     }
 

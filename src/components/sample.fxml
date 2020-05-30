@@ -89,6 +89,10 @@
                                 <String fx:value="Sequential Search"/>
                                 <String fx:value="Binary Search"/>
                                 <String fx:value="A* Path-finding"/>
+                                <!-- <String fx:value="Bubble Sort"/>-->
+                                <!-- <String fx:value="Merge Sort"/>-->
+                                <!--<String fx:value="Quick Sort"/>-->
+
                             </FXCollections>
                         </items>
                         <value>
