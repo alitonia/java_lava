@@ -19,6 +19,7 @@ public class Random_Color {
 
     public static int get_Random(Random_Color... statuses) {
         List<Integer> choice_List = new ArrayList<>();
+
         for (Random_Color random_status : statuses) {
             int number_of_elements = (int) Math.floor(random_status.getProbability() * 100);
             for (int i = 0; i < number_of_elements; i++) {

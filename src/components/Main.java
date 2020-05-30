@@ -1,24 +1,26 @@
-package sample;
+package components;
 
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+//TODO: Change name of window
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        root.getStylesheets().add("sample/main_Style.css");
+        //Initialize
+        Parent root = FXMLLoader.load(getClass().getResource("screens/Large_Screen.fxml"));
 
-        primaryStage.setTitle("Hello World");
+        // the address is not changed when rename parent directory @@ --> be careful
+        root.getStylesheets().add("components/styles/Plum_Style.css");
+
+        primaryStage.setTitle("Hello Visualization");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
-
 
         //Exit program when out
         primaryStage.setOnCloseRequest(e -> {
