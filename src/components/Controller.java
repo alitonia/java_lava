@@ -1,5 +1,6 @@
 package components;
 
+import Incoming_features.Sorting_Utils;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,11 +40,12 @@ public class Controller {
     private final History_Manager history_Manager = new History_Manager();
     private final Painter painter = new Painter(this);
 
-    private final Searching_Generators generator = new Searching_Generators();
-    private final A_Path_Finding generator_01 = new A_Path_Finding();
+    private final Searching_Generators search_Generator = new Searching_Generators();
+    private final A_Path_Finding graph_search_Generator = new A_Path_Finding();
+    private final Sorting_Utils sort_Generator = new Sorting_Utils();
 
     private final ExecutorService button_Executor = Executors.newSingleThreadExecutor();
-    private final ExecutorService graphic_Executor = Executors.newSingleThreadExecutor();
+//    private final ExecutorService graphic_Executor = Executors.newSingleThreadExecutor();
 
     @FXML
     private Button cancel_Button;
@@ -268,6 +270,10 @@ public class Controller {
                 generate_A_Star();
                 break;
 
+            case BUBBLE_SORT_MODE:
+                generate_Bubble();
+                break;
+
             default:
                 System.out.println("Error parsing choice!");
                 break;
@@ -284,9 +290,10 @@ public class Controller {
     }
 
 
+
     private void generate_Sequential() {
         my_Log.print("Mode: " + SEQUENTIAL_SEARCH_MODE);
-        visual_Factory.make_Histogram(NUMBER_OF_RECTANGLE);
+        visual_Factory.make_Histogram(NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE);
 
         // set context for history manager
         history_Manager.set_Origin_List(visual_Factory.get_List_State_Format());
@@ -310,7 +317,7 @@ public class Controller {
         }
 
         //generate steps to history Manager
-        generator.sequential_Search(
+        search_Generator.sequential_Search(
                 target.getHeight(),
                 visual_Factory.get_List_Double_Format(),
                 history_Manager
@@ -321,7 +328,7 @@ public class Controller {
 
     private void generate_Binary() {
         my_Log.print("Mode: " + BINARY_SEARCH_MODE);
-        visual_Factory.make_Ordered_Histogram(NUMBER_OF_RECTANGLE);
+        visual_Factory.make_Ordered_Histogram(NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE);
 
         // set context for history manager
         history_Manager.set_Origin_List(visual_Factory.get_List_State_Format());
@@ -340,7 +347,7 @@ public class Controller {
         }
 
         //generate steps to history Manager
-        generator.binary_Search(
+        search_Generator.binary_Search(
                 target.getHeight(),
                 visual_Factory.get_List_Double_Format(),
                 history_Manager
@@ -357,17 +364,29 @@ public class Controller {
 
         // set context for history manager
         // Height doesn't change so don't need to repaint height
-        history_Manager.set_Origin_List(visual_Factory.get_List_State_Format(NO_PAINT_SIGNAL));
+        history_Manager.set_Origin_List(visual_Factory.get_List_State_Format(NO_REPAINT_HEIGHT_SIGNAL));
         System.out.println(visual_Factory.get_List_Node_Format().toString());
 
         //generator generate something here
         //currently no engine for start
-        generator_01.find_Path(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS,
+        graph_search_Generator.find_Path(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS,
                 visual_Factory.get_List_Node_Format(), history_Manager);
 
         my_Log.print("Done");
     }
 
+    private void generate_Bubble() {
+        target_Line.setVisible(false);
+        my_Log.print("Mode: " + BUBBLE_SORT_MODE);
+        visual_Factory.make_Histogram(NUMBER_OF_HISTOGRAM_SORT_RECTANGLE);
+
+        history_Manager.set_Origin_List(visual_Factory.get_List_State_Format());
+        System.out.println(visual_Factory.get_List_Node_Format().toString());
+
+        sort_Generator.Bubble_Sort(visual_Factory.get_List_Double_Format(), history_Manager);
+
+        my_Log.print("Done");
+    }
 
     public void paint_Board(ObservableList<Colorful_Rectangle> colorful_rectangles) {
         Platform.runLater(() -> {

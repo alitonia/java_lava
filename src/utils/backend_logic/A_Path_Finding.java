@@ -152,7 +152,7 @@ public class A_Path_Finding {
 
             current_Step = new ArrayList<>();
             current_Step.add(new State_Blob(Translator.flatten(temp.get_X(), temp.get_Y(), number_of_Rectangle_In_X_axis),
-                    THE_VISITING_RECT_STATUS, NO_PAINT_SIGNAL));
+                    THE_VISITING_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
 
             q.add(current_Step);
 
@@ -170,11 +170,11 @@ public class A_Path_Finding {
             if (temp != start_Graph_Node && temp != end_Graph_Node) {
                 current_Step.add(new State_Blob(
                         Translator.flatten(temp.get_X(), temp.get_Y(), number_of_Rectangle_In_X_axis),
-                        constants.THE_VISITED_RECT_STATUS, NO_PAINT_SIGNAL));
+                        constants.THE_VISITED_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
             } else {
                 current_Step.add(new State_Blob(
                         Translator.flatten(temp.get_X(), temp.get_Y(), number_of_Rectangle_In_X_axis),
-                        THE_GATE_RECT_STATUS, NO_PAINT_SIGNAL));
+                        THE_GATE_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
             }
             q.add(current_Step);
 
@@ -415,7 +415,7 @@ public class A_Path_Finding {
                     close_List) {
                 current_Step.add(new State_Blob(
                         Translator.flatten(n.get_X(), n.get_Y(), number_of_Rectangle_In_X_axis),
-                        THE_OUTSTANDING_RECT_STATUS, NO_PAINT_SIGNAL));
+                        THE_OUTSTANDING_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
             }
             q.add(current_Step);
 
@@ -452,7 +452,7 @@ public class A_Path_Finding {
             }
             current_Step.add(new State_Blob(
                     Translator.flatten(Path.get(i).get_X(), Path.get(i).get_Y(), number_of_Rectangle_In_X_Axis),
-                    THE_GATE_RECT_STATUS, NO_PAINT_SIGNAL));
+                    THE_GATE_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
         }
         q.add(current_Step);
 

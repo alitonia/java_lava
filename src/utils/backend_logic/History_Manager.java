@@ -7,6 +7,8 @@ import utils.Log;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static utils.constants.NO_REPAINT_HEIGHT_SIGNAL;
+
 public class History_Manager {
 
     private final Log my_Log;
@@ -34,10 +36,16 @@ public class History_Manager {
             //Make old_List
             List<State_Blob> previous_State_Blob = new ArrayList<>();
             for (State_Blob s : new_Changes) {
+                // streamline height inside history manager
+                if (s.getHeight() == NO_REPAINT_HEIGHT_SIGNAL) {
+                    s.setHeight(internal_List.get(s.getIndex()).getHeight());
+                }
+
                 previous_State_Blob.add(
                         new State_Blob(s.getIndex(),
                                 internal_List.get(s.getIndex()).getStatus(),
                                 internal_List.get(s.getIndex()).getHeight()));
+
             }
 
             my_Map.put("Old", previous_State_Blob);
@@ -49,6 +57,7 @@ public class History_Manager {
             for (State_Blob s : new_Changes) {
                 State_Blob destination = internal_List.get(s.getIndex());
                 destination.setStatus(s.getStatus());
+                destination.setHeight(s.getHeight());
             }
             queue_Length += 1;
             history_Queue.offer(my_Map);
@@ -58,6 +67,7 @@ public class History_Manager {
             my_Log.print("Internal state/original state not specified!");
         }
     }
+
 
     public void clear() {
         history_Queue.clear();

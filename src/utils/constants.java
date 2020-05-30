@@ -12,29 +12,45 @@ public class constants {
     //Thread
     public static final int MAX_EXECUTIONERS = 3; //?
 
+    //Screen mode
+    public static final int MINI_SCREEN = 1;
+    public static final int LARGE_SCREEN = 2;
+
+    public static final int CURRENT_SCREEN = LARGE_SCREEN;
+
+
     //Operating mode:
     public static final String SEQUENTIAL_SEARCH_MODE = "Sequential Search";
     public static final String BINARY_SEARCH_MODE = "Binary Search";
     public static final String A_STAR_PATH_FINDING_MODE = "A* Path-finding";
+    public static final String BUBBLE_SORT_MODE = "Bubble Sort";
 
 
     //Data properties
-    public static final int NUMBER_OF_RECTANGLE = 50;
+    public static final int NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE = 100;
     public static final int NUMBER_OF_RECTANGLE_X_AXIS = 40;
     public static final int NUMBER_OF_RECTANGLE_Y_AXIS = 30;
+    public static final int NUMBER_OF_HISTOGRAM_SORT_RECTANGLE = 20;
+
     public static final double HEIGHT_VARIANCE_COEFFICIENT = 1.3;
-    public static final int MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE = (int) (NUMBER_OF_RECTANGLE * 0.3);
+    public static final int MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE = (int) (NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE * 0.3);
 
     public static final boolean TARGET_LINE_TO_FRONT = true;
 
+
     //Play-speed
+    // change with care. Thread might be a problem
     public static final long MINIMUM_A_STAR_DELAY_MILLISECOND = 20;
 
-    public static final long SEQUENTIAL_SEARCH_DELAY_MILLISECOND = (long) 5000 / NUMBER_OF_RECTANGLE;
+    public static final long SEQUENTIAL_SEARCH_DELAY_MILLISECOND = (long) 5000 / NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE;
     public static final long BINARY_SEARCH_DELAY_MILLISECOND = SEQUENTIAL_SEARCH_DELAY_MILLISECOND * 6;
     public static final long A_STAR_DELAY_MILLISECOND =
             Math.max(1200 / (NUMBER_OF_RECTANGLE_X_AXIS * NUMBER_OF_RECTANGLE_Y_AXIS),
                     MINIMUM_A_STAR_DELAY_MILLISECOND);
+    // can swap
+    public static final Color THE_SWAP_ABLE_FILL_COLOR =
+            new Color((float) 163 / 255, (float) 247 / 255, (float) 191 / 255, 1);
+
 
     // size
     public static final double MINIMUM_RECT_HEIGHT = 0.03;
@@ -119,6 +135,14 @@ public class constants {
             new Color((float) 243 / 255, (float) 85 / 255, (float) 136 / 255, 1);
     public static final Color THE_OUTSTANDING_STROKE_COLOR =
             new Color(0.667, 0.96, 0.189, 0.25);
+    public static final Color THE_SWAP_ABLE_STROKE_COLOR =
+            new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
+    // can't swap
+    public static final Color THE_NOT_SWAP_ABLE_FILL_COLOR =
+            new Color((float) 243 / 255, (float) 85 / 255, (float) 136 / 255, 1);
+    public static final Color THE_NOT_SWAP_ABLE_STROKE_COLOR =
+            new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
+    public static final int THE_SWAP_ABLE_RECT_STATUS = 10;
 
 
     //status
@@ -137,6 +161,9 @@ public class constants {
     public static final int THE_OUTSTANDING_RECT_STATUS = 8;
 
     public static final int THE_VISITING_RECT_STATUS = 9;
+    public static final int THE_NOT_SWAP_ABLE_RECT_STATUS = 11;
+    public static final int NO_REPAINT_HEIGHT_SIGNAL = -1;
+
 
     public static final int THE_DEFAULT_RECT_STATUS = THE_NORMAL_RECT_STATUS;
 
@@ -148,8 +175,7 @@ public class constants {
     public static final int START_SIGNAL = -4;
 
     // Painter signal
-
-    public static final int NO_PAINT_SIGNAL = -1;
+    private static final long BUBBLE_SORT_DELAY_MILLISECOND = 30;
 
     //Add more when have more status
     public static HashMap<Integer, List<Color>> COLOR_MAP = new HashMap<>();
@@ -185,6 +211,11 @@ public class constants {
         COLOR_MAP.put(THE_OUTSTANDING_RECT_STATUS,
                 Arrays.asList(THE_OUTSTANDING_FILL_COLOR, THE_OUTSTANDING_STROKE_COLOR));
 
+        COLOR_MAP.put(THE_SWAP_ABLE_RECT_STATUS,
+                Arrays.asList(THE_SWAP_ABLE_FILL_COLOR, THE_SWAP_ABLE_STROKE_COLOR));
+
+        COLOR_MAP.put(THE_NOT_SWAP_ABLE_RECT_STATUS,
+                Arrays.asList(THE_NOT_SWAP_ABLE_FILL_COLOR, THE_NOT_SWAP_ABLE_STROKE_COLOR));
     }
 
 
@@ -221,8 +252,11 @@ public class constants {
 
             case A_STAR_PATH_FINDING_MODE:
                 return A_STAR_DELAY_MILLISECOND;
+
+            case BUBBLE_SORT_MODE:
+                return BUBBLE_SORT_DELAY_MILLISECOND;
             default:
-                return 1;
+                return 25;
         }
     }
 }

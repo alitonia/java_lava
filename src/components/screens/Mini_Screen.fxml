@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Line?>
-<?import java.lang.String?>
+<?import java.lang.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
             prefWidth="600.0" style="-fx-background-color: #e17776;" xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.Controller">
@@ -89,7 +89,7 @@
                                 <String fx:value="Sequential Search"/>
                                 <String fx:value="Binary Search"/>
                                 <String fx:value="A* Path-finding"/>
-                                <!-- <String fx:value="Bubble Sort"/>-->
+                                <String fx:value="Bubble Sort"/>
                                 <!-- <String fx:value="Merge Sort"/>-->
                                 <!--<String fx:value="Quick Sort"/>-->
 

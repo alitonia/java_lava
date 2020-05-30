@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static utils.constants.*;
+
 public class Sorting_Utils {
 
     int FLAG = 0;
@@ -28,7 +30,7 @@ public class Sorting_Utils {
         }
     }
 
-    public void Bubble_Sort(List<Double> arr, History_Manager q) {
+    public void Bubble_Sort(List<Double> height_List, History_Manager q) {
 
         // Steps:
         // All normal color
@@ -43,44 +45,88 @@ public class Sorting_Utils {
         int index;
         List<State_Blob> my_Change;
         State_Blob s1;
-        for (int i = 0; i < arr.size() - 1; i++) {
-            status = FLAG;
+        for (int i = 0; i < height_List.size() - 1; i++) {
+            status = THE_OBSTACLE_RECT_STATUS;
             index = i;
-            s1 = new State_Blob(index, status, arr.get(index));
+            s1 = new State_Blob(index, status, height_List.get(index));
 
             my_Change = new ArrayList<>();
             my_Change.add(s1);
             q.add(my_Change);
 
-            for (int j = arr.size() - 1; j > i; j--) {
-                status = CHOOSING;
+            for (int j = height_List.size() - 1; j > i; j--) {
+                status = THE_SPOTLIGHT_RECT_STATUS;
                 index = j - 1;
-                s1 = new State_Blob(index, status, arr.get(index));
+                s1 = new State_Blob(index, status, height_List.get(index));
                 my_Change = new ArrayList<>();
                 my_Change.add(s1);
 
                 index = j;
-                s1 = new State_Blob(index, status, arr.get(index));
+                s1 = new State_Blob(index, status, height_List.get(index));
                 my_Change.add(s1);
 
                 q.add(my_Change);
 
-                if (arr.get(j) < arr.get(j - 1)) {
-                    status = CHANGING;
+                if (height_List.get(j) < height_List.get(j - 1)) {
+                    status = THE_SWAP_ABLE_RECT_STATUS;
                     index = j - 1;
-                    s1 = new State_Blob(index, status, arr.get(j));
+                    s1 = new State_Blob(index, status, height_List.get(j));
                     my_Change = new ArrayList<>();
                     my_Change.add(s1);
 
                     index = j;
-                    s1 = new State_Blob(index, status, arr.get(j - 1));
+                    s1 = new State_Blob(index, status, height_List.get(j - 1));
                     my_Change.add(s1);
 
                     q.add(my_Change);
-                    Collections.swap(arr, j, j-1);
+                    Collections.swap(height_List, j, j - 1);
+
+                } else {
+                    status = THE_NOT_SWAP_ABLE_RECT_STATUS;
+                    index = j - 1;
+                    s1 = new State_Blob(index, status, height_List.get(index));
+                    my_Change = new ArrayList<>();
+                    my_Change.add(s1);
+
+                    index = j;
+                    s1 = new State_Blob(index, status, height_List.get(index));
+                    my_Change.add(s1);
+
+                    q.add(my_Change);
                 }
+
+                // back to normal
+                status = THE_NORMAL_RECT_STATUS;
+                index = j - 1;
+                s1 = new State_Blob(index, status, height_List.get(index));
+                my_Change = new ArrayList<>();
+                my_Change.add(s1);
+
+                index = j;
+                s1 = new State_Blob(index, status, height_List.get(index));
+                my_Change.add(s1);
+
+                q.add(my_Change);
             }
+            // First element is sorted --> paint it
+            status = THE_SUCCESSFUL_RECT_STATUS;
+            index = i;
+            s1 = new State_Blob(index, status, height_List.get(index));
+
+            my_Change = new ArrayList<>();
+            my_Change.add(s1);
+            q.add(my_Change);
+
         }
+        // Last element is not painted ---> paint it
+        status = THE_SUCCESSFUL_RECT_STATUS;
+        index = height_List.size() - 1;
+        s1 = new State_Blob(index, status, height_List.get(index));
+
+        my_Change = new ArrayList<>();
+        my_Change.add(s1);
+        q.add(my_Change);
+
     }
 //
 //    public static Queue Selection_Sort(int[] arr) {

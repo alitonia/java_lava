@@ -46,11 +46,11 @@ public class Painter {
     }
 
     private synchronized void paint_By_Height(Colorful_Rectangle rectangle, double height) {
-        if (height != NO_PAINT_SIGNAL) {
+        if (height != NO_REPAINT_HEIGHT_SIGNAL) {
 
             Pane my_Stage = controller.get_Visual_Board();
             System.out.println("Original: " + rectangle.toString() + " to height " + height
-                    + ", Y = " + my_Stage.getLayoutY() + (my_Stage.getHeight() - rectangle.getHeight()));
+                    + ", Y = " + (my_Stage.getLayoutY() + (my_Stage.getHeight() - rectangle.getHeight())));
             rectangle.setHeight(height);
 
             // because the Oxy axis is to the upper left of the screen
