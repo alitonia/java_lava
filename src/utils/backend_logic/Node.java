@@ -24,10 +24,10 @@ public class Node {
         this.f = node.f;
         this.g = node.y;
         this.h = node.h;
-        this.Parent = node.getParent();
+        this.Parent = node.get_Parent();
     }
 
-    public boolean check_overlap(Node e) {
+    public boolean check_Overlap(Node e) {
         if (this.get_X() == e.get_X() && this.get_Y() == e.get_Y()) {
             return true;
         }
@@ -56,7 +56,7 @@ public class Node {
         return h;
     }
 
-    public Node getParent() {
+    public Node get_Parent() {
         return Parent;
     }
 

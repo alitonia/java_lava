@@ -14,79 +14,31 @@ public class A_Path_Finding {
     private Node start_Node;
     private Node end_Node;
 
-    // Delete?
     private ArrayList<Node> block = new ArrayList<>();
 
     // in-progress queue
-    private ArrayList<Node> OpenList = new ArrayList<>();
+    private ArrayList<Node> open_List = new ArrayList<>();
 
-    // done?
-    private ArrayList<Node> CloseList = new ArrayList<>();
+    // visited nodes
+    private ArrayList<Node> close_List = new ArrayList<>();
 
-    private ArrayList<ArrayList<Node>> Map_2D;
+    private ArrayList<ArrayList<Node>> map_2D;
     //Some thing like this:
 
     // 1  2  3  4  5
     // 6  7  8  9  10
     // 11 12 13 14 15
 
+
     public A_Path_Finding() {
     }
 
-    public A_Path_Finding(int row, int col) {
-        start_Node = new Node(7, 0);
-        end_Node = new Node(0, 0);
-        Map_2D = new ArrayList<>();
 
-        for (int i = 0; i < row; i++) {
-            ArrayList<Node> temp = new ArrayList<>();
-            for (int j = 0; j < col; j++) {
-                temp.add(new Node(i, j));
-            }
-            Map_2D.add(temp);
-        }
-    }
-
-    private void init(int number_of_Rectangle_in_X_axis, int number_of_Rectangle_in_Y_axis, List<Node> my_Nodes) {
-        ArrayList<Node> temp;
-        int index;
-        Node current_Node;
-        double state;
-        this.Map_2D = new ArrayList<>();
-
-        // De-flatten my_Nodes --> 2D Map
-        for (int i = 0; i < number_of_Rectangle_in_Y_axis; i++) {
-            temp = new ArrayList<>();
-
-            for (int j = 0; j < number_of_Rectangle_in_X_axis; j++) {
-                index = i * number_of_Rectangle_in_X_axis + j;
-                current_Node = my_Nodes.get(index);
-
-                state = current_Node.get_F();                    // Un-wanted implementation :< . Up for refactoring
-
-                // Procedures for special nodes
-                if (state == BLOCKED_SIGNAL) {
-                    block.add(current_Node);                    // another un-wanted implementation. Up for change
-
-                } else if (state == END_SIGNAL) {
-                    this.end_Node = new Node(current_Node);
-
-                } else if (state == START_SIGNAL) {
-                    this.start_Node = new Node(current_Node);
-                }
-
-                temp.add(current_Node);
-            }
-
-            Map_2D.add(temp);
-        }
-    }
-
-
-    public void find_Path(int row_Size, int column_Size, List<Node> my_Nodes, history_Manager q) {
+    public void find_Path(int number_of_Rectangle_in_X_axis, int number_of_Rectangle_in_Y_axis, List<Node> my_Nodes, history_Manager q) {
         //Initialize
-        init(row_Size, column_Size, my_Nodes);
-        System.out.println(Map_2D.toString());
+        init(number_of_Rectangle_in_X_axis, number_of_Rectangle_in_Y_axis, my_Nodes);
+
+        System.out.println(map_2D.toString());
 
         // check src and dest is valid or not
         if (!is_Valid(start_Node) || !is_Valid(end_Node)) {
@@ -94,14 +46,14 @@ public class A_Path_Finding {
         }
 
         // check src and dest is blocked or not
-        if (is_Blocked(get_Start_node()) || is_Blocked(get_End_node())) {
+        if (is_Blocked(get_Start_Node()) || is_Blocked(get_End_Node())) {
             return;
         }
 
 
         // check src and dest equal so we are already at the destination
         // this might not happens though
-        if (is_Destination(get_Start_node())) {
+        if (is_Destination(get_Start_Node())) {
             System.out.println("We are already at the destination!!!");
             return;
         }
@@ -131,7 +83,8 @@ public class A_Path_Finding {
         start_Node.set_Parent(start_node_parent);
 
         // Add to the open list the start node
-        get_Open_List().add(get_Start_node());
+        get_Open_List().add(get_Start_Node());
+
 
         boolean found_Dest = false;
 
@@ -143,9 +96,17 @@ public class A_Path_Finding {
             // pop the node have lowest value f
             temp = get_Open_List().get(0);
 
+
+            System.out.println("Selecting " + temp.toString());
+
+
             get_Open_List().remove(0);
 
             get_Close_List().add(temp);
+
+
+            System.out.println("Visited " + temp.toString() + "\n");
+
 
             int i = temp.get_X();
 
@@ -375,25 +336,68 @@ public class A_Path_Finding {
         }
         // if not finding the path from start_node to end_node
         if (!found_Dest) {
+            System.out.println("Not found!");
+            System.out.println(close_List.toString());
             return;
+        }
+        System.out.println("End");
+    }
+
+
+    private void init(int number_of_Rectangle_in_X_axis, int number_of_Rectangle_in_Y_axis, List<Node> my_Nodes) {
+        //Initialize parameters for find_Path
+
+        ArrayList<Node> temp;
+        int index;
+        Node current_Node;
+        double state;
+        this.map_2D = new ArrayList<>();
+
+        // construct map
+        // note that the map is sliced in horizontal axis, which is absolutely weird
+        for (int i = 0; i < number_of_Rectangle_in_X_axis; i++) {
+            map_2D.add(new ArrayList<>());
+        }
+
+
+        // De-flatten my_Nodes --> 2D Map
+        for (int i = 0; i < my_Nodes.size(); i++) {
+            current_Node = my_Nodes.get(i);
+            state = current_Node.get_F();       // Un-wanted implementation :< . Up for refactoring
+
+
+            if (state == BLOCKED_SIGNAL) {
+                block.add(current_Node);                    // another un-wanted implementation. Up for change
+
+            } else if (state == END_SIGNAL) {
+                this.end_Node = new Node(current_Node);
+
+            } else if (state == START_SIGNAL) {
+                this.start_Node = new Node(current_Node);
+            }
+
+            int X_idex = i % number_of_Rectangle_in_X_axis;
+            map_2D.get(X_idex).add(current_Node);
         }
     }
 
 
     public void trace_Path() {
-        int row = get_End_node().get_X();
-        int col = get_End_node().get_Y();
-        ArrayList<Node> Path = new ArrayList<Node>();
-        while (!(Map_2D.get(row).get(col).getParent().get_X() == -1 && Map_2D.get(row).get(col).getParent().get_Y() == -1)) {
+        int row = get_End_Node().get_X();
+        int col = get_End_Node().get_Y();
+        ArrayList<Node> Path = new ArrayList<>();
+        while (!(map_2D.get(row).get(col).get_Parent().get_X() == -1 && map_2D.get(row).get(col).get_Parent().get_Y() == -1)) {
             Node X = new Node(row, col);
             ;
             Path.add(X);
-            int temp_row = get_Map().get(row).get(col).getParent().get_X();
-            int temp_col = get_Map().get(row).get(col).getParent().get_Y();
+            int temp_row = get_Map().get(row).get(col).get_Parent().get_X();
+            int temp_col = get_Map().get(row).get(col).get_Parent().get_Y();
             row = temp_row;
             col = temp_col;
         }
-        Path.add(get_Start_node());
+        Path.add(get_Start_Node());
+        System.out.println();
+
         for (int i = Path.size() - 1; i >= 0; i--) {
             if (i != 0) {
                 System.out.printf("(%d %d)--->", Path.get(i).get_X(), Path.get(i).get_Y());
@@ -401,11 +405,14 @@ public class A_Path_Finding {
                 System.out.printf("(%d %d)", Path.get(i).get_X(), Path.get(i).get_Y());
             }
         }
+        System.out.println();
+        System.out.println(close_List.toString());
+
     }
 
 
     public double calculate_H_Value(Node x) {
-        return ((double) Math.sqrt(Math.pow(x.get_X() - get_End_node().get_X(), 2) + Math.pow(x.get_Y() - get_End_node().get_Y(), 2)));
+        return ((double) Math.sqrt(Math.pow(x.get_X() - get_End_Node().get_X(), 2) + Math.pow(x.get_Y() - get_End_Node().get_Y(), 2)));
     }
 
     public double calculate_G_Value(Node x, Node y) {
@@ -422,12 +429,12 @@ public class A_Path_Finding {
     }
 
     public boolean is_Destination(Node x) {
-        return x.check_overlap(get_End_node());
+        return x.check_Overlap(get_End_Node());
     }
 
     public boolean is_Blocked(Node x) {
         for (int i = 0; i < get_Block().size(); i++) {
-            if (x.check_overlap(get_Block().get(i))) {
+            if (x.check_Overlap(get_Block().get(i))) {
                 return true;
             }
         }
@@ -436,7 +443,7 @@ public class A_Path_Finding {
 
     public boolean is_Closed(Node x) {
         for (int i = 0; i < get_Close_List().size(); i++) {
-            if (x.check_overlap(get_Close_List().get(i))) {
+            if (x.check_Overlap(get_Close_List().get(i))) {
                 return true;
             }
         }
@@ -445,11 +452,11 @@ public class A_Path_Finding {
 
 
     @Getter
-    public Node get_Start_node() {
+    public Node get_Start_Node() {
         return start_Node;
     }
 
-    public Node get_End_node() {
+    public Node get_End_Node() {
         return end_Node;
     }
 
@@ -458,15 +465,15 @@ public class A_Path_Finding {
     }
 
     public ArrayList<Node> get_Open_List() {
-        return OpenList;
+        return open_List;
     }
 
     public ArrayList<Node> get_Close_List() {
-        return CloseList;
+        return close_List;
     }
 
     public ArrayList<ArrayList<Node>> get_Map() {
-        return Map_2D;
+        return map_2D;
     }
 
 
@@ -484,14 +491,14 @@ public class A_Path_Finding {
     }
 
     public void set_Open_List(ArrayList<Node> openList) {
-        OpenList = openList;
+        open_List = openList;
     }
 
     public void set_Close_List(ArrayList<Node> closeList) {
-        CloseList = closeList;
+        close_List = closeList;
     }
 
-    public void set_Map(ArrayList<ArrayList<Node>> map) {
-        Map_2D = map;
+    public void set_Map(ArrayList<ArrayList<Node>> map_2D) {
+        this.map_2D = map_2D;
     }
 }
