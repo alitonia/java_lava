@@ -1,9 +1,11 @@
 package Incoming_features;
 
-import utils.backend_logic.State;
-import utils.backend_logic.history_Manager;
+import utils.backend_logic.History_Manager;
+import utils.backend_logic.State_Blob;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Sorting_Utils {
 
@@ -26,8 +28,8 @@ public class Sorting_Utils {
         }
     }
 
-    public void Bubble_Sort(List<Double> arr, history_Manager q) {
-        
+    public void Bubble_Sort(List<Double> arr, History_Manager q) {
+
         // Steps:
         // All normal color
         // 1. Select FLAG
@@ -39,12 +41,12 @@ public class Sorting_Utils {
 
         int status;
         int index;
-        List<State> my_Change;
-        State s1;
+        List<State_Blob> my_Change;
+        State_Blob s1;
         for (int i = 0; i < arr.size() - 1; i++) {
             status = FLAG;
             index = i;
-            s1 = new State(index, status, arr.get(index));
+            s1 = new State_Blob(index, status, arr.get(index));
 
             my_Change = new ArrayList<>();
             my_Change.add(s1);
@@ -53,12 +55,12 @@ public class Sorting_Utils {
             for (int j = arr.size() - 1; j > i; j--) {
                 status = CHOOSING;
                 index = j - 1;
-                s1 = new State(index, status, arr.get(index));
+                s1 = new State_Blob(index, status, arr.get(index));
                 my_Change = new ArrayList<>();
                 my_Change.add(s1);
 
                 index = j;
-                s1 = new State(index, status, arr.get(index));
+                s1 = new State_Blob(index, status, arr.get(index));
                 my_Change.add(s1);
 
                 q.add(my_Change);
@@ -66,12 +68,12 @@ public class Sorting_Utils {
                 if (arr.get(j) < arr.get(j - 1)) {
                     status = CHANGING;
                     index = j - 1;
-                    s1 = new State(index, status, arr.get(j));
+                    s1 = new State_Blob(index, status, arr.get(j));
                     my_Change = new ArrayList<>();
                     my_Change.add(s1);
 
                     index = j;
-                    s1 = new State(index, status, arr.get(j - 1));
+                    s1 = new State_Blob(index, status, arr.get(j - 1));
                     my_Change.add(s1);
 
                     q.add(my_Change);
@@ -86,7 +88,7 @@ public class Sorting_Utils {
 //        String status = new String();
 //        ArrayList<Integer> index;
 //        int min_idx = 0;
-//        State s1;
+//        State_Blob s1;
 //        for (int i = 0; i < arr.length - 1; i++) {
 //            min_idx = i;
 //            for (int j = i + 1; j < arr.length; j++) {
@@ -98,7 +100,7 @@ public class Sorting_Utils {
 //
 //                index.add(j);
 //
-//                s1 = new State(status, index);
+//                s1 = new State_Blob(status, index);
 //
 //                q.add(s1);
 //                if (arr[j] < arr[min_idx]) {
@@ -111,7 +113,7 @@ public class Sorting_Utils {
 //
 //                index.add(min_idx);
 //
-//                s1 = new State(status, index);
+//                s1 = new State_Blob(status, index);
 //
 //                q.add(s1);
 //            }
@@ -128,7 +130,7 @@ public class Sorting_Utils {
 //
 //            index.add(min_idx);
 //
-//            s1 = new State(status, index);
+//            s1 = new State_Blob(status, index);
 //
 //            q.add(s1);
 //        }

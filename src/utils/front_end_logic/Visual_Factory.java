@@ -1,25 +1,26 @@
 package utils.front_end_logic;
 
 
+import components.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
-import components.Controller;
 import utils.Log;
 import utils.Random_Color;
-import utils.backend_logic.Node;
-import utils.backend_logic.State;
+import utils.backend_logic.Graph_Node;
+import utils.backend_logic.State_Blob;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static utils.consts.*;
+import static utils.constants.*;
 
 
-public class Array_Controller {
+public class Visual_Factory {
 
     private Controller controller;
     private ObservableList<Colorful_Rectangle> colorful_rectangles;
@@ -31,7 +32,7 @@ public class Array_Controller {
     double board_Y;
     Log my_Log = new Log();
 
-    public Array_Controller(Controller c) {
+    public Visual_Factory(Controller c) {
         this.controller = c;
         Log log = new Log();
         log.print("Array_controller created.");
@@ -217,29 +218,40 @@ public class Array_Controller {
         return colorful_rectangles;
     }
 
-    public List<State> get_List_State_Format() {
-        List<State> l = new ArrayList<>();
+    public List<State_Blob> get_List_State_Format() {
+        List<State_Blob> l = new ArrayList<>();
         for (int i = 0; i < colorful_rectangles.size(); i++) {
             l.add(
-                    new State(i,
+                    new State_Blob(i,
                             colorful_rectangles.get(i).getStatus(),
                             colorful_rectangles.get(i).getHeight()));
         }
         return l;
     }
 
+    public List<State_Blob> get_List_State_Format(int set_Height) {
+        List<State_Blob> l = new ArrayList<>();
+        for (int i = 0; i < colorful_rectangles.size(); i++) {
+            l.add(
+                    new State_Blob(i,
+                            colorful_rectangles.get(i).getStatus(),
+                            set_Height));
+        }
+        return l;
+    }
+
     public List<Double> get_List_Double_Format() {
         List<Double> l = new ArrayList<>();
-        for (int i = 0; i < colorful_rectangles.size(); i++) {
-            l.add(colorful_rectangles.get(i).getHeight());
+        for (Colorful_Rectangle colorful_rectangle : colorful_rectangles) {
+            l.add(colorful_rectangle.getHeight());
         }
         return l;
     }
 
 
-    public List<Node> get_List_Node_Format() {
-        List<Node> my_Node = new ArrayList<>();
-        Node new_Node;
+    public List<Graph_Node> get_List_Node_Format() {
+        List<Graph_Node> my_Graph_Node = new ArrayList<>();
+        Graph_Node new_Graph_Node;
         int X_position;
         int Y_position;
         int status;
@@ -247,24 +259,24 @@ public class Array_Controller {
         for (int i = 0; i < colorful_rectangles.size(); i++) {
             X_position = i % NUMBER_OF_RECTANGLE_X_AXIS;
             Y_position = i / NUMBER_OF_RECTANGLE_X_AXIS;
-            new_Node = new Node(X_position, Y_position);
+            new_Graph_Node = new Graph_Node(X_position, Y_position);
 
             status = colorful_rectangles.get(i).getStatus();
 
             //Get appropriate f values
             if (i == 0) {
-                new_Node.set_F(START_SIGNAL);
+                new_Graph_Node.set_F(START_SIGNAL);
             } else if (i == colorful_rectangles.size() - 1) {
-                new_Node.set_F(END_SIGNAL);
+                new_Graph_Node.set_F(END_SIGNAL);
             } else if (status == THE_OBSTACLE_RECT_STATUS) {
-                new_Node.set_F(BLOCKED_SIGNAL);
+                new_Graph_Node.set_F(BLOCKED_SIGNAL);
             } else {
-                new_Node.set_F(WALK_ABLE_SIGNAL);
+                new_Graph_Node.set_F(WALK_ABLE_SIGNAL);
             }
-            my_Node.add(new_Node);
+            my_Graph_Node.add(new_Graph_Node);
         }
 
-        return my_Node;
+        return my_Graph_Node;
     }
 
     @Setter

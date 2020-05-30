@@ -5,7 +5,7 @@ import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import utils.Painter;
 
-import static utils.consts.*;
+import static utils.constants.THE_DEFAULT_RECT_STATUS;
 
 
 public class Colorful_Rectangle extends Rectangle {

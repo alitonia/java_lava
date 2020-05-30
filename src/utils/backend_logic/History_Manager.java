@@ -7,45 +7,47 @@ import utils.Log;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class history_Manager {
+public class History_Manager {
 
     private final Log my_Log;
-    private final LinkedList<Map<String, List<State>>> history_Queue;
-    private List<State> internal_List;
-    private List<State> origin_List;
+    private final LinkedList<Map<String, List<State_Blob>>> history_Queue;
+    private List<State_Blob> internal_List;
+    private List<State_Blob> origin_List;
 
     private int current_step;
     private int queue_Length;
 
 
-    public history_Manager() {
+    public History_Manager() {
         history_Queue = new LinkedList<>();
         current_step = 0;
         queue_Length = 0;
         my_Log = new Log();
     }
 
-    public void add(List<State> new_Changes) {
+    public void add(List<State_Blob> new_Changes) {
         if (internal_List != null && origin_List != null) {
-            Map<String, List<State>> my_Map = new HashMap();
+            Map<String, List<State_Blob>> my_Map = new HashMap<>();
+//            System.out.println("Change: ");
+//            System.out.println(new_Changes.toString());
 
             //Make old_List
-            List<State> previous_State = new ArrayList<>();
-            for (State s : new_Changes) {
-                previous_State.add(
-                        new State(s.getIndex(),
+            List<State_Blob> previous_State_Blob = new ArrayList<>();
+            for (State_Blob s : new_Changes) {
+                previous_State_Blob.add(
+                        new State_Blob(s.getIndex(),
                                 internal_List.get(s.getIndex()).getStatus(),
                                 internal_List.get(s.getIndex()).getHeight()));
             }
 
-            my_Map.put("Old", previous_State);
+            my_Map.put("Old", previous_State_Blob);
 
             //Make new_List
             my_Map.put("New", new_Changes);
 
 //        Change internal state accordingly
-            for (State s : new_Changes) {
-                State destination = internal_List.get(s.getIndex());
+            for (State_Blob s : new_Changes) {
+                State_Blob destination = internal_List.get(s.getIndex());
                 destination.setStatus(s.getStatus());
             }
             queue_Length += 1;
@@ -66,8 +68,8 @@ public class history_Manager {
         my_Log.print("Queue cleared!");
     }
 
-    public List<State> get_Next() {
-        List<State> return_List = null;
+    public List<State_Blob> get_Next() {
+        List<State_Blob> return_List = null;
 
         if (is_Tail()) {
             my_Log.print("End of Queue");
@@ -79,8 +81,8 @@ public class history_Manager {
         return return_List;
     }
 
-    public List<State> get_Previous() {
-        List<State> return_List = null;
+    public List<State_Blob> get_Previous() {
+        List<State_Blob> return_List = null;
 
         if (is_Top()) {
             my_Log.print("Start of Queue");
@@ -111,7 +113,7 @@ public class history_Manager {
 
 
     @Getter
-    public LinkedList<Map<String, List<State>>> get_History_Queue() {
+    public LinkedList<Map<String, List<State_Blob>>> get_History_Queue() {
         return history_Queue;
     }
 
@@ -119,26 +121,24 @@ public class history_Manager {
         return queue_Length;
     }
 
-    public List<State> get_Origin_List() {
+    public List<State_Blob> get_Origin_List() {
         return origin_List;
     }
 
-
-    @Setter
-    //Might be used for debugging
-    public void set_Internal_List(List<State> internal_List) {
-        this.internal_List = internal_List;
-    }
-
-
-    public void set_Origin_List(List<State> origin_List) {
+    public void set_Origin_List(List<State_Blob> origin_List) {
         this.origin_List = origin_List;
 
         //Copy to internal_List
         internal_List = new ArrayList<>();
-        for (State s : origin_List) {
-            internal_List.add(new State(s, s.getHeight()));
+        for (State_Blob s : origin_List) {
+            internal_List.add(new State_Blob(s, s.getHeight()));
         }
+    }
+
+    @Setter
+    //Might be used for debugging
+    public void set_Internal_List(List<State_Blob> internal_List) {
+        this.internal_List = internal_List;
     }
 
 

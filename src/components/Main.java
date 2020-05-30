@@ -13,12 +13,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //Initialize
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("screens/Large_Screen.fxml"));
 
         // the address is not changed when rename parent directory @@ --> be careful
-        root.getStylesheets().add("components/main_Style.css");
+        root.getStylesheets().add("components/styles/Plum_Style.css");
 
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Hello Visualization");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
 

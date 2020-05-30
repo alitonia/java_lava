@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class consts {
+public class constants {
 
     //Thread
     public static final int MAX_EXECUTIONERS = 3; //?
@@ -19,27 +19,31 @@ public class consts {
 
 
     //Data properties
-    public static final int NUMBER_OF_RECTANGLE = 20;
-    public static final int NUMBER_OF_RECTANGLE_X_AXIS = 30;
-    public static final int NUMBER_OF_RECTANGLE_Y_AXIS = 20;
+    public static final int NUMBER_OF_RECTANGLE = 50;
+    public static final int NUMBER_OF_RECTANGLE_X_AXIS = 40;
+    public static final int NUMBER_OF_RECTANGLE_Y_AXIS = 30;
     public static final double HEIGHT_VARIANCE_COEFFICIENT = 1.3;
     public static final int MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE = (int) (NUMBER_OF_RECTANGLE * 0.3);
 
     public static final boolean TARGET_LINE_TO_FRONT = true;
 
     //Play-speed
-    public static final long SEQUENTIAL_SEARCH_DELAY_MILLISECOND = (int) 5000 / NUMBER_OF_RECTANGLE;
-    public static final long BINARY_SEARCH_DELAY_MILLISECOND = SEQUENTIAL_SEARCH_DELAY_MILLISECOND * 2;
-    public static final long A_STAR_DELAY_MILLISECOND = SEQUENTIAL_SEARCH_DELAY_MILLISECOND * 3;
+    public static final long MINIMUM_A_STAR_DELAY_MILLISECOND = 20;
+
+    public static final long SEQUENTIAL_SEARCH_DELAY_MILLISECOND = (long) 5000 / NUMBER_OF_RECTANGLE;
+    public static final long BINARY_SEARCH_DELAY_MILLISECOND = SEQUENTIAL_SEARCH_DELAY_MILLISECOND * 6;
+    public static final long A_STAR_DELAY_MILLISECOND =
+            Math.max(1200 / (NUMBER_OF_RECTANGLE_X_AXIS * NUMBER_OF_RECTANGLE_Y_AXIS),
+                    MINIMUM_A_STAR_DELAY_MILLISECOND);
 
     // size
     public static final double MINIMUM_RECT_HEIGHT = 0.03;
     public static final double MAXIMUM_RECT_HEIGHT = 0.97;
 
-    public static final double PERCENT_RIGHT_PADDING_OF_A_STAR = 0.015;
-    public static final double PERCENT_LEFT_PADDING_OF_A_STAR = 0.015;
-    public static final double PERCENT_UP_PADDING_A_STAR = 0.03;
-    public static final double PERCENT_DOWN_PADDING_A_STAR = 0.03;
+    public static final double PERCENT_RIGHT_PADDING_OF_A_STAR = 0.01;
+    public static final double PERCENT_LEFT_PADDING_OF_A_STAR = 0.01;
+    public static final double PERCENT_UP_PADDING_A_STAR = 0.02;
+    public static final double PERCENT_DOWN_PADDING_A_STAR = 0.02;
 
 
     //color
@@ -51,11 +55,13 @@ public class consts {
     public static final Color THE_NORMAL_STROKE_COLOR =
             new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
 
+
     //focus
     public static final Color THE_FOCUSED_FILL_COLOR =
             new Color((float) 255 / 255, (float) 165 / 255, (float) 163 / 255, 1);
     public static final Color THE_FOCUSED_STROKE_COLOR =
             new Color((float) 11 / 255, (float) 199 / 255, (float) 207 / 255, 0.35);
+
 
     //choosing
     public static final Color THE_SPOTLIGHT_FILL_COLOR =
@@ -63,11 +69,13 @@ public class consts {
     public static final Color THE_SPOTLIGHT_STROKE_COLOR =
             new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 0.8);
 
+
     //chosen
     public static final Color THE_SUCCESSFUL_FILL_COLOR =
             new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 1);
     public static final Color THE_SUCCESSFUL_STROKE_COLOR =
             new Color((float) 252 / 255, (float) 248 / 255, (float) 118 / 255, 0.8);
+
 
     //not satisfy
     public static final Color THE_UNWORTHY_FILL_COLOR =
@@ -85,19 +93,30 @@ public class consts {
 
     //hindrance in map
     public static final Color THE_OBSTACLE_FILL_COLOR =
-            new Color((float) 47 / 255, (float) 196 / 255, (float) 178 / 255, 1);
+            new Color((float) 132 / 255, (float) 70 / 255, (float) 133 / 255, 1);
+
     public static final Color THE_OBSTACLE_STROKE_COLOR =
             new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
 
 
-    //These aren't used
-    public static final Color THE_HIGHLIGHTED_FILL_COLOR =
-            new Color((float) 4 / 255, (float) 200 / 255, (float) 100 / 255, 1);
-    public static final Color THE_HIGHLIGHTED_STROKE_COLOR =
+    //selecting, but for graph
+    public static final Color THE_VISITING_FILL_COLOR =
+            new Color((float) 232 / 255, (float) 228 / 255, (float) 225 / 255, 1);
+    public static final Color THE_VISITING_STROKE_COLOR =
+            new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
+
+
+    // visited for graph
+    public static final Color THE_VISITED_FILL_COLOR =
+            new Color((float) 47 / 255, (float) 196 / 255, (float) 178 / 255, 1);
+
+    public static final Color THE_VISITED_STROKE_COLOR =
             new Color(0.667, 0.96, 0.189, 0.25);
 
+
+    // no possible solution for A*
     public static final Color THE_OUTSTANDING_FILL_COLOR =
-            new Color((float) 18 / 255, (float) 200 / 255, (float) 250 / 255, 0.8);
+            new Color((float) 243 / 255, (float) 85 / 255, (float) 136 / 255, 1);
     public static final Color THE_OUTSTANDING_STROKE_COLOR =
             new Color(0.667, 0.96, 0.189, 0.25);
 
@@ -114,8 +133,10 @@ public class consts {
     public static final int THE_GATE_RECT_STATUS = 5;
     public static final int THE_OBSTACLE_RECT_STATUS = 6;
 
-    public static final int THE_HIGHLIGHTED_RECT_STATUS = 7;
+    public static final int THE_VISITED_RECT_STATUS = 7;
     public static final int THE_OUTSTANDING_RECT_STATUS = 8;
+
+    public static final int THE_VISITING_RECT_STATUS = 9;
 
     public static final int THE_DEFAULT_RECT_STATUS = THE_NORMAL_RECT_STATUS;
 
@@ -126,10 +147,12 @@ public class consts {
     public static final int END_SIGNAL = -3;
     public static final int START_SIGNAL = -4;
 
+    // Painter signal
 
+    public static final int NO_PAINT_SIGNAL = -1;
 
     //Add more when have more status
-    public static HashMap<Integer, List<Color>> COLOR_MAP = new HashMap<Integer, List<Color>>();
+    public static HashMap<Integer, List<Color>> COLOR_MAP = new HashMap<>();
 
     static {
         COLOR_MAP.put(THE_NORMAL_RECT_STATUS,
@@ -153,9 +176,11 @@ public class consts {
         COLOR_MAP.put(THE_OBSTACLE_RECT_STATUS,
                 Arrays.asList(THE_OBSTACLE_FILL_COLOR, THE_OBSTACLE_STROKE_COLOR));
 
+        COLOR_MAP.put(THE_VISITING_RECT_STATUS,
+                Arrays.asList(THE_VISITING_FILL_COLOR, THE_VISITING_STROKE_COLOR));
 
-        COLOR_MAP.put(THE_HIGHLIGHTED_RECT_STATUS,
-                Arrays.asList(THE_HIGHLIGHTED_FILL_COLOR, THE_HIGHLIGHTED_STROKE_COLOR));
+        COLOR_MAP.put(THE_VISITED_RECT_STATUS,
+                Arrays.asList(THE_VISITED_FILL_COLOR, THE_VISITED_STROKE_COLOR));
 
         COLOR_MAP.put(THE_OUTSTANDING_RECT_STATUS,
                 Arrays.asList(THE_OUTSTANDING_FILL_COLOR, THE_OUTSTANDING_STROKE_COLOR));

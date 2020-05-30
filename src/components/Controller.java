@@ -1,8 +1,5 @@
 package components;
 
-//TODO: Optimize painting
-
-
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,11 +13,12 @@ import org.reactfx.EventStreams;
 import org.reactfx.Subscription;
 import utils.Log;
 import utils.Painter;
-import utils.backend_logic.SearchingUtils;
-import utils.backend_logic.State;
-import utils.backend_logic.history_Manager;
-import utils.front_end_logic.Array_Controller;
+import utils.backend_logic.A_Path_Finding;
+import utils.backend_logic.History_Manager;
+import utils.backend_logic.Searching_Generators;
+import utils.backend_logic.State_Blob;
 import utils.front_end_logic.Colorful_Rectangle;
+import utils.front_end_logic.Visual_Factory;
 
 import java.time.Duration;
 import java.util.List;
@@ -29,7 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static utils.consts.*;
+import static utils.constants.*;
 
 public class Controller {
 
@@ -37,10 +35,12 @@ public class Controller {
     private Subscription play_Stream;
 
     private final Log my_Log = new Log();
-    private final Array_Controller array_Controller = new Array_Controller(this);
-    private final SearchingUtils generator = new SearchingUtils();
-    private final utils.backend_logic.history_Manager history_Manager = new history_Manager();
-    private final Painter painter = new Painter();
+    private final Visual_Factory visual_Factory = new Visual_Factory(this);
+    private final History_Manager history_Manager = new History_Manager();
+    private final Painter painter = new Painter(this);
+
+    private final Searching_Generators generator = new Searching_Generators();
+    private final A_Path_Finding generator_01 = new A_Path_Finding();
 
     private final ExecutorService button_Executor = Executors.newSingleThreadExecutor();
     private final ExecutorService graphic_Executor = Executors.newSingleThreadExecutor();
@@ -110,7 +110,7 @@ public class Controller {
 
                         .subscribe(v -> {
                             if (v != null) {
-                                painter.paint_Many_By_Status(v, array_Controller.get_Colorful_Rectangles());
+                                painter.paint_Many_By_Status(v, visual_Factory.get_Colorful_Rectangles());
                             } else {
                                 button_Executor.execute(() -> {
                                             play_Stream.unsubscribe();
@@ -165,19 +165,19 @@ public class Controller {
         my_Log.print("Next button pressed:\n" +
                 "Go to next action\n");
 
-        List<State> now_State = history_Manager.get_Next();
-        if (now_State != null) {
-            painter.paint_Many_By_Status(now_State, array_Controller.get_Colorful_Rectangles());
+        List<State_Blob> now_State_Blob = history_Manager.get_Next();
+        if (now_State_Blob != null) {
+            painter.paint_Many_By_Status(now_State_Blob, visual_Factory.get_Colorful_Rectangles());
         } else {
             my_Log.print("Reach end of steps!");
         }
 
         button_Executor.execute(() -> {
-                    if (history_Manager.is_Tail()) {
-                        forward_Button.setDisable(true);
-                        start_Button.setDisable(true);
-                    } else {
-                        backward_Button.setDisable(false);
+            if (history_Manager.is_Tail()) {
+                forward_Button.setDisable(true);
+                start_Button.setDisable(true);
+            } else {
+                backward_Button.setDisable(false);
                         reset_Button.setDisable(false);
                     }
                 }
@@ -190,19 +190,19 @@ public class Controller {
         my_Log.print("Backward button pressed:\n" +
                 "Go to previous action\n");
 
-        List<State> now_State = history_Manager.get_Previous();
-        if (now_State != null) {
-            painter.paint_Many_By_Status(now_State, array_Controller.get_Colorful_Rectangles());
+        List<State_Blob> now_State_Blob = history_Manager.get_Previous();
+        if (now_State_Blob != null) {
+            painter.paint_Many_By_Status(now_State_Blob, visual_Factory.get_Colorful_Rectangles());
         } else {
             my_Log.print("Reach head of steps!");
         }
 
         button_Executor.execute(() -> {
-                    if (!history_Manager.is_Tail()) {
-                        forward_Button.setDisable(false);
-                        start_Button.setDisable(false);
-                    }
-                    if (history_Manager.is_Top()) {
+            if (!history_Manager.is_Tail()) {
+                forward_Button.setDisable(false);
+                start_Button.setDisable(false);
+            }
+            if (history_Manager.is_Top()) {
                         reset_Button.setDisable(true);
                         backward_Button.setDisable(true);
                     }
@@ -221,8 +221,9 @@ public class Controller {
 
         //restore original state
         history_Manager.reset();
-        List<State> original_State = history_Manager.get_Origin_List();
-        painter.paint_Many_By_Status(original_State, array_Controller.get_Colorful_Rectangles());
+        List<State_Blob> original_State_Blob = history_Manager.get_Origin_List();
+        System.out.println("This " + original_State_Blob.size());
+        painter.paint_Many_By_Status(original_State_Blob, visual_Factory.get_Colorful_Rectangles());
 
         button_Executor.execute(() -> {
                     backward_Button.setDisable(true);
@@ -285,17 +286,17 @@ public class Controller {
 
     private void generate_Sequential() {
         my_Log.print("Mode: " + SEQUENTIAL_SEARCH_MODE);
-        array_Controller.make_Histogram(NUMBER_OF_RECTANGLE);
+        visual_Factory.make_Histogram(NUMBER_OF_RECTANGLE);
 
         // set context for history manager
-        history_Manager.set_Origin_List(array_Controller.get_List_State_Format());
+        history_Manager.set_Origin_List(visual_Factory.get_List_State_Format());
 
         // set target as the x-th element of histogram
         // with constraint as having distance 0.3*length away from start
         // to make animation look more exciting
-        Colorful_Rectangle target = array_Controller.get_Colorful_Rectangles().get(
+        Colorful_Rectangle target = visual_Factory.get_Colorful_Rectangles().get(
                 ThreadLocalRandom.current().nextInt(
-                        array_Controller.getLength() - MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE)
+                        visual_Factory.getLength() - MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE)
                         + MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE
         );
 
@@ -305,18 +306,13 @@ public class Controller {
         target_Line.setVisible(true);
 
         if (TARGET_LINE_TO_FRONT) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    target_Line.toFront();
-                }
-            });
+            Platform.runLater(() -> target_Line.toFront());
         }
 
         //generate steps to history Manager
         generator.sequential_Search(
                 target.getHeight(),
-                array_Controller.get_List_Double_Format(),
+                visual_Factory.get_List_Double_Format(),
                 history_Manager
         );
         my_Log.print("Done");
@@ -325,14 +321,14 @@ public class Controller {
 
     private void generate_Binary() {
         my_Log.print("Mode: " + BINARY_SEARCH_MODE);
-        array_Controller.make_Ordered_Histogram(NUMBER_OF_RECTANGLE);
+        visual_Factory.make_Ordered_Histogram(NUMBER_OF_RECTANGLE);
 
         // set context for history manager
-        history_Manager.set_Origin_List(array_Controller.get_List_State_Format());
+        history_Manager.set_Origin_List(visual_Factory.get_List_State_Format());
 
         // set target as the x-th element of histogram
-        Colorful_Rectangle target = array_Controller.get_Colorful_Rectangles().get(
-                ThreadLocalRandom.current().nextInt(array_Controller.getLength()));
+        Colorful_Rectangle target = visual_Factory.get_Colorful_Rectangles().get(
+                ThreadLocalRandom.current().nextInt(visual_Factory.getLength()));
 
         //set target-line
         target_Line.setStartY(target.getY());
@@ -340,18 +336,13 @@ public class Controller {
         target_Line.setVisible(true);
 
         if (TARGET_LINE_TO_FRONT) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    target_Line.toFront();
-                }
-            });
+            Platform.runLater(() -> target_Line.toFront());
         }
 
         //generate steps to history Manager
         generator.binary_Search(
                 target.getHeight(),
-                array_Controller.get_List_Double_Format(),
+                visual_Factory.get_List_Double_Format(),
                 history_Manager
         );
         my_Log.print("Done");
@@ -362,27 +353,27 @@ public class Controller {
         //no need for target_line
         target_Line.setVisible(false);
         my_Log.print("Mode: " + A_STAR_PATH_FINDING_MODE);
-        array_Controller.make_Map(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS);
+        visual_Factory.make_Map(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS);
 
         // set context for history manager
-        history_Manager.set_Origin_List(array_Controller.get_List_State_Format());
-        System.out.println(array_Controller.get_List_Node_Format().toString());
+        // Height doesn't change so don't need to repaint height
+        history_Manager.set_Origin_List(visual_Factory.get_List_State_Format(NO_PAINT_SIGNAL));
+        System.out.println(visual_Factory.get_List_Node_Format().toString());
 
         //generator generate something here
         //currently no engine for start
+        generator_01.find_Path(NUMBER_OF_RECTANGLE_X_AXIS, NUMBER_OF_RECTANGLE_Y_AXIS,
+                visual_Factory.get_List_Node_Format(), history_Manager);
 
         my_Log.print("Done");
     }
 
 
     public void paint_Board(ObservableList<Colorful_Rectangle> colorful_rectangles) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                my_Log.print("Painting board...");
-                visual_Board.getChildren().addAll(colorful_rectangles);
-                my_Log.print("Done");
-            }
+        Platform.runLater(() -> {
+            my_Log.print("Painting board...");
+            visual_Board.getChildren().addAll(colorful_rectangles);
+            my_Log.print("Done");
         });
     }
 
