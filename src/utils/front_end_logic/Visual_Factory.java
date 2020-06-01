@@ -90,7 +90,7 @@ public class Visual_Factory {
 
 
     public void make_Ordered_Histogram(int number_of_Rectangles) {
-        // make_Histogram histogram, then sort it ---> ordered histogram
+        // make_Histogram histogram, then quick_Sort it ---> ordered histogram
         make_Histogram(number_of_Rectangles);
         my_Log.print("Sorting histogram");
         sort(this.colorful_rectangles, 0, colorful_rectangles.size() - 1);
@@ -184,7 +184,7 @@ public class Visual_Factory {
         if (start < end) {
             int pivot = partition(rectangles, start, end);
 
-            // Recursively sort on 2 sides of pivot
+            // Recursively quick_Sort on 2 sides of pivot
             sort(rectangles, start, pivot - 1);
             sort(rectangles, pivot + 1, end);
         }

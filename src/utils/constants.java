@@ -34,8 +34,9 @@ public class constants {
     public static final int NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE = 100;
     public static final int NUMBER_OF_RECTANGLE_X_AXIS = 40;
     public static final int NUMBER_OF_RECTANGLE_Y_AXIS = 30;
-    public static final int NUMBER_OF_HISTOGRAM_SLOW_SORT_RECTANGLE = 8;
+    public static final int NUMBER_OF_HISTOGRAM_SLOW_SORT_RECTANGLE = 12;
     public static final int NUMBER_OF_HISTOGRAM_FAST_SORT_RECTANGLE = 100;
+    public static final int NUMBER_OF_HISTOGRAM_DEBUG_SORT_RECTANGLE = 8;
 
 
     public static final double HEIGHT_VARIANCE_COEFFICIENT = 1.3;
@@ -48,14 +49,20 @@ public class constants {
     // change with care. Thread might be a problem
     public static final long MINIMUM_A_STAR_DELAY_MILLISECOND = 20;
 
-    public static final long SEQUENTIAL_SEARCH_DELAY_MILLISECOND = (long) 5000 / NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE;
+    public static final long SEQUENTIAL_SEARCH_DELAY_MILLISECOND =
+            Math.max(5000 / NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE, 20);
     public static final long BINARY_SEARCH_DELAY_MILLISECOND = SEQUENTIAL_SEARCH_DELAY_MILLISECOND * 6;
+
     public static final long A_STAR_DELAY_MILLISECOND =
             Math.max(1200 / (NUMBER_OF_RECTANGLE_X_AXIS * NUMBER_OF_RECTANGLE_Y_AXIS),
                     MINIMUM_A_STAR_DELAY_MILLISECOND);
-    // can swap
-    public static final Color THE_SWAP_ABLE_FILL_COLOR =
-            new Color((float) 163 / 255, (float) 247 / 255, (float) 191 / 255, 1);
+
+    public static final long BUBBLE_SORT_DELAY_MILLISECOND = 65;
+    public static final long SELECTION_SORT_DELAY_MILLISECOND = 85;
+    public static final long INSERTION_SORT_DELAY_MILLISECOND = 65;
+
+    public static final long MERGE_SORT_DELAY_MILLISECOND = 65;
+    public static final long QUICK_SORT_DELAY_MILLISECOND = 25;
 
 
     // size
@@ -147,6 +154,10 @@ public class constants {
             new Color((float) 243 / 255, (float) 85 / 255, (float) 136 / 255, 1);
     public static final Color THE_OUTSTANDING_STROKE_COLOR =
             new Color(0.667, 0.96, 0.189, 0.25);
+
+    // can swap
+    public static final Color THE_SWAP_ABLE_FILL_COLOR =
+            new Color((float) 163 / 255, (float) 247 / 255, (float) 191 / 255, 1);
     public static final Color THE_SWAP_ABLE_STROKE_COLOR =
             new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
 
@@ -192,8 +203,6 @@ public class constants {
     public static final int END_SIGNAL = -3;
     public static final int START_SIGNAL = -4;
 
-    // Painter signal
-    private static final long BUBBLE_SORT_DELAY_MILLISECOND = 30;
 
     //Add more when have more status
     public static HashMap<Integer, List<Color>> COLOR_MAP = new HashMap<>();
@@ -276,8 +285,22 @@ public class constants {
 
             case BUBBLE_SORT_MODE:
                 return BUBBLE_SORT_DELAY_MILLISECOND;
+
+            case SELECTION_SORT_MODE:
+                return SELECTION_SORT_DELAY_MILLISECOND;
+
+            case INSERTION_SORT_MODE:
+                return INSERTION_SORT_DELAY_MILLISECOND;
+
+            case MERGE_SORT_MODE:
+                return MERGE_SORT_DELAY_MILLISECOND;
+
+            case QUICK_SORT_MODE:
+                return QUICK_SORT_DELAY_MILLISECOND;
+
             default:
-                return 25;
+                //debug mode :)
+                return 250;
         }
     }
 }

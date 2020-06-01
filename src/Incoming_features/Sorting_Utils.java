@@ -368,6 +368,107 @@ public class Sorting_Utils {
     }
 
 
+    public void quick_Sort(List<Double> height_List, int start, int end, History_Manager q) {
+        if (start <= end) {
+            int pivot = partition(height_List, start, end, q);
+
+            // Recursively quick_Sort on 2 sides of pivot
+            quick_Sort(height_List, start, pivot - 1, q);
+            quick_Sort(height_List, pivot + 1, end, q);
+            System.out.println(height_List.toString() + " ... " + start + " ... " + end);
+        }
+    }
+
+    private int partition(List<Double> height_List, int start, int end, History_Manager q) {
+
+        double pivot = height_List.get(end);
+        //coloring pivot
+        change_List = new ArrayList<>();
+        change_List.add(new State_Blob(end, THE_OBSTACLE_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+        q.add(change_List);
+
+        int i = (start - 1); // index of smaller element
+
+        for (int j = start; j < end; j++) {
+            // selecting another
+            change_List = new ArrayList<>();
+            change_List.add(new State_Blob(j, THE_FOCUSED_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+            q.add(change_List);
+
+            // If current element is smaller than the pivot
+            if (height_List.get(j) < pivot) {
+                // signal can swap
+                change_List = new ArrayList<>();
+                change_List.add(new State_Blob(j, THE_SPOTLIGHT_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+                q.add(change_List);
+
+                i += 1;
+                Collections.swap(height_List, i, j);
+
+                //now swap
+                change_List = new ArrayList<>();
+                change_List.add(new State_Blob(i, THE_SPOTLIGHT_RECT_STATUS, height_List.get(i)));
+                change_List.add(new State_Blob(j, THE_SPOTLIGHT_RECT_STATUS, height_List.get(j)));
+                q.add(change_List);
+
+                //back to normal
+                change_List = new ArrayList<>();
+                change_List.add(new State_Blob(i, THE_NORMAL_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+                change_List.add(new State_Blob(j, THE_NORMAL_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+
+                q.add(change_List);
+
+
+            } else {
+                //signal can't swap
+                change_List = new ArrayList<>();
+                change_List.add(new State_Blob(j, THE_UNWORTHY_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+                q.add(change_List);
+
+                //unselect rect
+                change_List = new ArrayList<>();
+                change_List.add(new State_Blob(j, THE_NORMAL_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+                q.add(change_List);
+            }
+        }
+        // swap pivot and last index
+        if (i + 1 != end) {
+            // selecting
+            change_List = new ArrayList<>();
+            change_List.add(new State_Blob(i + 1, THE_SPOTLIGHT_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+            q.add(change_List);
+
+            //now swap
+            change_List = new ArrayList<>();
+            change_List.add(new State_Blob(i + 1, THE_OBSTACLE_RECT_STATUS, height_List.get(end)));
+            change_List.add(new State_Blob(end, THE_SPOTLIGHT_RECT_STATUS, height_List.get(i + 1)));
+            q.add(change_List);
+
+            //back to normal
+            change_List = new ArrayList<>();
+            change_List.add(new State_Blob(end, THE_NORMAL_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+
+            //show sorted rect
+            change_List.add(new State_Blob(i + 1, THE_SUCCESSFUL_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+            q.add(change_List);
+
+        } else {
+            // selecting
+            change_List = new ArrayList<>();
+            change_List.add(new State_Blob(i + 1, THE_SPOTLIGHT_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+            q.add(change_List);
+
+            //show sorted
+            change_List = new ArrayList<>();
+            change_List.add(new State_Blob(i + 1, THE_SUCCESSFUL_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
+            q.add(change_List);
+        }
+        Collections.swap(height_List, i + 1, end);
+
+        return i + 1;
+    }
+
+
 //    private int Find_max_value(ArrayList<Integer> height_List, History_Manager q) {
 //        int max_value = height_List.get(0);
 //        for (int i = 1; i < height_List.size(); i++) {
