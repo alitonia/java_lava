@@ -21,6 +21,7 @@ public class Painter {
     //Single Thread to guarantee order of execution
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     private Controller controller;
+    private final Log my_Log = new Log();
 
 
     public Painter() {
@@ -33,32 +34,36 @@ public class Painter {
 
     public synchronized void paint_by_Status(Colorful_Rectangle rectangle) {
         executor.execute(() -> {
+
             int status = rectangle.getStatus();
+            my_Log.print("Original fill: " + rectangle.getFill() + " to" + getFill(status));
+            my_Log.print("Original stroke: " + rectangle.getStroke() + " to" + getStroke(status));
+
             rectangle.setFill(getFill(status));
             rectangle.setStroke(getStroke(status));
 
             //Optional blinking
 //                if (status == THE_SUCCESSFUL_RECT_STATUS) {
-//                    blink(Collections.singletonList(rectangle), 50, 10,
-//                            THE_FOCUSED_FILL_COLOR, THE_HIGHLIGHTED_FILL_COLOR);
+//                    blink(Collections.singletonList(rectangle), 15, 2,
+//                            THE_FOCUSED_FILL_COLOR, THE_SECOND_SPOTLIGHT_STROKE_COLOR);
 //                }
         });
     }
 
     private synchronized void paint_By_Height(Colorful_Rectangle rectangle, double height) {
-        if (height != NO_REPAINT_HEIGHT_SIGNAL) {
+        executor.execute(() -> {
 
-            Pane my_Stage = controller.get_Visual_Board();
-            System.out.println("Original: " + rectangle.toString() + " to height " + height
-                    + ", Y = " + (my_Stage.getLayoutY() + (my_Stage.getHeight() - rectangle.getHeight())));
-            rectangle.setHeight(height);
+            if (height != NO_REPAINT_HEIGHT_SIGNAL) {
+                Pane my_Stage = controller.get_Visual_Board();
+                my_Log.print("Original height: " + rectangle.getHeight() + " to" + height);
 
-            // because the Oxy axis is to the upper left of the screen
-            // so drawing rectangles is a bit weird
-            rectangle.setY(my_Stage.getLayoutY() + (my_Stage.getHeight() - rectangle.getHeight()));
+                rectangle.setHeight(height);
+                // because the Oxy axis is to the upper left of the screen
+                // so drawing rectangles is a bit weird
+                rectangle.setY(my_Stage.getLayoutY() + (my_Stage.getHeight() - rectangle.getHeight()));
+            }
+        });
 
-
-        }
 
     }
 

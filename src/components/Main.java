@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 //TODO: Change name of window
@@ -24,8 +25,11 @@ public class Main extends Application {
         root.getStylesheets().add("components/styles/Plum_Style.css");
 
         primaryStage.setTitle("Hello Visualization");
+        primaryStage.getIcons().add(new Image("pictures/javascript.jpeg"));
+
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
+
 
         //Exit program when out
         primaryStage.setOnCloseRequest(e -> {

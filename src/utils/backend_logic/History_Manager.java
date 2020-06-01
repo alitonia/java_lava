@@ -61,7 +61,8 @@ public class History_Manager {
             }
             queue_Length += 1;
             history_Queue.offer(my_Map);
-            my_Log.print("Step added");
+            // avoid flooding log
+//            my_Log.print("Step added");
 
         } else {
             my_Log.print("Internal state/original state not specified!");
@@ -86,7 +87,7 @@ public class History_Manager {
         } else {
             return_List = history_Queue.get(current_step).get("New");
             current_step += 1;
-            my_Log.print("Get next step successfully");
+//            my_Log.print("Get next step successfully");
         }
         return return_List;
     }
