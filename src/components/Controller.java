@@ -32,9 +32,6 @@ import static utils.constants.*;
 
 public class Controller {
 
-    public String sequential_search;
-    public String binary_search;
-    public String a_star;
     private String execution_Mode = SEQUENTIAL_SEARCH_MODE;
     private Subscription play_Stream;
 
