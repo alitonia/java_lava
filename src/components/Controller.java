@@ -1,6 +1,5 @@
 package components;
 
-import Incoming_features.Sorting_Generator;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,10 +13,7 @@ import org.reactfx.EventStreams;
 import org.reactfx.Subscription;
 import utils.Log;
 import utils.Painter;
-import utils.backend_logic.A_Path_Finding;
-import utils.backend_logic.History_Manager;
-import utils.backend_logic.Searching_Generator;
-import utils.backend_logic.State_Blob;
+import utils.backend_logic.*;
 import utils.front_end_logic.Colorful_Rectangle;
 import utils.front_end_logic.Visual_Factory;
 
