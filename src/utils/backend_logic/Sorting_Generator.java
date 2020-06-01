@@ -27,6 +27,8 @@ public class Sorting_Generator {
 
 
         for (int i = 0; i < height_List.size() - 1; i++) {
+            System.out.println("Current limiter: " + i);
+
             status = THE_OBSTACLE_RECT_STATUS;
             index = i;
             state_Blob = new State_Blob(index, status, height_List.get(index));
@@ -36,6 +38,7 @@ public class Sorting_Generator {
             q.add(change_List);
 
             for (int j = height_List.size() - 1; j > i; j--) {
+
                 status = THE_SPOTLIGHT_RECT_STATUS;
                 index = j - 1;
                 state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
@@ -48,7 +51,13 @@ public class Sorting_Generator {
 
                 q.add(change_List);
 
+                System.out.println("Choosing "
+                        + (j - 1) + ": " + height_List.get(j - 1) + ", "
+                        + j + ": " + height_List.get(j));
+
                 if (height_List.get(j) < height_List.get(j - 1)) {
+                    System.out.println("Less than --> swap " + j + " " + (j - 1));
+
                     //Signal change
                     status = THE_SWAP_ABLE_RECT_STATUS;
                     index = j - 1;
@@ -77,6 +86,8 @@ public class Sorting_Generator {
                     Collections.swap(height_List, j, j - 1);
 
                 } else {
+                    System.out.println("More than --> no swap");
+
                     //Signal can't change
                     status = THE_NOT_SWAP_ABLE_RECT_STATUS;
                     index = j - 1;
@@ -105,6 +116,8 @@ public class Sorting_Generator {
                 q.add(change_List);
             }
             // First element is sorted --> paint it
+            System.out.println("Sorted: " + i);
+
             status = THE_SUCCESSFUL_RECT_STATUS;
             index = i;
             state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
@@ -115,6 +128,8 @@ public class Sorting_Generator {
 
         }
         // Last element is not painted ---> paint it
+        System.out.println("Sorted: " + (height_List.size() - 1));
+
         status = THE_SUCCESSFUL_RECT_STATUS;
         index = height_List.size() - 1;
         state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
@@ -125,15 +140,15 @@ public class Sorting_Generator {
 
     }
 
+
     public void Selection_Sort(List<Double> height_List, History_Manager q) {
-
         int min_Index;
-
 
         for (int i = 0; i < height_List.size() - 1; i++) {
             min_Index = i;
             for (int j = i + 1; j < height_List.size(); j++) {
 
+                System.out.println("Selecting " + i + ": " + height_List.get(i));
                 // paint current min and selecting rect
                 change_List = new ArrayList<>();
                 status = THE_OBSTACLE_RECT_STATUS;
@@ -149,6 +164,9 @@ public class Sorting_Generator {
                 q.add(change_List);
 
                 if (height_List.get(j) < height_List.get(min_Index)) {
+                    System.out.println("Rect " + j + ": " + height_List.get(j)
+                            + " less than current min ---> swap");
+
                     // Signal if rect is chosen
                     change_List = new ArrayList<>();
 
@@ -184,9 +202,12 @@ public class Sorting_Generator {
                     q.add(change_List);
 
                     min_Index = j;
+                    System.out.println("New min: " + min_Index + ": " + height_List.get(min_Index));
 
                 } else {
                     // signal not chosen
+                    System.out.println("Rect " + j + ": " + height_List.get(j)
+                            + " greater than current min ---> no swap");
                     change_List = new ArrayList<>();
                     status = THE_UNWORTHY_RECT_STATUS;
                     index = j;
@@ -243,10 +264,15 @@ public class Sorting_Generator {
 
                 q.add(change_List);
             }
+            System.out.println("Swap rect " + i + ", " + min_Index);
+            System.out.println("Sorted: " + i);
+
             Collections.swap(height_List, i, min_Index);
         }
 
         // last element is sorted ---> color it
+        System.out.println("Sorted: " + (height_List.size() - 1));
+
         change_List = new ArrayList<>();
         status = THE_SUCCESSFUL_RECT_STATUS;
         index = height_List.size() - 1;
@@ -270,6 +296,8 @@ public class Sorting_Generator {
     }
 
     public void merge(List<Double> height_List, int left, int mid, int right, History_Manager q) {
+        System.out.println("Range: " + left + " - " + mid + " - " + right);
+
         int i, j, k;
         int n1 = mid - left + 1;
         int n2 = right - mid;
@@ -300,10 +328,12 @@ public class Sorting_Generator {
         i = 0;
         j = 0;
         k = left;
+        System.out.println("Sort order: ");
 
         while (i < n1 && j < n2) {
             if (L.get(i) <= R.get(j)) {
                 height_List.set(k, L.get(i));
+                System.out.print((left + i) + " -> ");
 
                 change_List = new ArrayList<>();
                 change_List.add(
@@ -316,6 +346,8 @@ public class Sorting_Generator {
                 i += 1;
             } else {
                 height_List.set(k, R.get(j));
+                System.out.print((mid + j + 1) + " -> ");
+
                 change_List = new ArrayList<>();
                 change_List.add(
                         new State_Blob(mid + j + 1,
@@ -329,6 +361,7 @@ public class Sorting_Generator {
         }
         while (i < n1) {
             height_List.set(k, L.get(i));
+            System.out.print((left + i) + " -> ");
 
             change_List = new ArrayList<>();
             change_List.add(
@@ -343,6 +376,7 @@ public class Sorting_Generator {
         }
         while (j < n2) {
             height_List.set(k, R.get(j));
+            System.out.print((mid + j + 1) + " -> ");
 
             change_List = new ArrayList<>();
             change_List.add(
@@ -355,6 +389,9 @@ public class Sorting_Generator {
             j += 1;
             k += 1;
         }
+        System.out.println();
+
+        System.out.println("Sorted: " + left + " - " + right);
 
         change_List = new ArrayList<>();
         status = THE_SUCCESSFUL_RECT_STATUS;
@@ -380,6 +417,8 @@ public class Sorting_Generator {
     private int partition(List<Double> height_List, int start, int end, History_Manager q) {
 
         double pivot = height_List.get(end);
+        System.out.println("Pivot " + end + ": " + pivot);
+
         //coloring pivot
         change_List = new ArrayList<>();
         change_List.add(new State_Blob(end, THE_OBSTACLE_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
@@ -389,12 +428,17 @@ public class Sorting_Generator {
 
         for (int j = start; j < end; j++) {
             // selecting another
+            System.out.println("Selecting " + j + ": " + height_List.get(j));
+
             change_List = new ArrayList<>();
             change_List.add(new State_Blob(j, THE_FOCUSED_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
             q.add(change_List);
 
             // If current element is smaller than the pivot
             if (height_List.get(j) < pivot) {
+                System.out.println(
+                        "Current value: " + height_List.get(j) + " < " + pivot
+                                + " -----> swap");
                 // signal can swap
                 change_List = new ArrayList<>();
                 change_List.add(new State_Blob(j, THE_SPOTLIGHT_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
@@ -418,6 +462,9 @@ public class Sorting_Generator {
 
 
             } else {
+                System.out.println(
+                        "Current value: " + height_List.get(j) + " >= " + pivot
+                                + " -----> not swap");
                 //signal can't swap
                 change_List = new ArrayList<>();
                 change_List.add(new State_Blob(j, THE_UNWORTHY_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
@@ -461,8 +508,10 @@ public class Sorting_Generator {
             change_List.add(new State_Blob(i + 1, THE_SUCCESSFUL_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
             q.add(change_List);
         }
+        System.out.println("Swap " + (i + 1) + ", " + end);
         Collections.swap(height_List, i + 1, end);
 
+        System.out.println("Sorted: " + (i + 1));
         return i + 1;
     }
 
@@ -472,6 +521,8 @@ public class Sorting_Generator {
 
         for (int i = 1; i < size; i++) {
             Double key = height_List.get(i);
+            System.out.println("Key: " + key);
+
             // mark "pivot"
             change_List = new ArrayList<>();
             change_List.add(new State_Blob(i, THE_OBSTACLE_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
@@ -487,6 +538,8 @@ public class Sorting_Generator {
                 q.add(change_List);
 
                 //swap
+                System.out.println("Rect " + (j + 1) + " to value " + height_List.get(j));
+
                 height_List.set(j + 1, height_List.get(j));
 
                 change_List = new ArrayList<>();
@@ -506,11 +559,16 @@ public class Sorting_Generator {
             change_List.add(new State_Blob(j + 1, THE_SPOTLIGHT_RECT_STATUS, NO_REPAINT_HEIGHT_SIGNAL));
             q.add(change_List);
 
+            System.out.println("Rect " + (j + 1) + "to value " + key);
+
             height_List.set(j + 1, key);
 
             change_List = new ArrayList<>();
             change_List.add(new State_Blob(j + 1, THE_OBSTACLE_RECT_STATUS, height_List.get(j + 1)));
             q.add(change_List);
+
+
+            System.out.println("Sorted: " + 0 + " - " + (i + 1));
 
             change_List = new ArrayList<>();
             for (int k = 0; k < i + 1; k++) {
@@ -519,62 +577,6 @@ public class Sorting_Generator {
             q.add(change_List);
 
         }
-
     }
-
-//    private int Find_max_value(ArrayList<Integer> height_List, History_Manager q) {
-//        int max_value = height_List.get(0);
-//        for (int i = 1; i < height_List.size(); i++) {
-//            if (max_value < height_List.get(i)) {
-//                max_value = height_List.get(i);
-//            }
-//        }
-//        return max_value;
-//    }
-
-//    public static void bucket_sort_for_each_part(ArrayList<Integer> arr) {
-//        int max_value = Find_max_value(arr);
-//
-//        int start_pos = 0;
-//
-//        int[] bucket_array = new int[max_value + 1];
-//
-//        for (int i = 0; i < arr.size(); i++) {
-//            bucket_array[arr.get(i)]++;
-//        }
-//
-//        arr.clear();
-//
-//        for (int i = 0; i < bucket_array.length; i++) {
-//            for (int j = 0; j < bucket_array[i]; j++) {
-//                arr.add(i);
-//            }
-//        }
-//    }
-//
-//    public static void Bucket_Sort(int[] arr) {
-//        ArrayList<Integer> Pos = new ArrayList<Integer>();
-//
-//        ArrayList<Integer> Neg = new ArrayList<Integer>();
-//
-//
-//        for (int i = 0; i < arr.length; i++) {
-//            if (arr[i] < 0) {
-//                Neg.add(-1 * arr[i]);
-//            } else {
-//                Pos.add(arr[i]);
-//            }
-//        }
-//
-//        bucket_sort_for_each_part(Neg);
-//        bucket_sort_for_each_part(Pos);
-//
-//        for (int i = 0; i < Neg.size(); i++) {
-//            arr[i] = -1 * Neg.get(Neg.size() - i - 1);
-//        }
-//
-//        for (int i = Neg.size(); i < arr.length; i++) {
-//            arr[i] = Pos.get(i - Neg.size());
-//        }
-//    }
 }
+

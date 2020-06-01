@@ -2,6 +2,7 @@ package utils.backend_logic;
 
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
+import utils.Log;
 import utils.Translator;
 import utils.constants;
 
@@ -12,6 +13,8 @@ import static utils.constants.*;
 
 
 public class A_Path_Finding {
+
+    private final Log my_Log = new Log();
 
     private Graph_Node start_Graph_Node;
     private Graph_Node end_Graph_Node;
@@ -89,8 +92,6 @@ public class A_Path_Finding {
 
         List<State_Blob> current_Step;
 
-        System.out.println(map_2D.toString());
-
         // check src and dest is valid or not
         if (!is_Valid(start_Graph_Node) || !is_Valid(end_Graph_Node)) {
             return;
@@ -105,7 +106,7 @@ public class A_Path_Finding {
         // check src and dest equal so we are already at the destination
         // this might not happens though
         if (is_Destination(get_Start_Node())) {
-            System.out.println("We are already at the destination!!!");
+            my_Log.print("Already at the destination!!!");
             return;
         }
 
@@ -148,7 +149,7 @@ public class A_Path_Finding {
             temp = get_Open_List().get(0);
 
 
-            System.out.println("Selecting " + temp.toString());
+            my_Log.print("Selecting " + temp.toString());
 
             current_Step = new ArrayList<>();
             current_Step.add(new State_Blob(Translator.flatten(temp.get_X(), temp.get_Y(), number_of_Rectangle_In_X_axis),
@@ -162,7 +163,7 @@ public class A_Path_Finding {
             get_Close_List().add(temp);
 
 
-            System.out.println("Visited " + temp.toString() + "\n");
+            my_Log.print("Visited " + temp.toString() + "\n");
 
             current_Step = new ArrayList<>();
             // Highlight if node visited
@@ -192,7 +193,7 @@ public class A_Path_Finding {
                 if (is_Destination(x)) {
                     x.set_Parent(parent);
                     // trace path(print path)
-                    System.out.println("The destination is found");
+                    my_Log.print("The destination is found");
                     this.trace_Path(q);
                     found_Dest = true;
                     return;
@@ -221,7 +222,7 @@ public class A_Path_Finding {
                 if (is_Destination(x)) {
                     x.set_Parent(parent);
                     // trace path(print path)
-                    System.out.println("The destination is found");
+                    my_Log.print("The destination is found");
                     this.trace_Path(q);
                     found_Dest = true;
                     return;
@@ -248,7 +249,7 @@ public class A_Path_Finding {
                 if (is_Destination(x)) {
                     x.set_Parent(parent);
                     // trace path(print path)
-                    System.out.println("The destination is found");
+                    my_Log.print("The destination is found");
                     this.trace_Path(q);
                     found_Dest = true;
                     return;
@@ -275,7 +276,7 @@ public class A_Path_Finding {
                 if (is_Destination(x)) {
                     x.set_Parent(parent);
                     // trace path(print path)
-                    System.out.println("The destination is found");
+                    my_Log.print("The destination is found");
                     this.trace_Path(q);
                     found_Dest = true;
                     return;
@@ -302,7 +303,7 @@ public class A_Path_Finding {
                 if (is_Destination(x)) {
                     x.set_Parent(parent);
                     // trace path(print path)
-                    System.out.println("The destination is found");
+                    my_Log.print("The destination is found");
                     this.trace_Path(q);
                     found_Dest = true;
                     return;
@@ -329,7 +330,7 @@ public class A_Path_Finding {
                 if (is_Destination(x)) {
                     x.set_Parent(parent);
                     // trace path(print path)
-                    System.out.println("The destination is found");
+                    my_Log.print("The destination is found");
                     this.trace_Path(q);
                     found_Dest = true;
                     return;
@@ -356,7 +357,7 @@ public class A_Path_Finding {
                 if (is_Destination(x)) {
                     x.set_Parent(parent);
                     // trace path(print path)
-                    System.out.println("The destination is found");
+                    my_Log.print("The destination is found");
                     this.trace_Path(q);
                     found_Dest = true;
                     return;
@@ -383,7 +384,7 @@ public class A_Path_Finding {
                 if (is_Destination(x)) {
                     x.set_Parent(parent);
                     // trace path(print path)
-                    System.out.println("The destination is found");
+                    my_Log.print("The destination is found");
                     this.trace_Path(q);
                     found_Dest = true;
                     return;
@@ -407,8 +408,8 @@ public class A_Path_Finding {
         }
         // if not finding the path from start_node to end_node
         if (!found_Dest) {
-            System.out.println("Not found!");
-            System.out.println(close_List.toString());
+            my_Log.print("Not found!");
+            my_Log.print("Visited: " + close_List.toString());
 
             current_Step = new ArrayList<>();
             for (Graph_Node n :
@@ -421,7 +422,7 @@ public class A_Path_Finding {
 
             return;
         }
-        System.out.println("End");
+        my_Log.print("End");
     }
 
 
@@ -431,7 +432,6 @@ public class A_Path_Finding {
         ArrayList<Graph_Node> Path = new ArrayList<>();
         while (!(map_2D.get(row).get(col).get_Parent().get_X() == -1 && map_2D.get(row).get(col).get_Parent().get_Y() == -1)) {
             Graph_Node X = new Graph_Node(row, col);
-            ;
             Path.add(X);
             int temp_row = get_Map().get(row).get(col).get_Parent().get_X();
             int temp_col = get_Map().get(row).get(col).get_Parent().get_Y();
@@ -439,7 +439,7 @@ public class A_Path_Finding {
             col = temp_col;
         }
         Path.add(get_Start_Node());
-        System.out.println();
+        my_Log.print("\n");
 
 
         List<State_Blob> current_Step = new ArrayList<>();
@@ -456,8 +456,8 @@ public class A_Path_Finding {
         }
         q.add(current_Step);
 
-        System.out.println();
-        System.out.println(close_List.toString());
+        my_Log.print("\n");
+        my_Log.print("Visited:" + close_List.toString());
 
     }
 
