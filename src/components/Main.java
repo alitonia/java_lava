@@ -7,28 +7,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import static utils.constants.*;
-
 //TODO: Change name of window
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         //Initialize
+        Parent root;
+
 //        Parent root = FXMLLoader.load(getClass().getResource("screens/Mini_Screen.fxml"));
 
-        Parent root;
-        switch (CURRENT_SCREEN) {
-            case MINI_SCREEN:
-                root = FXMLLoader.load(getClass().getResource("screens/Mini_Screen.fxml"));
-                break;
-            case LARGE_SCREEN:
-                root = FXMLLoader.load(getClass().getResource("screens/Large_Screen.fxml"));
-                break;
-            default:
-                root = FXMLLoader.load(getClass().getResource("screens/Mini_Screen.fxml"));
-                break;
-        }
+        root = FXMLLoader.load(getClass().getResource("Large_Screen.fxml"));
 
 
         // the address is not changed when rename parent directory @@ --> be careful

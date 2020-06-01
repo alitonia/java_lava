@@ -87,10 +87,12 @@
                         </GridPane.margin>
                         <items>
                             <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Sequential Search"/>
-                                <String fx:value="Binary Search"/>
-                                <String fx:value="A* Path-finding"/>
+                                <String fx:id="sequential_search" fx:value="Sequential Search"/>
+                                <String fx:id="binary_search" fx:value="Binary Search"/>
+                                <String fx:id="a_star" fx:value="A* Path-finding"/>
                                 <String fx:value="Bubble Sort"/>
+                                <String fx:value="Selection Sort"/>
+
                                 <!-- <String fx:value="Merge Sort"/>-->
                                 <!--<String fx:value="Quick Sort"/>-->
 

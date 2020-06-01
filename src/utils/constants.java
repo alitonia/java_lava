@@ -24,13 +24,16 @@ public class constants {
     public static final String BINARY_SEARCH_MODE = "Binary Search";
     public static final String A_STAR_PATH_FINDING_MODE = "A* Path-finding";
     public static final String BUBBLE_SORT_MODE = "Bubble Sort";
+    public static final String SELECTION_SORT_MODE = "Selection Sort";
 
 
     //Data properties
     public static final int NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE = 100;
     public static final int NUMBER_OF_RECTANGLE_X_AXIS = 40;
     public static final int NUMBER_OF_RECTANGLE_Y_AXIS = 30;
-    public static final int NUMBER_OF_HISTOGRAM_SORT_RECTANGLE = 20;
+    public static final int NUMBER_OF_HISTOGRAM_SLOW_SORT_RECTANGLE = 8;
+    public static final int NUMBER_OF_HISTOGRAM_FAST_SORT_RECTANGLE = 100;
+
 
     public static final double HEIGHT_VARIANCE_COEFFICIENT = 1.3;
     public static final int MINIMUM_HISTOGRAM_TRAVERSING_DISTANCE = (int) (NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE * 0.3);

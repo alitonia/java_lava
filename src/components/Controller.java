@@ -32,6 +32,9 @@ import static utils.constants.*;
 
 public class Controller {
 
+    public String sequential_search;
+    public String binary_search;
+    public String a_star;
     private String execution_Mode = SEQUENTIAL_SEARCH_MODE;
     private Subscription play_Stream;
 
@@ -175,11 +178,11 @@ public class Controller {
         }
 
         button_Executor.execute(() -> {
-            if (history_Manager.is_Tail()) {
-                forward_Button.setDisable(true);
-                start_Button.setDisable(true);
-            } else {
-                backward_Button.setDisable(false);
+                    if (history_Manager.is_Tail()) {
+                        forward_Button.setDisable(true);
+                        start_Button.setDisable(true);
+                    } else {
+                        backward_Button.setDisable(false);
                         reset_Button.setDisable(false);
                     }
                 }
@@ -200,11 +203,11 @@ public class Controller {
         }
 
         button_Executor.execute(() -> {
-            if (!history_Manager.is_Tail()) {
-                forward_Button.setDisable(false);
-                start_Button.setDisable(false);
-            }
-            if (history_Manager.is_Top()) {
+                    if (!history_Manager.is_Tail()) {
+                        forward_Button.setDisable(false);
+                        start_Button.setDisable(false);
+                    }
+                    if (history_Manager.is_Top()) {
                         reset_Button.setDisable(true);
                         backward_Button.setDisable(true);
                     }
@@ -274,6 +277,10 @@ public class Controller {
                 generate_Bubble();
                 break;
 
+            case SELECTION_SORT_MODE:
+                generate_Selection();
+                break;
+
             default:
                 System.out.println("Error parsing choice!");
                 break;
@@ -288,7 +295,6 @@ public class Controller {
                 }
         );
     }
-
 
 
     private void generate_Sequential() {
@@ -375,15 +381,30 @@ public class Controller {
         my_Log.print("Done");
     }
 
+
     private void generate_Bubble() {
         target_Line.setVisible(false);
         my_Log.print("Mode: " + BUBBLE_SORT_MODE);
-        visual_Factory.make_Histogram(NUMBER_OF_HISTOGRAM_SORT_RECTANGLE);
+        visual_Factory.make_Histogram(NUMBER_OF_HISTOGRAM_SLOW_SORT_RECTANGLE);
 
         history_Manager.set_Origin_List(visual_Factory.get_List_State_Format());
         System.out.println(visual_Factory.get_List_Node_Format().toString());
 
         sort_Generator.Bubble_Sort(visual_Factory.get_List_Double_Format(), history_Manager);
+
+        my_Log.print("Done");
+    }
+
+
+    private void generate_Selection() {
+        target_Line.setVisible(false);
+        my_Log.print("Mode: " + SELECTION_SORT_MODE);
+        visual_Factory.make_Histogram(NUMBER_OF_HISTOGRAM_SLOW_SORT_RECTANGLE);
+
+        history_Manager.set_Origin_List(visual_Factory.get_List_State_Format());
+        System.out.println(visual_Factory.get_List_Node_Format().toString());
+
+        sort_Generator.Selection_Sort(visual_Factory.get_List_Double_Format(), history_Manager);
 
         my_Log.print("Done");
     }
