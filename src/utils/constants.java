@@ -300,7 +300,7 @@ public class constants {
 
             default:
                 //debug mode :)
-                return 250;
+                return 550;
         }
     }
 }
