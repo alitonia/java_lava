@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Test_Ground {
     public static void main(String[] args) {
-        Sorting_Utils sorting_utils = new Sorting_Utils();
+        Sorting_Generator sorting_Generator = new Sorting_Generator();
         History_Manager history_manager = new History_Manager();
 
         List<Double> my_Values = Arrays.asList(1.0, -5.0, 6.0, 4.0, 9.0, 1.0, 0.0, 11.0);
@@ -20,10 +20,14 @@ public class Test_Ground {
         }
 
         history_manager.set_Origin_List(origin);
-        sorting_utils.merge_Sort(my_Values,
-                0, my_Values.size() - 1,
+        sorting_Generator.insertion_Sort(my_Values,
                 history_manager);
 
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         history_manager.print();
         System.out.println(my_Values.toString());
 

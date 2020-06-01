@@ -59,7 +59,7 @@ public class constants {
 
     public static final long BUBBLE_SORT_DELAY_MILLISECOND = 65;
     public static final long SELECTION_SORT_DELAY_MILLISECOND = 85;
-    public static final long INSERTION_SORT_DELAY_MILLISECOND = 65;
+    public static final long INSERTION_SORT_DELAY_MILLISECOND = 195;
 
     public static final long MERGE_SORT_DELAY_MILLISECOND = 65;
     public static final long QUICK_SORT_DELAY_MILLISECOND = 25;

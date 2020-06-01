@@ -1,6 +1,6 @@
 package components;
 
-import Incoming_features.Sorting_Utils;
+import Incoming_features.Sorting_Generator;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,7 +16,7 @@ import utils.Log;
 import utils.Painter;
 import utils.backend_logic.A_Path_Finding;
 import utils.backend_logic.History_Manager;
-import utils.backend_logic.Searching_Generators;
+import utils.backend_logic.Searching_Generator;
 import utils.backend_logic.State_Blob;
 import utils.front_end_logic.Colorful_Rectangle;
 import utils.front_end_logic.Visual_Factory;
@@ -43,9 +43,9 @@ public class Controller {
     private final History_Manager history_Manager = new History_Manager();
     private final Painter painter = new Painter(this);
 
-    private final Searching_Generators search_Generator = new Searching_Generators();
+    private final Searching_Generator search_Generator = new Searching_Generator();
     private final A_Path_Finding graph_search_Generator = new A_Path_Finding();
-    private final Sorting_Utils sort_Generator = new Sorting_Utils();
+    private final Sorting_Generator sort_Generator = new Sorting_Generator();
 
     private final ExecutorService button_Executor = Executors.newSingleThreadExecutor();
 //    private final ExecutorService graphic_Executor = Executors.newSingleThreadExecutor();
@@ -289,6 +289,10 @@ public class Controller {
                 generate_Quick();
                 break;
 
+            case INSERTION_SORT_MODE:
+                generate_Insertion();
+                break;
+
             default:
                 System.out.println("Error parsing choice!");
                 break;
@@ -417,6 +421,7 @@ public class Controller {
         my_Log.print("Done");
     }
 
+
     private void generate_Merge() {
         target_Line.setVisible(false);
         my_Log.print("Mode: " + SELECTION_SORT_MODE);
@@ -446,6 +451,20 @@ public class Controller {
                 visual_Factory.get_List_Double_Format(),
                 0, visual_Factory.get_List_Double_Format().size() - 1,
                 history_Manager);
+
+        my_Log.print("Done");
+    }
+
+
+    private void generate_Insertion() {
+        target_Line.setVisible(false);
+        my_Log.print("Mode: " + SELECTION_SORT_MODE);
+        visual_Factory.make_Histogram(NUMBER_OF_HISTOGRAM_SLOW_SORT_RECTANGLE);
+
+        history_Manager.set_Origin_List(visual_Factory.get_List_State_Format());
+        System.out.println(visual_Factory.get_List_Node_Format().toString());
+
+        sort_Generator.insertion_Sort(visual_Factory.get_List_Double_Format(), history_Manager);
 
         my_Log.print("Done");
     }

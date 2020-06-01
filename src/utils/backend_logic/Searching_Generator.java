@@ -9,7 +9,7 @@ import static utils.constants.*;
 
 //TODO: Name change on finishing A_Star
 
-public class Searching_Generators {
+public class Searching_Generator {
 
     private int status;
     private List<State_Blob> change_List;
