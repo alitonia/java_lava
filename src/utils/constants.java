@@ -25,6 +25,9 @@ public class constants {
     public static final String A_STAR_PATH_FINDING_MODE = "A* Path-finding";
     public static final String BUBBLE_SORT_MODE = "Bubble Sort";
     public static final String SELECTION_SORT_MODE = "Selection Sort";
+    public static final String INSERTION_SORT_MODE = "Insertion Sort";
+    public static final String MERGE_SORT_MODE = "Merge Sort";
+    public static final String QUICK_SORT_MODE = "Quick Sort";
 
 
     //Data properties
@@ -88,6 +91,12 @@ public class constants {
     public static final Color THE_SPOTLIGHT_STROKE_COLOR =
             new Color((float) 95 / 255, (float) 221 / 255, (float) 229 / 255, 0.8);
 
+    //also choosing, but second
+    public static final Color THE_SECOND_SPOTLIGHT_FILL_COLOR =
+            new Color((float) 217 / 255, (float) 69 / 255, (float) 95 / 255, 1);
+    public static final Color THE_SECOND_SPOTLIGHT_STROKE_COLOR =
+            new Color((float) 225 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
+
 
     //chosen
     public static final Color THE_SUCCESSFUL_FILL_COLOR =
@@ -140,12 +149,12 @@ public class constants {
             new Color(0.667, 0.96, 0.189, 0.25);
     public static final Color THE_SWAP_ABLE_STROKE_COLOR =
             new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
+
     // can't swap
     public static final Color THE_NOT_SWAP_ABLE_FILL_COLOR =
             new Color((float) 243 / 255, (float) 85 / 255, (float) 136 / 255, 1);
     public static final Color THE_NOT_SWAP_ABLE_STROKE_COLOR =
             new Color((float) 255 / 255, (float) 203 / 255, (float) 203 / 255, 0.95);
-    public static final int THE_SWAP_ABLE_RECT_STATUS = 10;
 
 
     //status
@@ -164,7 +173,13 @@ public class constants {
     public static final int THE_OUTSTANDING_RECT_STATUS = 8;
 
     public static final int THE_VISITING_RECT_STATUS = 9;
+
+    public static final int THE_SWAP_ABLE_RECT_STATUS = 10;
     public static final int THE_NOT_SWAP_ABLE_RECT_STATUS = 11;
+
+
+    public static final int THE_SECOND_SPOTLIGHT_RECT_STATUS = 12;
+
     public static final int NO_REPAINT_HEIGHT_SIGNAL = -1;
 
 
@@ -219,6 +234,9 @@ public class constants {
 
         COLOR_MAP.put(THE_NOT_SWAP_ABLE_RECT_STATUS,
                 Arrays.asList(THE_NOT_SWAP_ABLE_FILL_COLOR, THE_NOT_SWAP_ABLE_STROKE_COLOR));
+
+        COLOR_MAP.put(THE_SECOND_SPOTLIGHT_RECT_STATUS,
+                Arrays.asList(THE_SECOND_SPOTLIGHT_FILL_COLOR, THE_SECOND_SPOTLIGHT_STROKE_COLOR));
     }
 
 

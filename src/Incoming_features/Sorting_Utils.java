@@ -13,7 +13,7 @@ public class Sorting_Utils {
 
     private int status;
     private int index;
-    private List<State_Blob> my_Change;
+    private List<State_Blob> change_List;
     private State_Blob state_Blob;
 
 
@@ -34,49 +34,49 @@ public class Sorting_Utils {
             index = i;
             state_Blob = new State_Blob(index, status, height_List.get(index));
 
-            my_Change = new ArrayList<>();
-            my_Change.add(state_Blob);
-            q.add(my_Change);
+            change_List = new ArrayList<>();
+            change_List.add(state_Blob);
+            q.add(change_List);
 
             for (int j = height_List.size() - 1; j > i; j--) {
                 status = THE_SPOTLIGHT_RECT_STATUS;
                 index = j - 1;
                 state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                my_Change = new ArrayList<>();
-                my_Change.add(state_Blob);
+                change_List = new ArrayList<>();
+                change_List.add(state_Blob);
 
                 index = j;
                 state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                my_Change.add(state_Blob);
+                change_List.add(state_Blob);
 
-                q.add(my_Change);
+                q.add(change_List);
 
                 if (height_List.get(j) < height_List.get(j - 1)) {
                     //Signal change
                     status = THE_SWAP_ABLE_RECT_STATUS;
                     index = j - 1;
                     state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                    my_Change = new ArrayList<>();
-                    my_Change.add(state_Blob);
+                    change_List = new ArrayList<>();
+                    change_List.add(state_Blob);
 
                     index = j;
                     state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                    my_Change.add(state_Blob);
+                    change_List.add(state_Blob);
 
-                    q.add(my_Change);
+                    q.add(change_List);
 
                     //Now change
                     status = THE_SWAP_ABLE_RECT_STATUS;
                     index = j - 1;
                     state_Blob = new State_Blob(index, status, height_List.get(j));
-                    my_Change = new ArrayList<>();
-                    my_Change.add(state_Blob);
+                    change_List = new ArrayList<>();
+                    change_List.add(state_Blob);
 
                     index = j;
                     state_Blob = new State_Blob(index, status, height_List.get(j - 1));
-                    my_Change.add(state_Blob);
+                    change_List.add(state_Blob);
 
-                    q.add(my_Change);
+                    q.add(change_List);
                     Collections.swap(height_List, j, j - 1);
 
                 } else {
@@ -84,37 +84,37 @@ public class Sorting_Utils {
                     status = THE_NOT_SWAP_ABLE_RECT_STATUS;
                     index = j - 1;
                     state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                    my_Change = new ArrayList<>();
-                    my_Change.add(state_Blob);
+                    change_List = new ArrayList<>();
+                    change_List.add(state_Blob);
 
                     index = j;
                     state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                    my_Change.add(state_Blob);
+                    change_List.add(state_Blob);
 
-                    q.add(my_Change);
+                    q.add(change_List);
                 }
 
                 // back to normal
                 status = THE_NORMAL_RECT_STATUS;
                 index = j - 1;
                 state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                my_Change = new ArrayList<>();
-                my_Change.add(state_Blob);
+                change_List = new ArrayList<>();
+                change_List.add(state_Blob);
 
                 index = j;
                 state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                my_Change.add(state_Blob);
+                change_List.add(state_Blob);
 
-                q.add(my_Change);
+                q.add(change_List);
             }
             // First element is sorted --> paint it
             status = THE_SUCCESSFUL_RECT_STATUS;
             index = i;
             state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
 
-            my_Change = new ArrayList<>();
-            my_Change.add(state_Blob);
-            q.add(my_Change);
+            change_List = new ArrayList<>();
+            change_List.add(state_Blob);
+            q.add(change_List);
 
         }
         // Last element is not painted ---> paint it
@@ -122,9 +122,9 @@ public class Sorting_Utils {
         index = height_List.size() - 1;
         state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
 
-        my_Change = new ArrayList<>();
-        my_Change.add(state_Blob);
-        q.add(my_Change);
+        change_List = new ArrayList<>();
+        change_List.add(state_Blob);
+        q.add(change_List);
 
     }
 
@@ -138,191 +138,246 @@ public class Sorting_Utils {
             for (int j = i + 1; j < height_List.size(); j++) {
 
                 // paint current min and selecting rect
-                my_Change = new ArrayList<>();
+                change_List = new ArrayList<>();
                 status = THE_OBSTACLE_RECT_STATUS;
                 index = min_Index;
                 state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                my_Change.add(state_Blob);
+                change_List.add(state_Blob);
 
                 status = THE_SPOTLIGHT_RECT_STATUS;
                 index = j;
                 state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                my_Change.add(state_Blob);
+                change_List.add(state_Blob);
 
-                q.add(my_Change);
+                q.add(change_List);
 
                 if (height_List.get(j) < height_List.get(min_Index)) {
                     // Signal if rect is chosen
-                    my_Change = new ArrayList<>();
+                    change_List = new ArrayList<>();
 
                     status = THE_SWAP_ABLE_RECT_STATUS;
                     index = j;
                     state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                    my_Change.add(state_Blob);
+                    change_List.add(state_Blob);
 
-                    q.add(my_Change);
+                    q.add(change_List);
 
 
                     // new min
-                    my_Change = new ArrayList<>();
+                    change_List = new ArrayList<>();
                     status = THE_OBSTACLE_RECT_STATUS;
                     index = j;
                     state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                    my_Change.add(state_Blob);
+                    change_List.add(state_Blob);
 
                     status = THE_SWAP_ABLE_RECT_STATUS;
                     index = min_Index;
                     state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                    my_Change.add(state_Blob);
+                    change_List.add(state_Blob);
 
-                    q.add(my_Change);
+                    q.add(change_List);
 
 
                     // not min rect to normal color
-                    my_Change = new ArrayList<>();
+                    change_List = new ArrayList<>();
                     status = THE_NORMAL_RECT_STATUS;
                     index = min_Index;
                     state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                    my_Change.add(state_Blob);
-                    q.add(my_Change);
+                    change_List.add(state_Blob);
+                    q.add(change_List);
 
                     min_Index = j;
 
                 } else {
                     // signal not chosen
-                    my_Change = new ArrayList<>();
+                    change_List = new ArrayList<>();
                     status = THE_UNWORTHY_RECT_STATUS;
                     index = j;
                     state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                    my_Change.add(state_Blob);
+                    change_List.add(state_Blob);
 
-                    q.add(my_Change);
+                    q.add(change_List);
 
                     //back to normal
 
-                    my_Change = new ArrayList<>();
+                    change_List = new ArrayList<>();
                     status = THE_NORMAL_RECT_STATUS;
                     index = j;
                     state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-                    my_Change.add(state_Blob);
+                    change_List.add(state_Blob);
 
-                    q.add(my_Change);
+                    q.add(change_List);
                 }
 
             }
             //swap
-            my_Change = new ArrayList<>();
+            change_List = new ArrayList<>();
             status = THE_SWAP_ABLE_RECT_STATUS;
             index = i;
             state_Blob = new State_Blob(index, status, NO_REPAINT_HEIGHT_SIGNAL);
-            my_Change.add(state_Blob);
+            change_List.add(state_Blob);
 
-            q.add(my_Change);
+            q.add(change_List);
 
             // i rect is sorted
             // change not sorted rect to normal,
             // except if i and min are the same rect
 
             if (i != min_Index) {
-                my_Change = new ArrayList<>();
+                change_List = new ArrayList<>();
                 status = THE_SUCCESSFUL_RECT_STATUS;
                 index = i;
                 state_Blob = new State_Blob(index, status, height_List.get(min_Index));
-                my_Change.add(state_Blob);
+                change_List.add(state_Blob);
 
                 status = THE_NORMAL_RECT_STATUS;
                 index = min_Index;
                 state_Blob = new State_Blob(index, status, height_List.get(i));
-                my_Change.add(state_Blob);
+                change_List.add(state_Blob);
 
-                q.add(my_Change);
+                q.add(change_List);
 
             } else {
-                my_Change = new ArrayList<>();
+                change_List = new ArrayList<>();
                 status = THE_SUCCESSFUL_RECT_STATUS;
                 index = i;
                 state_Blob = new State_Blob(index, status, height_List.get(min_Index));
-                my_Change.add(state_Blob);
+                change_List.add(state_Blob);
 
-                q.add(my_Change);
+                q.add(change_List);
             }
             Collections.swap(height_List, i, min_Index);
         }
 
         // last element is sorted ---> color it
-        my_Change = new ArrayList<>();
+        change_List = new ArrayList<>();
         status = THE_SUCCESSFUL_RECT_STATUS;
         index = height_List.size() - 1;
         state_Blob = new State_Blob(index, status, height_List.get(min_Index));
-        my_Change.add(state_Blob);
+        change_List.add(state_Blob);
 
-        q.add(my_Change);
+        q.add(change_List);
     }
 
-//    public static void Merge(int[] arr, int l, int m, int r) {
-//        int i, j, k;
-//        int n1 = m - l + 1;
-//        int n2 = r - m;
-//
-//        int[] L = new int[n1];
-//        int[] R = new int[n2];
-//
-//        for (i = 0; i < n1; i++) {
-//            L[i] = arr[l + i];
-//        }
-//        for (j = 0; j < n2; j++) {
-//            R[j] = arr[m + j + 1];
-//        }
-//
-//        i = 0;
-//        j = 0;
-//        k = l;
-//
-//
-//        while (i < n1 && j < n2) {
-//            if (L[i] <= R[j]) {
-//                arr[k] = L[i];
-//                i++;
-//            } else {
-//                arr[k] = R[j];
-//                j++;
-//            }
-//            k++;
-//        }
-//        while (i < n1) {
-//            arr[k] = L[i];
-//            i++;
-//            k++;
-//        }
-//        while (j < n2) {
-//            arr[k] = R[j];
-//            j++;
-//            k++;
-//        }
-//    }
-//
-//    public static void Merge_Sort(int[] arr, int left, int right) {
-//        if (left < right) {
-//            int mid = left + (right - left) / 2;
-//
-//            Merge_Sort(arr, left, mid);
-//
-//            Merge_Sort(arr, mid + 1, right);
-//
-//            Merge(arr, left, mid, right);
-//        }
-//    }
-//
-//    public static int Find_max_value(ArrayList<Integer> arr) {
-//        int max_value = arr.get(0);
-//        for (int i = 1; i < arr.size(); i++) {
-//            if (max_value < arr.get(i)) {
-//                max_value = arr.get(i);
+
+    public void merge_Sort(List<Double> height_List, int left, int right, History_Manager q) {
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+
+            merge_Sort(height_List, left, mid, q);
+
+            merge_Sort(height_List, mid + 1, right, q);
+
+            merge(height_List, left, mid, right, q);
+        }
+    }
+
+    public void merge(List<Double> height_List, int left, int mid, int right, History_Manager q) {
+        int i, j, k;
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        List<Double> L = new ArrayList<>();
+        List<Double> R = new ArrayList<>();
+
+        //focusing
+        change_List = new ArrayList<>();
+        status = THE_FOCUSED_RECT_STATUS;
+        for (int l = left; l < mid + 1; l++) {
+            change_List.add(new State_Blob(l, status, NO_REPAINT_HEIGHT_SIGNAL));
+        }
+
+        status = THE_SECOND_SPOTLIGHT_RECT_STATUS;
+        for (int l = mid + 1; l < right + 1; l++) {
+            change_List.add(new State_Blob(l, status, NO_REPAINT_HEIGHT_SIGNAL));
+        }
+        q.add(change_List);
+
+        for (i = 0; i < n1; i++) {
+            L.add(height_List.get(left + i));
+        }
+        for (j = 0; j < n2; j++) {
+            R.add(height_List.get(mid + j + 1));
+        }
+
+        i = 0;
+        j = 0;
+        k = left;
+
+        while (i < n1 && j < n2) {
+            if (L.get(i) <= R.get(j)) {
+                height_List.set(k, L.get(i));
+
+                change_List = new ArrayList<>();
+                change_List.add(
+                        new State_Blob(left + i,
+                                THE_GATE_RECT_STATUS,
+                                NO_REPAINT_HEIGHT_SIGNAL)
+                );
+                q.add(change_List);
+
+                i += 1;
+            } else {
+                height_List.set(k, R.get(j));
+                change_List = new ArrayList<>();
+                change_List.add(
+                        new State_Blob(mid + j + 1,
+                                THE_GATE_RECT_STATUS,
+                                NO_REPAINT_HEIGHT_SIGNAL)
+                );
+                q.add(change_List);
+                j += 1;
+            }
+            k += 1;
+        }
+        while (i < n1) {
+            height_List.set(k, L.get(i));
+
+            change_List = new ArrayList<>();
+            change_List.add(
+                    new State_Blob(left + i,
+                            THE_GATE_RECT_STATUS,
+                            NO_REPAINT_HEIGHT_SIGNAL)
+            );
+            q.add(change_List);
+
+            i += 1;
+            k += 1;
+        }
+        while (j < n2) {
+            height_List.set(k, R.get(j));
+
+            change_List = new ArrayList<>();
+            change_List.add(
+                    new State_Blob(mid + j + 1,
+                            THE_GATE_RECT_STATUS,
+                            NO_REPAINT_HEIGHT_SIGNAL)
+            );
+            q.add(change_List);
+
+            j += 1;
+            k += 1;
+        }
+
+        change_List = new ArrayList<>();
+        status = THE_SUCCESSFUL_RECT_STATUS;
+        for (int l = left; l < right + 1; l++) {
+            change_List.add(new State_Blob(l, status, height_List.get(l)));
+        }
+        q.add(change_List);
+    }
+
+
+//    private int Find_max_value(ArrayList<Integer> height_List, History_Manager q) {
+//        int max_value = height_List.get(0);
+//        for (int i = 1; i < height_List.size(); i++) {
+//            if (max_value < height_List.get(i)) {
+//                max_value = height_List.get(i);
 //            }
 //        }
 //        return max_value;
 //    }
-//
+
 //    public static void bucket_sort_for_each_part(ArrayList<Integer> arr) {
 //        int max_value = Find_max_value(arr);
 //

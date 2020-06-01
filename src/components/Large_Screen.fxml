@@ -92,8 +92,7 @@
                                 <String fx:id="a_star" fx:value="A* Path-finding"/>
                                 <String fx:value="Bubble Sort"/>
                                 <String fx:value="Selection Sort"/>
-
-                                <!-- <String fx:value="Merge Sort"/>-->
+                                 <String fx:value="Merge Sort"/>
                                 <!--<String fx:value="Quick Sort"/>-->
 
                             </FXCollections>

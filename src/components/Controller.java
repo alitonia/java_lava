@@ -281,6 +281,10 @@ public class Controller {
                 generate_Selection();
                 break;
 
+            case MERGE_SORT_MODE:
+                generate_Merge();
+                break;
+
             default:
                 System.out.println("Error parsing choice!");
                 break;
@@ -405,6 +409,22 @@ public class Controller {
         System.out.println(visual_Factory.get_List_Node_Format().toString());
 
         sort_Generator.Selection_Sort(visual_Factory.get_List_Double_Format(), history_Manager);
+
+        my_Log.print("Done");
+    }
+
+    private void generate_Merge() {
+        target_Line.setVisible(false);
+        my_Log.print("Mode: " + SELECTION_SORT_MODE);
+        visual_Factory.make_Histogram(NUMBER_OF_HISTOGRAM_FAST_SORT_RECTANGLE);
+
+        history_Manager.set_Origin_List(visual_Factory.get_List_State_Format());
+        System.out.println(visual_Factory.get_List_Node_Format().toString());
+
+        sort_Generator.merge_Sort(
+                visual_Factory.get_List_Double_Format(),
+                0, visual_Factory.get_List_Double_Format().size() - 1,
+                history_Manager);
 
         my_Log.print("Done");
     }
