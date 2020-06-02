@@ -90,6 +90,7 @@ public class Controller {
                     start_Button.setDisable(true);
                     randomize_Button.setDisable(true);
                     mode_Choice.setDisable(true);
+            reset_Button.setDisable(true);
                 }
         );
         long delay = getDelay(execution_Mode);

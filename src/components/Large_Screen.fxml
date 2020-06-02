@@ -67,7 +67,7 @@
                                 onAction="#reset" prefHeight="65.0" prefWidth="143.0"
                                 text="Reset"/>
                         <Button fx:id="cancel_Button" mnemonicParsing="false" onAction="#cancel"
-                                prefHeight="60.0" prefWidth="140.0" text="Cancel"/>
+                                prefHeight="60.0" prefWidth="140.0" text="Exit"/>
                     </HBox>
                     <HBox prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                         <GridPane.margin>
