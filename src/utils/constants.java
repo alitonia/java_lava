@@ -32,8 +32,8 @@ public class constants {
 
     //Data properties
     public static final int NUMBER_OF_HISTOGRAM_SEARCH_RECTANGLE = 150;
-    public static final int NUMBER_OF_RECTANGLE_X_AXIS = 100;
-    public static final int NUMBER_OF_RECTANGLE_Y_AXIS = 100;
+    public static final int NUMBER_OF_RECTANGLE_X_AXIS = 30;
+    public static final int NUMBER_OF_RECTANGLE_Y_AXIS = 30;
     public static final int NUMBER_OF_HISTOGRAM_SLOW_SORT_RECTANGLE = 12;
     public static final int NUMBER_OF_HISTOGRAM_FAST_SORT_RECTANGLE = 100;
     public static final int NUMBER_OF_HISTOGRAM_DEBUG_SORT_RECTANGLE = 8;
