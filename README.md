@@ -1,11 +1,4 @@
-# java_lava
-JAVA Mini-project for OOP class
-Now available visualization:
-    - Sequential Search
-    - Binary Search
-    - A* Path-finding
-    - Insertion Sort
-    - Selection Sort
-    - Bubble Sort
-    - Merge Sort
-    - Quick Sort
+Visualization:
+    This program illustrates a few popular algorithms, including ability to pause, reset, go step by step.
+Parameter changes such as number of visualization, run speed, color can be modified in constants class.
+    
